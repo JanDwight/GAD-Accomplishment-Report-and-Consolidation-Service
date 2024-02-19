@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react'
 import { Tab } from '@headlessui/react'
 import axiosClient from '../../../../axios/axios';
-import { ArchiveBoxArrowDownIcon, PencilIcon } from '@heroicons/react/24/outline';
+import { ArchiveBoxArrowDownIcon, PresentationChartLineIcon } from '@heroicons/react/24/outline';
 import ReactModal from 'react-modal';
 import ViewEADReportModal from '../activityForms/components/modals/ViewEADReportModal';
 import ArchiveReportModal from './components/modals/ArchiveReportModal';
@@ -87,15 +87,16 @@ export default function AccomplishmentReport() {
                   </h3>
 
                   <ul className="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">  
-                    <button onClick={() => handleEditClick((formEntry))}>
                       <li>{formEntry.forms.title}</li>
-                    </button>
                   </ul>
 
                   <ul>
                       
                       <button onClick={() => handleArchiveClick((formEntry))}>
                           <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
+                      </button>
+                      <button onClick={() => handleEditClick((formEntry))}>
+                          <PresentationChartLineIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
                       </button>
                     </ul>
                   </li>
