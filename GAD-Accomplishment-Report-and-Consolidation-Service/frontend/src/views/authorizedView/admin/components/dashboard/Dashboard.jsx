@@ -36,7 +36,7 @@ export default function Dashboard() {
     // Handle archive click
   };
   
-  const headerStyles = 'font-medium text-xs'
+  const headerStyles = 'font-bold text-xs'
 
   return (
     <div className='h-full'>
@@ -53,8 +53,8 @@ export default function Dashboard() {
           <thead className='bg-secondary sticky top-0'>
             <tr>
               <td className={`${headerStyles} w-[40%]`}>USERS <div className='text-xs'>TOTAL</div></td>
-              <td className={headerStyles}>SUBMITTED ACTIVITY DESIGN<div className='font-normal'>TOTAL</div></td>
-              <td className={headerStyles}>ACCOMPLISHMENT REPORTS<div className='font-normal'>TOTAL</div></td>
+              <td className={headerStyles}>SUBMITTED ACTIVITY DESIGN<div>TOTAL</div></td>
+              <td className={headerStyles}>ACCOMPLISHMENT REPORTS<div>TOTAL</div></td>
             </tr>
           </thead>
           <tbody>
