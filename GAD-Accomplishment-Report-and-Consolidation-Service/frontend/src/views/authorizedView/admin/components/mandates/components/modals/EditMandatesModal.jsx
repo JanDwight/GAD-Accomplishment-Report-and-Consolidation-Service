@@ -7,7 +7,7 @@ import Feedback from '../../../../../../components/feedbacks/Feedback';
 
 export default function EditMandatesModal({ mandateSelected }) {
     //--------For Feedback
-    const [error, setError] = useState('');
+
     const [message, setAxiosMessage] = useState(''); // State for success message
     const [status, setAxiosStatus] = useState('');
 
@@ -59,25 +59,19 @@ export default function EditMandatesModal({ mandateSelected }) {
   //----------axiosClient
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+    
     try {
         const response = await axiosClient.put(`/updatemandate/${formData.id}`, {
             form_data: formData,
         });
-        setAxiosMessage(response.data.message); // Set success message
+        setAxiosMessage(response.data.message);
         setAxiosStatus(response.data.success);
-        setTimeout(() => {
-            setAxiosMessage(''); // Clear success message
-            setAxiosStatus('');
-        }, 3000); // Timeout after 3 seconds
     } catch (error) {
-        if (error.response) {
-            const finalErrors = Object.values(error.response.data.errors).reduce(
-                (accum, next) => [...accum, ...next],
-                []
-            );
-            setError(finalErrors.join('<br>'));
-        }
-        console.error(error);
+      setAxiosMessage(error.response.data.message);
+      setAxiosStatus(false);
     }
   };
 

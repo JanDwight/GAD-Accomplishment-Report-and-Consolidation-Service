@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import Submit from '../../../../../../components/buttons/Submit';
 import axiosClient from '../../../../../../axios/axios';
+import Feedback from '../../../../../../components/feedbacks/Feedback';
 
 export default function AddMandatesModal() {
+
+  const [message, setAxiosMessage] = useState('');
+  const [status, setAxiosStatus] = useState('');
 
   const [formData, setFormData] = useState({
     gender_issue: '',
@@ -52,35 +56,28 @@ export default function AddMandatesModal() {
   //----------axiosClient
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+    
     try {
-        const response = await axiosClient.post('/createmandates', {
-            form_data: formData
-        });
-        setAxiosMessage(response.data.Message); // Set success message
-        setAxiosStatus(response.data.Success);
-        
-        if (response.data.Success === true){
-          populateDocx(); // Run the download of DOCX
-        }
-        setTimeout(() => {
-            setAxiosMessage(''); // Clear success message
-            setAxiosStatus('');
-        }, 3000); // Timeout after 3 seconds
+      const response = await axiosClient.post('/createmandates', {
+          form_data: formData
+      });
+      setAxiosMessage(response.data.message);
+      setAxiosStatus(response.data.success);
     } catch (error) {
-        if (error.response) {
-            const finalErrors = Object.values(error.response.data.errors).reduce(
-                (accum, next) => [...accum, ...next],
-                []
-            );
-            setError(finalErrors.join('<br>'));
-        }
-        console.error(error);
+      setAxiosMessage(error.response.data.message);
+      setAxiosStatus(false);
     }
   };
   //----------
 
   return (
     <div>
+
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
+
       <form onSubmit={handleSubmit}>
         {renderInput('gender_issue', 'Gender Issues/GAD Mandate')}
         {renderInput('cause_of_gender_issue', 'Cause of Gender Issues')}
