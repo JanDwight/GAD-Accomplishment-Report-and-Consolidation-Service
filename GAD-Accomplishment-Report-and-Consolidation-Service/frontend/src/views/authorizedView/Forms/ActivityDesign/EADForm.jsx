@@ -8,11 +8,9 @@ import ExtensionTrainingDesign from '../../../components/printing/forms/Extensio
 
 //For Feedback
 import Feedback from '../../../components/feedbacks/Feedback';
-import Error from '../../../components/feedbacks/Error';
 
 export default function EADForm() {
   //For feedback
-  const [error, setError] = useState('');
   const [message, setAxiosMessage] = useState(''); // State for success message
   const [status, setAxiosStatus] = useState('');
 
@@ -118,30 +116,24 @@ export default function EADForm() {
   //----------axiosClient
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+
     try {
         const response = await axiosClient.post('/form_ead', {
             form_data: formData,
             xp_data: inputFields
         });
-        setAxiosMessage(response.data.Message); // Set success message
-        setAxiosStatus(response.data.Success);
+        setAxiosMessage(response.data.message);
+        setAxiosStatus(response.data.success); 
         
         if (response.data.Success === true){
           populateDocx(); // Run the download of DOCX
         }
-        setTimeout(() => {
-            setAxiosMessage(''); // Clear success message
-            setAxiosStatus('');
-        }, 3000); // Timeout after 3 seconds
     } catch (error) {
-        if (error.response) {
-            const finalErrors = Object.values(error.response.data.errors).reduce(
-                (accum, next) => [...accum, ...next],
-                []
-            );
-            setError(finalErrors.join('<br>'));
-        }
-        console.error(error);
+      setAxiosMessage(error.message);
+      setAxiosStatus(false);
     }
 };
   //----------
@@ -179,10 +171,7 @@ export default function EADForm() {
   return (
     <div className='bg-gray-100 m-5 p-3'>
       {/**For Feedback */}
-      <Error isOpen={error !== ''} onClose={() => setError('')} errorMessage={error} />
-      
-      {/* Integrate the Success component */}
-      <Feedback isOpen={message !== ''} onClose={() => setAxiosStatus('')} successMessage={message}  status={status}/>
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1 className='text-center'>
         Extension Activity Design Form

@@ -157,30 +157,25 @@ export default function EmployeeForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+
     try {
         const response = await axiosClient.post('/form_employee', {
             form_data: formData,
             xp_data: inputFields
         });
-        setAxiosMessage(response.data.Message); // Set success message
-        setAxiosStatus(response.data.Success);
+
+        setAxiosMessage(response.data.message);
+        setAxiosStatus(response.data.success); 
         
-        if (response.data.Success === true){
-          populateDocx(); // Run the download of DOCX
+        if (response.data.success === true){
+          populateDocx(); // Run the download of DOCX 
         }
-        setTimeout(() => {
-            setAxiosMessage(''); // Clear success message
-            setAxiosStatus('');
-        }, 3000); // Timeout after 3 seconds
     } catch (error) {
-        if (error.response) {
-            const finalErrors = Object.values(error.response.data.errors).reduce(
-                (accum, next) => [...accum, ...next],
-                []
-            );
-            setError(finalErrors.join('<br>'));
-        }
-        console.error(error);
+      setAxiosMessage(error.message);
+      setAxiosStatus(false);
     }
 };
 
@@ -222,8 +217,8 @@ export default function EmployeeForm() {
   return (
     <div className='bg-gray-100 m-5 p-3'>
       {/**For Feedback */}
-      <Error isOpen={error !== ''} onClose={() => setError('')} errorMessage={error} />
-      <Feedback isOpen={message !== ''} onClose={() => setSuccess('')} successMessage={message}  status={status}/>
+
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1 className='text-center'>
         Employee Activity Form
