@@ -10,9 +10,18 @@ export default function Login() {
   const [success, setSuccess] = useState(''); // State for success message
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { setCurrentUser, setUserToken } = useStateContext();
 
   const [axiosRes, setAxiosRes] = useState('');
+
+   //---
+   const handlePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const inputType = showPassword ? 'text' : 'password';
+  //---
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -68,13 +77,21 @@ export default function Login() {
           placeholder={'Input Password'}
           id="password"
           name="password"
-          type="password"
+          type={inputType}
           autoComplete="password"
           required
           value={password}
           onChange={(ev) => setPassword(ev.target.value)}
           className='w-[80%] border-solid border-2 border-primary focus:border-accent focus:outline-none rounded-lg p-2'
         />
+        <div className='w-[80%] flex space-x-2 justify-end pt-1 px-2'>
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={handlePasswordVisibility}
+          />
+          <label htmlFor="showPassword" className="text-sm">Show Password</label>
+        </div>
 
         <div className="mt-5">
           <Submit label="Login" />
