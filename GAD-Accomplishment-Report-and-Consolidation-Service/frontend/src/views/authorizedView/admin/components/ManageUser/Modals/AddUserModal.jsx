@@ -10,6 +10,7 @@ export default function AddUserModal() {
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [role, setRole] = useState('');
 
     const [message, setAxiosMessage] = useState('');
@@ -33,6 +34,14 @@ export default function AddUserModal() {
       }
   
     const style = 'text-center border border-black'
+
+    //---
+    const handlePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
+  
+    const inputType = showPassword ? 'text' : 'password';
+    //---
 
   return (
     <div className='h-full grid place-items-center text-center'>
@@ -72,13 +81,21 @@ export default function AddUserModal() {
                   placeholder={'Input Password'}
                   id="password"
                   name="password"
-                  type="password"
+                  type={inputType}
                   autoComplete="password"
                   required
                   value={password}
                   onChange={ev => setPassword(ev.target.value)}
                   className={style}
               />
+              <div className='flex space-x-2 justify-end pt-1'>
+                <input
+                  type="checkbox"
+                  checked={showPassword}
+                  onChange={handlePasswordVisibility}
+                />
+                <label htmlFor="showPassword" className="text-sm">Show Password</label>
+              </div>
           </div>
 
           {/**For Roles */}
