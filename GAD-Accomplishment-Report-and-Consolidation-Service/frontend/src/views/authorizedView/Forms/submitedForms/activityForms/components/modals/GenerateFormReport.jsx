@@ -12,6 +12,9 @@ import { MinusCircleIcon } from '@heroicons/react/20/solid';
 
 export default function GenerateFormReport({ selectedForm }) {
   
+  const [message, setAxiosMessage] = useState(''); // State for success message
+  const [status, setAxiosStatus] = useState('');
+
   const [formData, setFormData] = useState({
     forms_id: selectedForm.id,
     title: selectedForm.title,
@@ -127,16 +130,13 @@ export default function GenerateFormReport({ selectedForm }) {
     generateInputFields();
 }, []);
   //------------------------------
-
-  //For feedback
-  const [error, setError] = useState('');
-  const [message, setAxiosMessage] = useState(''); // State for success message
-  const [status, setAxiosStatus] = useState('');
   
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-    setError({ __html: "" });
   
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+    
     // Create FormData object
     const formDataToSend = new FormData();
   
@@ -156,8 +156,6 @@ export default function GenerateFormReport({ selectedForm }) {
         formDataToSend.append(`expenditures[${index}][${key}]`, expenditure[key]);
       }
     });
-    
-    console.log('formDataToSend',formDataToSend);
 
     try {
       const response = await axiosClient.post('/accomplishment_report', formDataToSend);
@@ -166,12 +164,9 @@ export default function GenerateFormReport({ selectedForm }) {
       if (response.data.success === true){
         populateDocx(); // Run the download of DOCX
       }
-      setTimeout(() => {
-        setAxiosMessage(''); // Clear success message
-        setAxiosStatus('');
-      }, 3000); // Timeout after 3 seconds
     } catch (error) {
-      setAxiosMessage(error.response.data.message); // Set success message
+      setAxiosMessage(error.response.data.message);
+      setAxiosStatus(false);
     }
   };
   
@@ -203,13 +198,8 @@ const renderInput = (name, label) => {
   // Check if the input field should be required based on form type and field name
   const isRequired = selectedForm.form_type !== "INSET" && name == "no_of_target_participants";
 
-  console.log('test',formData.images);
   return (
     <div className='flex flex-1 flex-col'>
-      
-    {/* Integrate the Success component */}
-    <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message}  status={status}/>
-
       <label htmlFor={name}>{label}</label>
       <input
         id={name}
@@ -230,12 +220,8 @@ const renderInput = (name, label) => {
 
   return (
     <div>
-      {error.__html && (
-        <div
-          className="bg-red-500 rounded py-2 px-3 text-white"
-          dangerouslySetInnerHTML={error}
-        ></div>
-      )}
+      
+    <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
     <form onSubmit={handleSubmit} className="flex flex-1 flex-col" encType="multipart/form-data">
       {renderInput("title", "Title: ")}
