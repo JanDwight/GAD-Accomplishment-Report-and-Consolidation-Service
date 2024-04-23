@@ -59,6 +59,10 @@ export default function EditMandatesModal({ mandateSelected }) {
   //----------axiosClient
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+    
     try {
         const response = await axiosClient.put(`/updatemandate/${formData.id}`, {
             form_data: formData,
