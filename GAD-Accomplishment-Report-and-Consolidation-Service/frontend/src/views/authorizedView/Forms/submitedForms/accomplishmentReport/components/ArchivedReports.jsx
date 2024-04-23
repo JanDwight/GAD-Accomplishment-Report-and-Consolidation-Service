@@ -43,19 +43,22 @@ export default function ArchivedReports() {
 
     return (
         <>
-            <div className="flex justify-center overflow-y-auto">
-                <table className='border-solid border-2 border-sky-500'>
-                    <thead className='border-solid border-2 border-sky-500'>
+            <div className="bg-white flex h-full overflow-y-auto rounded-xl">
+                <table className='w-screen text-center h-fit'>
+                    <thead className='bg-secondary sticky top-0'>
                         <tr>
-                            <th className="text-left bg-gray-200 p-2 border-solid border-2 border-sky-500">Title</th>
-                            <th className="text-left bg-gray-200 p-2 border-solid border-2 border-sky-500">Actions</th>
+                            <th className="text-left bg-secondary p-2 ">Title</th>
+                            <th className="text-left bg-secondary p-2 ">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredData.map((form, index) => (
-                            <tr key={index} className={`${index % 2 === 0 ? 'odd:bg-green-100' : ''}`}>
+                            <tr 
+                                key={index} 
+                                className='border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs'
+                            >
                                 <td className="text-center p-2">{form.forms.title}</td>
-                                <td className="flex items-center p-3">
+                                <td className="flex justify-center p-3">
                                     <button onClick={() => handleRestoreReportClick(form)}>
                                         <ArrowLeftStartOnRectangleIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
                                     </button>
