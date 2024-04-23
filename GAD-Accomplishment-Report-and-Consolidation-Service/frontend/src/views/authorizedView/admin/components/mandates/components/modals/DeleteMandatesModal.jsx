@@ -7,38 +7,40 @@ import Feedback from '../../../../../../components/feedbacks/Feedback';
 
 export default function DeleteMandatesModal({selectedForm}) {
   // For feedback
-  const [error, setError] = useState('');
   const [message, setAxiosMessage] = useState('');
   const [status, setAxiosStatus] = useState('');
 
   const onSubmit = async (ev) => {
     ev.preventDefault();
-    setError({ __html: "" });
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
 
     try {
       const response = await axiosClient.put(`/deletemandate/${selectedForm[0].id}`, {});
-      setAxiosMessage(response.data.message); // Set success message
+      setAxiosMessage(response.data.message);
       setAxiosStatus(response.data.success);
-      setTimeout(() => {
-        setAxiosMessage(''); // Clear success message
-        setAxiosStatus('');
-      }, 3000); // Timeout after 3 seconds
     } catch (error) {
-      setAxiosMessage(error.response.data.message); // Set success message
+      setAxiosMessage(error.response.data.message);
+      setAxiosStatus(false);
     }
   };
 
   return (
     <div>
-        Are you sure you want to delete? 
-        This will delete the Mandate permanently
+
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
+
+      <h1>
+        Are you sure you want to delete <b>{selectedForm[0].gender_issue}</b>
+      </h1>
 
       {/**BUTTONS */}
       <div className='mt-5'>
         {/** For Feedback */}
         <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} />
 
-          <WarningButton label="Delete User" onClick={onSubmit}/*disabled={ your condition }*/ />
+          <WarningButton label="Delete Mandate" onClick={onSubmit}/*disabled={ your condition }*/ />
         </div>
     </div>
   )
