@@ -10,14 +10,26 @@ Modal.setAppElement('#root'); // Assuming '#root' is the ID of your root element
 //For feedback
 import Feedback from '../../../../../../components/feedbacks/Feedback';
 import { MinusCircleIcon } from '@heroicons/react/24/outline';
+import AddImages from '../../../../../../components/image/Addimages';
 
 export default function GenerateAccomplishmentReport({ selectedForm }) {
+  const [message, setAxiosMessage] = useState('');
+  const [status, setAxiosStatus] = useState('');
+
     //----------for docx
     const fileUrl = ExtensionAccomplishmentReport; // Use the imported file directly
 
     const fetchData = async (url) => {
       const response = await fetch(url);
       return await response.blob();
+    };
+
+    const handleImagesChange = (selectedImages) => {
+      // Update the formData state with the array of selected images
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        images: selectedImages
+      }));
     };
   
     const populateDocx = async () => {
@@ -75,9 +87,6 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
     approved_budget: '',
     actual_expenditure: '',
   }]);
-
-  const [message, setAxiosMessage] = useState('');
-  const [status, setAxiosStatus] = useState('');
 
   const expendituresArray = selectedForm.expenditures;
 
@@ -145,25 +154,41 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
   //----------axiosClient
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    try {
-        const response = await axiosClient.post('/accomplishment_report', {
-          accReport: formData,
-            expenditures: actualExpendatures,
-        });
-        setAxiosMessage(response.data.message); // Set success message
-        setAxiosStatus(response.data.success);
+    
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
 
-        console.log('status',response.data.success);
+    // Create FormData object
+    const formDataToSend = new FormData();
+
+    // Append form data
+    for (const key in formData) {
+      formDataToSend.append(key, formData[key]);
+    }
+
+    // Append image files
+    formData.images.forEach((image, index) => {
+      formDataToSend.append(`images[${index}]`, image);
+    });
+
+    // Append expenditures data as array
+    actualExpendatures.forEach((expenditure, index) => {
+      for (const key in expenditure) {
+        formDataToSend.append(`expenditures[${index}][${key}]`, expenditure[key]);
+      }
+    });
+
+    try {
+        const response = await axiosClient.post('/accomplishment_report', formDataToSend);
+
         if (response.data.success === true){
           populateDocx(); // Run the download of DOCX
+          setAxiosMessage(response.data.message); // Set success message
+          setAxiosStatus(response.data.success);
         }
-        setTimeout(() => {
-            setAxiosMessage(''); // Clear success message
-            setAxiosStatus('');
-        }, 3000); // Timeout after 3 seconds
       } catch (error) {
         setAxiosMessage(error.response.data.message);
+        setAxiosStatus(false);
       }
     
   };
@@ -320,9 +345,13 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
             <div className="flex justify-center mt-3">
               <NeutralButton label="Add more.." onClick={() => addFields()} />
             </div>
-          
+
         </div>
         
+        <div className='flex justify-center mt-5'>
+          <AddImages onImagesChange={handleImagesChange} />
+        </div>
+
         <div className='mt-5'>
           <Submit label="Submit"/>
         </div>
