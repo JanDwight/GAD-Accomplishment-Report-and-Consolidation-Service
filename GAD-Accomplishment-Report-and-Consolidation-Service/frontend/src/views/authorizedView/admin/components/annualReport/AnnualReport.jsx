@@ -25,8 +25,14 @@ export default function AnnualReport() {
         try {
             const response = await axiosClient.get('/showact_mandates');
             if (response.data) {
-                setClientMandate(response.data.Client)
-                setOrganizationMandate(response.data.Organization)
+                console.log('Return Client: ', response.data.Client);
+                console.log('Return Organization: ', response.data.Organization);
+                if (response.data.Client !== undefined) {
+                    setClientMandate(response.data.Client)
+                }
+                if (response.data.Organization !== undefined) {
+                    setOrganizationMandate(response.data.Organization)
+                }
             } else {
                 console.error('Invalid response format:', response.data);
             }
