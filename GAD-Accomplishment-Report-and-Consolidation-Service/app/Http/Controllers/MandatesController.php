@@ -36,14 +36,14 @@ class MandatesController extends Controller
             ]);
     
             return response([
-                'success' => true,
                 'message' => 'Mandate created successfully',
+                'success' => true
             ]);
     
         } catch (\Exception $e) {
             return response([
-                'success' => false,
                 'message' => 'Error creating mandates: ' . $e->getMessage(),
+                'success' => false
             ]);
         }
     }
@@ -57,13 +57,13 @@ class MandatesController extends Controller
             $mandateData->update($mandate['form_data']);
             
             return response([
-                'success' => true,
                 'message' => 'Mandate updated successfully',
+                'success' => true
             ]);
         } catch (\Exception $e) {
             return response([
-                'success' => false,
                 'message' => 'Error updating mandates: ' . $e->getMessage(),
+                'success' => false
             ]);
         }
     }
@@ -75,12 +75,13 @@ class MandatesController extends Controller
             $mandate->delete();
 
             return response([
-            'success' => true,
-            'message' => 'Mandate archived successfully']);
+            'message' => 'Mandate archived successfully',
+            'success' => true
+        ]);
         } catch (\Exception $e) {
             return response([
-                'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),
+                'success' => false
             ]);
         }
     }
@@ -93,12 +94,13 @@ class MandatesController extends Controller
             $mandate->restore();
 
             return response([
-                'success' => true,
-                'message' => 'Mandate Restored']);
+                'message' => 'Mandate Restored',
+                'success' => true
+            ]);
         } catch (\Exception $e) {
             return response([
-                'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),
+                'success' => false
             ]);
         }
     }
@@ -111,13 +113,13 @@ class MandatesController extends Controller
             $mandate->forceDelete();
             
             return response([
-                'success' => true,
                 'message' => 'Mandate permanently deleted',
+                'success' => true
             ]);
         } catch (\Exception $e) {
             return response([
-                'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),
+                'success' => false
             ]);
         }
     }
