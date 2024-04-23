@@ -109,12 +109,26 @@ export default function AnnualReport() {
     XLSX.writeFile(wb, 'report.xlsx');
     };
 
+    function EditableTable() {
+        useEffect(() => {
+          // Ensure all table cells are editable when the component mounts
+          const cells = document.querySelectorAll("#report-table td");
+          cells.forEach(cell => {
+            cell.setAttribute("contenteditable", true);
+          });
+        }, []); // Run this effect only once when the component mounts
+    }
+
     return (
         <div className='bg-white h-full overflow-y-auto rounded-xl'>
-            <div className='p-2 mx-auto w-[20%]'>
+            <div className='p-2 mx-auto w-[20%]' contenteditable>
                 <NeutralButton label={'Export to Excel'} onClick={exportToExcel} />
             </div>
-            <table id="report-table" className='w-screen overflow-x-auto'>
+            <table id="report-table" 
+                className='w-screen overflow-x-auto' 
+                contentEditable={false}
+                //set contentEditable to true for editing the table contents
+            >
                 <thead>
                     <tr>
                         <th style={tvStyles} colSpan="12">BENGUET STATE UNIVERSITY ANNUAL GENDER AND DEVELOPMENT (GAD) ACCOMPLISHMENT FY 20XX</th>

@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/deleteuser/{id}', 'deleteuser');
         Route::get('/showusers', 'index');
         Route::get('/showarchivedusers', 'userarchiveindex');
+        Route::get('/counter', 'counter');
     });
 
     //For Mandates================================================
