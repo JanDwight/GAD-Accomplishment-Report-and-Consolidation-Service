@@ -32,7 +32,7 @@ export default function AddUserModal() {
         }
       }
   
-    const style = 'text-center'
+    const style = 'text-center border border-black'
 
   return (
     <div className='h-full grid place-items-center text-center'>
@@ -86,7 +86,7 @@ export default function AddUserModal() {
             <Menu >
               {({ open }) => (
                 <>
-                  <Menu.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                  <Menu.Button className="flex w-full justify-between  bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
                     <span>Select Role</span>
                     <ChevronUpIcon
                       className={`${
@@ -95,15 +95,19 @@ export default function AddUserModal() {
                     />
                   </Menu.Button>
 
-                  <Menu.Items className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                    <div className="flex flex-col">
+                  <Menu.Items className="px-4 pb-2 pt-4 text-sm text-gray-500 bg-purple-50">
+                    <div className="flex flex-col ">
                       <Menu.Item>
-                        <button onClick={() => setRole('admin')}>
+                        <button 
+                          className="hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+                          onClick={() => setRole('admin')}>
                           Admin
                         </button>
                       </Menu.Item>
                       <Menu.Item>
-                        <button onClick={() => setRole('college')}>
+                        <button 
+                          className="hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+                          onClick={() => setRole('college')}>
                           College
                         </button>
                       </Menu.Item>

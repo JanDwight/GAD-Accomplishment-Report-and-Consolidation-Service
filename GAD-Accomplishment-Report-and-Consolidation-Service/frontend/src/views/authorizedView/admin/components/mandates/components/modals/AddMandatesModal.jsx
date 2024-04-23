@@ -27,6 +27,7 @@ export default function AddMandatesModal() {
           name={name}
           onChange={handleChange}
           value={formData[name]}
+          className='border border-black'
           required
         >
           <option value="">Select Focus</option>
@@ -41,7 +42,7 @@ export default function AddMandatesModal() {
             required
             value={formData[name]}
             onChange={handleChange}
-            className="bg-gray-200"
+            className="bg-gray-200 border border-black"
             rows={2}
         />
       )}
@@ -89,7 +90,7 @@ export default function AddMandatesModal() {
         {renderInput('target_result', 'Target Result')}
         {renderInput('focus', 'Focus')}
 
-        <div className='mt-5'>
+        <div className='mt-5 flex justify-center'>
           <Submit label="Submit"/>
         </div>
       </form>
