@@ -6,14 +6,11 @@ import { MinusCircleIcon } from '@heroicons/react/24/outline';
 
 //For Feedback
 import Feedback from '../../../../../../components/feedbacks/Feedback';
-import Error from '../../../../../../components/feedbacks/Error';
+
 
 export default function EditEADModal({selectedForm}) {
-  const selectedForms = selectedForm.Forms;
-  console.log('this is the selected form:', selectedForm);
   const expendituresArray = selectedForm.expenditures;
 
-  const [error, setError] = useState('');
   const [message, setAxiosMessage] = useState(''); // State for success message
   const [status, setAxiosStatus] = useState('');
 
@@ -96,29 +93,22 @@ export default function EditEADModal({selectedForm}) {
 
   //----------axiosClient
   const handleSubmit = async (e) => {
-    console.log('ID: ', removeID);
     e.preventDefault();
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+
     try {
         const response = await axiosClient.put(`/update_form_ead/${selectedForm.id}`, {
             form_data: formData,
             xp_data: inputFields,
             to_remove: removeID
         });
-        setAxiosMessage(response.data.Message); // Set success message
-        setAxiosStatus(response.data.Success);
-        setTimeout(() => {
-            setAxiosMessage(''); // Clear success message
-            setAxiosStatus('');
-        }, 3000); // Timeout after 3 seconds
+        setAxiosMessage(response.data.message);
+        setAxiosStatus(response.data.success); 
     } catch (error) {
-        if (error.response) {
-            const finalErrors = Object.values(error.response.data.errors).reduce(
-                (accum, next) => [...accum, ...next],
-                []
-            );
-            setError(finalErrors.join('<br>'));
-        }
-        console.error(error);
+      setAxiosMessage(error.message);
+      setAxiosStatus(false);
     }
 };
 
@@ -157,10 +147,7 @@ export default function EditEADModal({selectedForm}) {
   return (
     <div className='flex flex-1 flex-col'>
       {/**For Feedback */}
-      <Error isOpen={error !== ''} onClose={() => setError('')} errorMessage={error} />
-      
-      {/* Integrate the Success component */}
-      <Feedback isOpen={message !== ''} onClose={() => setSuccess('')} successMessage={message}  status={status}/>
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1 className='text-center'>
         Extension Activity Design Form

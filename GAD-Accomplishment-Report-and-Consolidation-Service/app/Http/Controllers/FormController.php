@@ -163,7 +163,7 @@ class FormController extends Controller
 
             return response([
              'success' => true,
-             'message' => $toRemove,
+             'message' => 'Update Successful',
        ]);
     }
     
