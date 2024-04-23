@@ -12,8 +12,8 @@ const navigation = [
   { name: 'Activity Design Forms', to: '/admin/forms'},
   { name: 'Submitted Forms', to: '/admin/submitedforms'},
   { name: 'Accomplishment Report', to: '/admin/accomplishmentreport'},
+  { name: 'Assign Mandate', to: '/admin/annualreporttest'},
   { name: 'Annual Report', to: '/admin/annualreport'},
-  { name: 'TestTable', to: '/admin/annualreporttest'},
   //{ name: 'ExcelImport', to: '/admin/exceltest'},
   //{ name: 'Employee Activity Form', to: '/admin/printemployeeactivityform'}
 ]

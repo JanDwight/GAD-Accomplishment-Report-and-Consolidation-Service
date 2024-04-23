@@ -156,7 +156,7 @@ export default function SubmitedForms() {
                 'ring-white/60 ring-offset-2 ring-offset-accent focus:outline-none focus:ring-2'
               )}
             >
-              <ul>
+              <ul className='text-center'>
                 {insetForms.map((form) => (
                   <li
                     key={form.id}
@@ -166,7 +166,7 @@ export default function SubmitedForms() {
                       {form.title}
                     </h3>
 
-                    <ul className="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+                    <ul className="mt-1 space-x-1 text-xs font-normal leading-4 text-gray-500">
                       <li>{form.proponents_implementors}</li>
                     </ul>
 
@@ -192,7 +192,7 @@ export default function SubmitedForms() {
                 'ring-white/60 ring-offset-2 ring-offset-accent focus:outline-none focus:ring-2'
               )}
             >
-              <ul>
+              <ul className='text-center'>
                 {eadForm.map((form) => (
                   <li
                   key={form.id}
@@ -202,7 +202,7 @@ export default function SubmitedForms() {
                     {form.title}
                   </h3>
 
-                  <ul className="mt-1 flex space-x-1 text-xs font-normal leading-4 text-gray-500">
+                  <ul className="mt-1 space-x-1 text-xs font-normal leading-4 text-gray-500">
                     <li>{form.proponents_implementors}</li>
                   </ul>
 
