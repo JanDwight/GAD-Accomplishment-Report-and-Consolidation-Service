@@ -44,10 +44,10 @@ export default function SideBar() {
     ];
 
     const sidebarList = [
-        { label: 'Total Users: ' + arbitrary.users},
-        { label: 'Training Designs Submitted: ' + arbitrary.design},
-        { label: 'Pending Accomplishment Reports: ' + arbitrary.pending},
-        { label: 'Accomplisment Reports: ' + arbitrary.completed},
+        { label: 'Total Users: ', val: arbitrary.users},
+        { label: 'Total Training Designs: ', val: arbitrary.design},
+        { label: 'Pending Accomplishment Reports: ', val: arbitrary.pending},
+        { label: 'Accomplisment Reports: ', val: arbitrary.completed},
     ];
 
     const style = "w-full md:w-[30%] max-h-[95%] min-h-fit bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl my-[1%] mx-auto p-5"
@@ -79,11 +79,11 @@ export default function SideBar() {
                     </li>
                 ))}
             </ul>
-            <div className='border-2 border-black p-5'>
+            <div className='border-2 shadow-2xl px-5 rounded-lg'>
                 <ul className="sidebar-list-2">
                     {sidebarList.map((item, index) => (
-                        <li key={index} className='pt-3'>
-                            <label>{item.label}</label>
+                        <li key={index} className='py-2 text font-semibold'>
+                            <label> <a className='text-xs'>{item.label}</a> <b>{item.val}</b></label>
                         </li>
                     ))}
                 </ul>
