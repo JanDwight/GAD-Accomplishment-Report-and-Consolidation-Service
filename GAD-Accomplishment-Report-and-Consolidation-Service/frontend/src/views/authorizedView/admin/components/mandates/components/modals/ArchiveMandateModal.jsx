@@ -6,31 +6,31 @@ import axiosClient from '../../../../../../axios/axios';
 import Feedback from '../../../../../../components/feedbacks/Feedback';
 
 export default function ArchiveMandateModal({ mandateSelected }) {
-      // For feedback
-  const [error, setError] = useState('');
+
   const [message, setAxiosMessage] = useState('');
   const [status, setAxiosStatus] = useState('');
 
   const onSubmit = async (ev) => {
     ev.preventDefault();
-    setError({ __html: "" });
+    
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
 
     try {
-      const response = await axiosClient.put(`/archivemandate/${mandateSelected.id}`, {});
-      setAxiosMessage(response.data.message); // Set success message
+      const response = await axiosClient.put(`/archivemandate/${mandateSelected[0].id}`, {});
+      setAxiosMessage(response.data.message);
       setAxiosStatus(response.data.success);
-      setTimeout(() => {
-        setAxiosMessage(''); // Clear success message
-        setAxiosStatus('');
-      }, 3000); // Timeout after 3 seconds
     } catch (error) {
-      setAxiosMessage(error.response.data.message); // Set success message
+      setAxiosMessage(error.response.data.message);
+      setAxiosStatus(false);
     }
   };
+
+  console.log('This is the selected Mandate', mandateSelected);
   return (
     <div>
       {/** For Feedback */}
-      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} />
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1>
         Are you sure you want to delete <b>{mandateSelected.gender_issue}</b>
