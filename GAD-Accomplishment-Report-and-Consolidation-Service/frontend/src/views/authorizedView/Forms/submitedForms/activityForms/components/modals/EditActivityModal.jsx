@@ -3,12 +3,14 @@ import Submit from '../../../../../../components/buttons/Submit';
 import NeutralButton from '../../../../../../components/buttons/NeutralButton';
 import axiosClient from '../../../../../../axios/axios';
 import { MinusCircleIcon } from '@heroicons/react/24/outline';
+import Feedback from '../../../../../../components/feedbacks/Feedback';
 
 export default function EditActivityModal({ selectedForm }) {
 
   const expendituresArray = selectedForm.expenditures;
-
-  const [error, setError] = useState("");
+  const [message, setAxiosMessage] = useState(''); // State for success message
+  const [status, setAxiosStatus] = useState('');
+  
   const [inputFields, setInputFields] = useState([
     {type: '', item: '', per_item: '', no_item: '', times: '', total: '0'}
   ])
@@ -114,40 +116,40 @@ export default function EditActivityModal({ selectedForm }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (ev) => {
-    console.log('ID Array: ', removeID);
-
+  const handleSubmit = async (ev) => {
     ev.preventDefault();
-    setError({ __html: "" });
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
 
     if(selectedForm.form_type === "EMPLOYEE"){
       //For EMPLOYEE UPDATE
-      axiosClient
-      .put(`/update_form_employee/${selectedForm.id}`, {form_data: formData, xp_data: inputFields, to_remove: removeID})
-      .catch((error) => {
-        if (error.response) {
-          const finalErrors = Object.values(error.response.data.errors).reduce(
-            (accum, next) => [...accum, ...next],
-            []
-          );
-          setError({ __html: finalErrors.join("<br>") });
-        }
-        console.error(error);
-      });
+      try {
+        const response = await axiosClient.put(`/update_form_employee/${selectedForm.id}`, {
+          form_data: formData,
+          xp_data: inputFields,
+          to_remove: removeID
+        });
+        setAxiosMessage(response.data.message);
+        setAxiosStatus(response.data.success); 
+      } catch (error) {
+        setAxiosMessage(error.message);
+        setAxiosStatus(false);
+      }
     } else {
       //For INSET UPDATE
-      axiosClient
-      .put(`/update_form_inset/${selectedForm.id}`, {form_data: formData, xp_data: inputFields, to_remove: removeID})
-      .catch((error) => {
-        if (error.response) {
-          const finalErrors = Object.values(error.response.data.errors).reduce(
-            (accum, next) => [...accum, ...next],
-            []
-          );
-          setError({ __html: finalErrors.join("<br>") });
-        }
-        console.error(error);
-      });
+      try {
+        const response = await axiosClient.put(`/update_form_inset/${selectedForm.id}`, {
+          form_data: formData,
+          xp_data: inputFields,
+          to_remove: removeID
+        });
+        setAxiosMessage(response.data.message);
+        setAxiosStatus(response.data.success); 
+      } catch (error) {
+        setAxiosMessage(error.message);
+        setAxiosStatus(false);
+      }
     }
   };
 
@@ -176,157 +178,153 @@ export default function EditActivityModal({ selectedForm }) {
 
   return (
     <div>
-      {error.__html && (
-        <div
-          className="bg-red-500 rounded py-2 px-3 text-white"
-          dangerouslySetInnerHTML={error}
-        ></div>
-      )}
 
-    <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
-      {renderInput("title", "Title: ")}
-      {renderInput("purpose", "Purpose: ")}
-      {renderInput("legal_bases", "Legal Bases: ")}
-      {renderInput(selectedForm.form_type === "INSET" ? "date_of_activity" : "date_of_activity", "Date of Activity: ")}
-      {renderInput("venue", "Venue: ")}
-      {renderInput("participants", "Participants: ")}
-      {selectedForm.form_type !== "INSET" && renderInput("no_of_target_participants", "Number of Target Participants: ")} {/**Render this only when the form is inset */}
-      {renderInput("learning_service_providers", "Learning Service Providers: ")}
-      {renderInput("expected_outputs", "Expected Outputs: ")}
-      {renderInput("fund_source", "Fund Source: ")}
-      {renderInput("proponents_implementors", "Proponents/Implementors ")}
-      <h1 className='text-center m-3'>
-        Budgetary Requirements:
-      </h1>
-      <div className="overflow-x-auto">
-        <table>
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Item</th>
-                  <th>Cost Per Item</th>
-                  <th>Number of Items</th>
-                  <th>Number of Times</th>
-                  <th>Total</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {inputFields.map((input, index) => (
-                  <tr key={index}>
-                    <td>
-                      <select
-                        id="type"
-                        name="type"
-                        autoComplete="type"
-                        required
-                        value={input.type}
-                        onChange={event => handleFormChange(index, event)}
-                      >
-                        <option value={input.type}>{input.type}</option>
-                        <option value="Meals and Snacks">Meals and Snacks</option>
-                        <option value="Function Room/Venue">Venue</option>
-                        <option value="Accomodation">Accomodation</option>
-                        <option value="Equipment Rental">Equipment Rental</option>
-                        <option value="Professional Fee/Honoria">Professional Fee/Honoria</option>
-                        <option value="Token/s">Token/s</option>
-                        <option value="Materials and Supplies">Materials and Supplies</option>
-                        <option value="Transportation">Transportation</option>
-                        <option value="Others">Others...</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input
-                        id="item"
-                        name="item"
-                        type="text"
-                        placeholder="Item"
-                        autoComplete="item"
-                        required
-                        value={input.item}
-                        onChange={event => handleFormChange(index, event)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        id="per_item"
-                        name="per_item"
-                        type="text"
-                        pattern="[0-9]*\.?[0-9]*"
-                        placeholder="Cost Per Item"
-                        autoComplete="per_item"
-                        required
-                        value={input.per_item}
-                        onChange={event => { handleFormChange(index, event); 
-                          handleChangeNumbers(index, event.target.value); }}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        id="no_item"
-                        name="no_item"
-                        type="text"
-                        pattern="[0-9]*\.?[0-9]*"
-                        placeholder="Number of Items"
-                        autoComplete="no_item"
-                        required
-                        value={input.no_item}
-                        onChange={event => { handleFormChange(index, event); 
-                          handleChangeNumbers(index, event.target.value); }}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        id="times"
-                        name="times"
-                        type="text"
-                        pattern="[0-9]*"
-                        placeholder="Number of Times"
-                        autoComplete="times"
-                        required
-                        value={input.times}
-                        onChange={event => { handleFormChange(index, event); 
-                          handleChangeNumbers(index, event.target.value); }}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        id="total"
-                        name="total"
-                        type="text"
-                        pattern="[0-9]*"
-                        placeholder="Total"
-                        autoComplete="Total"
-                        required
-                        readOnly
-                        value={input.total}
-                        onChange={event => { handleFormChange(index, event);}}
-                      />
-                      </td>
-                      <td className='text-center'>
-                      <button type="button" title="Delete Item" onClick={() => removeFields(index, input.id)}>
-                        <MinusCircleIcon className="w-6 h-6 text-red-500 cursor-pointer transform transition-transform hover:scale-125" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-        
-        
+         <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
-        {/*------------------------------------------------------------------------------*/}
-          <div className="flex justify-center">
-
-          <NeutralButton label="Add more.." onClick={() => addFields()} />
-          {/* <button onClick={addFields} className='m-1'>Add More..</button> */}
-          </div>
-        
-      </div>
-  <div className="mt-5">
-    <Submit label="Submit"/>
-  </div>
-</form>
+          <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
+            {renderInput("title", "Title: ")}
+            {renderInput("purpose", "Purpose: ")}
+            {renderInput("legal_bases", "Legal Bases: ")}
+            {renderInput(selectedForm.form_type === "INSET" ? "date_of_activity" : "date_of_activity", "Date of Activity: ")}
+            {renderInput("venue", "Venue: ")}
+            {renderInput("participants", "Participants: ")}
+            {selectedForm.form_type !== "INSET" && renderInput("no_of_target_participants", "Number of Target Participants: ")} {/**Render this only when the form is inset */}
+            {renderInput("learning_service_providers", "Learning Service Providers: ")}
+            {renderInput("expected_outputs", "Expected Outputs: ")}
+            {renderInput("fund_source", "Fund Source: ")}
+            {renderInput("proponents_implementors", "Proponents/Implementors ")}
+            <h1 className='text-center m-3'>
+              Budgetary Requirements:
+            </h1>
+            <div className="overflow-x-auto">
+              <table>
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th>Item</th>
+                        <th>Cost Per Item</th>
+                        <th>Number of Items</th>
+                        <th>Number of Times</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {inputFields.map((input, index) => (
+                        <tr key={index}>
+                          <td>
+                            <select
+                              id="type"
+                              name="type"
+                              autoComplete="type"
+                              required
+                              value={input.type}
+                              onChange={event => handleFormChange(index, event)}
+                            >
+                              <option value={input.type}>{input.type}</option>
+                              <option value="Meals and Snacks">Meals and Snacks</option>
+                              <option value="Function Room/Venue">Venue</option>
+                              <option value="Accomodation">Accomodation</option>
+                              <option value="Equipment Rental">Equipment Rental</option>
+                              <option value="Professional Fee/Honoria">Professional Fee/Honoria</option>
+                              <option value="Token/s">Token/s</option>
+                              <option value="Materials and Supplies">Materials and Supplies</option>
+                              <option value="Transportation">Transportation</option>
+                              <option value="Others">Others...</option>
+                            </select>
+                          </td>
+                          <td>
+                            <input
+                              id="item"
+                              name="item"
+                              type="text"
+                              placeholder="Item"
+                              autoComplete="item"
+                              required
+                              value={input.item}
+                              onChange={event => handleFormChange(index, event)}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              id="per_item"
+                              name="per_item"
+                              type="text"
+                              pattern="[0-9]*\.?[0-9]*"
+                              placeholder="Cost Per Item"
+                              autoComplete="per_item"
+                              required
+                              value={input.per_item}
+                              onChange={event => { handleFormChange(index, event); 
+                                handleChangeNumbers(index, event.target.value); }}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              id="no_item"
+                              name="no_item"
+                              type="text"
+                              pattern="[0-9]*\.?[0-9]*"
+                              placeholder="Number of Items"
+                              autoComplete="no_item"
+                              required
+                              value={input.no_item}
+                              onChange={event => { handleFormChange(index, event); 
+                                handleChangeNumbers(index, event.target.value); }}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              id="times"
+                              name="times"
+                              type="text"
+                              pattern="[0-9]*"
+                              placeholder="Number of Times"
+                              autoComplete="times"
+                              required
+                              value={input.times}
+                              onChange={event => { handleFormChange(index, event); 
+                                handleChangeNumbers(index, event.target.value); }}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              id="total"
+                              name="total"
+                              type="text"
+                              pattern="[0-9]*"
+                              placeholder="Total"
+                              autoComplete="Total"
+                              required
+                              readOnly
+                              value={input.total}
+                              onChange={event => { handleFormChange(index, event);}}
+                            />
+                            </td>
+                            <td className='text-center'>
+                            <button type="button" title="Delete Item" onClick={() => removeFields(index, input.id)}>
+                              <MinusCircleIcon className="w-6 h-6 text-red-500 cursor-pointer transform transition-transform hover:scale-125" />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                    
+                    
+                    
+              {/*------------------------------------------------------------------------------*/}
+                <div className="flex justify-center">
+                    
+                <NeutralButton label="Add more.." onClick={() => addFields()} />
+                {/* <button onClick={addFields} className='m-1'>Add More..</button> */}
+                </div>
+                    
+            </div>
+        <div className="mt-5">
+          <Submit label="Submit"/>
+        </div>
+      </form>
 
     </div>
   );
