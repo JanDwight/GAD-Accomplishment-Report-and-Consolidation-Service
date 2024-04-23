@@ -1,4 +1,4 @@
-import { React, Fragment } from 'react'
+import { React, Fragment, useState } from 'react'
 import { useStateContext } from '../../context/ContextProvider'
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
@@ -25,6 +25,7 @@ function classNames(...classes) {
 
 export default function AdminLayout() {
     const { userToken, setCurrentUser, setUserToken } = useStateContext();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const logout = (ev) => {
       ev.preventDefault();
@@ -39,9 +40,14 @@ export default function AdminLayout() {
         return <Navigate to='/' />
     }
 
+    const toggleSidebar = () => {
+      setIsSidebarOpen(!isSidebarOpen);
+    };
+
     return (
     <>
       <div className='h-screen overflow-hidden'>
+        
         {/*NavBar*/}
         <Disclosure as="nav" className="bg-primary">
           {({ open }) => (
@@ -66,11 +72,7 @@ export default function AdminLayout() {
                   <div className="flex h-full items-center sm:items-stretch sm:justify-start">
 
                     <div className="flex items-center">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
+                      <Bars3Icon className="block h-8 w-10 cursor-pointer transform transition-transform hover:scale-125" onClick={toggleSidebar}/>
                     </div>
 
                     <div className="hidden sm:ml-6 sm:block">
@@ -194,12 +196,21 @@ export default function AdminLayout() {
             </>
           )}
         </Disclosure>
-
+        
         <main className="flex h-full"> {/* Apply flex to the main container */}
-          <div className="sidebar shadow-2xl max-w-[15%] px-[1%]"> {/* Add sidebar styling */}
+          <div 
+            className={`bg-white ml-2 mt-1 sidebar py-[1%] shadow-2xl max-h-[90%] max-w-[15%] px-[1%] rounded-xl ${
+              isSidebarOpen ? '' : 'hidden'
+            }`}
+            style={{ transition: 'margin-left 0.5s' }}
+          > {/* Add sidebar styling */}
             <SideBar />
           </div>
-          <div className="max-h-[90%] max-w-[85%] min-w-[85%] pt-1 sm:px-6 lg:px-6"> {/* Maintain the content container */}
+          
+          <div 
+            className={`max-h-[90%] min-w-[${isSidebarOpen ? '85%' : '100%'}] pt-1 sm:px-6 lg:px-6`}
+            style={{ transition: 'width 0.5s' }}
+          > {/* Maintain the content container */}
               <Outlet />
           </div>
         </main>

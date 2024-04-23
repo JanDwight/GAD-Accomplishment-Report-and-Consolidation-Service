@@ -11,6 +11,14 @@ import ShowArchiveMandates from '../../authorizedView/admin/components/mandates/
 import AddMandatesModal from '../../authorizedView/admin/components/mandates/components/modals/AddMandatesModal';
 
 export default function SideBar() {
+
+    const [arbitrary, setArbitrary] = useState({
+        users: 29,
+        design: 78,
+        pending: 58,
+        completed: 20,
+    })
+
     // For Modals
     const [modals, setModals] = useState({
         addUser: false,
@@ -34,10 +42,18 @@ export default function SideBar() {
         { label: 'Archived Accomplishment Report List', onClick: () => toggleModal('archivedReports', true) },
     ];
 
+    const sidebarList = [
+        { label: 'Total Users: ' + arbitrary.users},
+        { label: 'Training Designs Submitted: ' + arbitrary.design},
+        { label: 'Pending Accomplishment Reports: ' + arbitrary.pending},
+        { label: 'Accomplisment Reports: ' + arbitrary.completed},
+    ];
+
+
     const style = "w-full md:w-[30%] max-h-[95%] min-h-fit bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl my-[1%] mx-auto p-5"
     
     return (
-        <div className="sidebar">
+        <div className="sidebar space-y-5">
             <ul className="sidebar-list">
                 {sidebarItems.map((item, index) => (
                     <li key={index} className='pt-3'>
@@ -45,7 +61,15 @@ export default function SideBar() {
                     </li>
                 ))}
             </ul>
-
+            <div className='border-2 border-black p-5'>
+                <ul className="sidebar-list-2">
+                    {sidebarList.map((item, index) => (
+                        <li key={index} className='pt-3'>
+                            <label>{item.label}</label>
+                        </li>
+                    ))}
+                </ul>
+            </div>
             {/* Modals */}
             <ReactModal
                 isOpen={modals.addUser}
