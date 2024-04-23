@@ -89,50 +89,56 @@ export default function TestTables() {
   }
 
     return (
-        <div>
+        <div className='bg-white h-full rounded-xl overflow-y-auto flex justify-center'>
             <Feedback isOpen={message !== ''} onClose={() => setSuccess('')} successMessage={message}  status={success}/>
-            <table id="reports_table" className="border-collapse border border-gray-400 w-full mt-5">
-                <thead>
-                    <tr className="border border-gray-400">
-                        <th>
-                            <input id='allselect' type="checkbox" className="ml-5" checked={selectAll} onChange={toggleSelectAll}/>
-                            <label className="ml-2">Select All</label>
-                        </th>
-                        <th>Accomplishment Report</th>
-                        <th>GAD Mandate</th>
+            <div className='overflow-y-auto rounded-xl w-full'>
+              <table id="reports_table" className="w-full text-center h-fit">
+                  <thead className='bg-secondary sticky top-0'>
+                      <tr>
+                          <th>
+                              <input id='allselect' type="checkbox" className="ml-5" checked={selectAll} onChange={toggleSelectAll}/>
+                              <label className="ml-2">Select All</label>
+                          </th>
+                          <th className='text-center bg-secondary p-2 '>Accomplishment Report</th>
+                          <th className='text-center bg-secondary p-2 '>GAD Mandate</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {report.map((fileName, index) => (
+                    <tr 
+                      key={index} 
+                      onClick={() => toggleRowSelection(index)}
+                      className='border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs'
+                    >
+                      <td className='text-center'>
+                        <input
+                          type="checkbox"
+                          checked={selectedRows.includes(index)}
+                          onChange={() => toggleRowSelection(index)}
+                        />
+                      </td>
+                      <td className='text-left px-5'>{fileName.id}) {fileName.title}</td>
+                      <td className='text-center'>{fileName.mandates_id}</td>
                     </tr>
-                </thead>
-                <tbody>
-                {report.map((fileName, index) => (
-                  <tr key={index} onClick={() => toggleRowSelection(index)}>
-                    <td className='text-center border border-gray-300'>
-                      <input
-                        type="checkbox"
-                        checked={selectedRows.includes(index)}
-                        onChange={() => toggleRowSelection(index)}
-                      />
-                    </td>
-                    <td className='text-left px-5 border border-gray-300'>{fileName.id}) {fileName.title}</td>
-                    <td className='text-center border border-gray-300'>{fileName.mandates_id}</td>
-                  </tr>
-                ))}
-                </tbody>
-            </table>
-            <div className='w-full flex pt-2 justify-end'>
-                <div className=''>
+                  ))}
+                  </tbody>
+              </table>
+            </div>
+            <div 
+            //className='w-full flex pt-2 justify-end'
+              className='w-[10%] flex justify-center absolute bottom-4 right-5 flex space-x-3 pt-5'
+            >
                    <button
                     onClick={editprompt}
                     className={`rounded-md bg-primary hover:bg-accent hover:drop-shadow-gs px-3 py-1.5 text-xs xl:text-md font-semibold leading-6 text-white text-center shadow-sm`}
                    >
                     Set Mandates
                    </button>
-                </div>
             </div>
-
             <ReactModal
               isOpen={showMandate}
               onRequestClose={() => setShowMandate(false)}
-              className="mx-auto my-[5%] bg-white w-full lg:w-2/5 px-4 py-6 shadow-lg rounded-lg ring-1 ring-black shadow-2xl"
+              className="mx-auto my-[5%] bg-white w-full h-[75%] lg:w-2/5 px-4 py-4 shadow-lg rounded-lg ring-1 ring-black shadow-2xl "
             >
               <SetMandateModal
                 closeModal={() => setShowMandate(false)}
