@@ -135,13 +135,19 @@ class UserController extends Controller
     
         // Check if the user exists
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json([
+                'message' => 'User not found',
+            'success' => true
+            ]);
         }
     
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $user->delete();
     
-        return response()->json(['message' => 'User archived successfully']);
+        return response()->json([
+            'message' => 'User archived successfully',
+            'success' => true
+        ]);
     }
 
     public function restoreuser($id)
@@ -152,13 +158,19 @@ class UserController extends Controller
     
         // Check if the user exists
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json([
+                'message' => 'User not found',
+                'success' => false
+            ]);
         }
     
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $user->restore();
     
-        return response()->json(['message' => 'User Restored successfully']);
+        return response()->json([
+            'message' => 'User Restored successfully',
+            'success' => true
+        ]);
     }
 
     public function userarchiveindex()
@@ -177,12 +189,18 @@ class UserController extends Controller
 
         // Check if the user exists
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json([
+                'message' => 'User not found',
+                'success' => false
+            ]);
         }
 
         // Force delete the user
         $user->forceDelete();
 
-        return response()->json(['message' => 'User permanently deleted']);
+        return response()->json([
+            'message' => 'User permanently deleted',
+            'success' => true
+        ]);
     }
 }
