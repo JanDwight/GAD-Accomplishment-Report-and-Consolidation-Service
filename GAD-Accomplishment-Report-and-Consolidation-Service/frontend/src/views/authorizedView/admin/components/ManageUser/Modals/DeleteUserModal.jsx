@@ -1,33 +1,38 @@
 import { React, useState } from 'react'
 import axiosClient from '../../../../../axios/axios';
 import WarningButton from '../../../../../components/buttons/WarningButton';
+import Feedback from '../../../../../components/feedbacks/Feedback';
 
 export default function DeleteUserModal({selectedUser}) {
-  const [error, setError] = useState("");
 
-  const onSubmit = (ev) => {
+  const [message, setAxiosMessage] = useState('');
+  const [status, setAxiosStatus] = useState('');
+
+  const onSubmit = async (ev) => {
     ev.preventDefault();
-    setError({ __html: "" });
+    
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
 
-    axiosClient
-      .put(`/deleteuser/${selectedUser.id}`)
-      .catch((error) => {
-        if (error.response) {
-          const finalErrors = Object.values(error.response.data.errors).reduce(
-            (accum, next) => [...accum, ...next],
-            []
-          );
-          setError({ __html: finalErrors.join("<br>") });
-        }
-        console.error(error);
-      });
-    };
+    try {
+      const response = await axiosClient.put(`/deleteuser/${selectedUser.id}`);
+      setAxiosMessage(response.data.message);
+      setAxiosStatus(response.data.success);
+    } catch (error) {
+      setAxiosMessage(error.response.data.message);
+      setAxiosStatus(false);
+    }
+  };
 
   return (
     <div>
-        Are you sure you want to delete? 
-        This will delete the user permanently
+      
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
+      <h1>
+        Are you sure you want to delete <b>{selectedUser.username}</b>
+      </h1>
+      
       {/**BUTTONS */}
       <div className='mt-5'>
           <WarningButton label="Delete User" onClick={onSubmit}/*disabled={ your condition }*/ />
