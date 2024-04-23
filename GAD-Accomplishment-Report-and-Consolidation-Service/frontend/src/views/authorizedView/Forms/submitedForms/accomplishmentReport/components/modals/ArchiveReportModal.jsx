@@ -1,32 +1,35 @@
 import { React, useState } from 'react'
 import Submit from '../../../../../../components/buttons/Submit';
 import axiosClient from '../../../../../../axios/axios';
+import Feedback from '../../../../../../components/feedbacks/Feedback';
 
 export default function ArchiveReportModal({selectedForm}) {
-  const [error, setError] = useState("");
+  const [message, setAxiosMessage] = useState('');
+  const [status, setAxiosStatus] = useState('');
 
   console.log(selectedForm);
-  const onSubmit = (ev) => {
+  const onSubmit = async (ev) => {
     ev.preventDefault();
-    setError({ __html: "" });
 
-    console.log('this is the selected foasdfdasfrm: ', selectedForm.id);
-    axiosClient
-      .put(`/archive_accomplishment_report/${selectedForm.id}`)
-      .catch((error) => {
-        if (error.response) {
-          const finalErrors = Object.values(error.response.data.errors).reduce(
-            (accum, next) => [...accum, ...next],
-            []
-          );
-          setError({ __html: finalErrors.join("<br>") });
-        }
-        console.error(error);
-      });
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+
+    try {
+      const response = await axiosClient.put(`/archive_accomplishment_report/${selectedForm.id}`);
+      setAxiosMessage(response.data.message);
+      setAxiosStatus(response.data.success);
+    } catch (error) {
+      setAxiosMessage(error.response.data.message);
+      setAxiosStatus(false);
+    }
+    
     };
 
   return (
     <div>
+      
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
+
       <h1>
         Are you sure you want to delete <b>{selectedForm.title}</b>
       </h1>
