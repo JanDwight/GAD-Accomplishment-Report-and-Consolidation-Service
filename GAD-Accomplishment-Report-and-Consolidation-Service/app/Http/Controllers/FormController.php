@@ -76,8 +76,8 @@ class FormController extends Controller
 
         if ($existingRecord) {
             return response([
-                'Success' => false,
-                'Message' => 'Title must be unique',
+                'success' => false,
+                'message' => 'Title must be unique',
             ]);
     
         }
@@ -116,9 +116,9 @@ class FormController extends Controller
         }
 
         return response([
-              'Success' => true,
-              'Message' => 'Form Added',
-              'Message 2' => $inputFields
+              'success' => true,
+              'message' => 'Form Added',
+              'message 2' => $inputFields
         ]);
 
     }
@@ -162,8 +162,8 @@ class FormController extends Controller
         }
 
             return response([
-             'Success' => true,
-             'Message' => $toRemove,
+             'success' => true,
+             'message' => $toRemove,
        ]);
     }
     
@@ -181,8 +181,8 @@ class FormController extends Controller
 
         if ($existingRecord) {
             return response([
-                'Success' => false,
-                'Message' => 'Title must be unique',
+                'success' => false,
+                'message' => 'Title must be unique',
             ]);
             //return response()->json(['error' => 'Title must be unique'], 422);
         }
@@ -220,8 +220,8 @@ class FormController extends Controller
         }
 
         return response([
-                'Success' => true,
-                'Message' => 'Form Added'
+                'success' => true,
+                'message' => 'Form Added'
         ]);
     }
 
@@ -264,8 +264,8 @@ class FormController extends Controller
           }
 
             return response([
-             'Success' => true,
-             'Message' => 'Form Updated'
+             'success' => true,
+             'message' => 'Form Updated'
        ]);
     }
 
@@ -282,8 +282,8 @@ class FormController extends Controller
  
         if ($existingRecord) {
             return response([
-                'Success' => false,
-                'Message' => 'Title must be unique',
+                'success' => false,
+                'message' => 'Title must be unique',
             ]);
             //return response()->json(['error' => 'Title must be unique'], 422);
         }
@@ -321,8 +321,8 @@ class FormController extends Controller
         }
  
         return response([
-               'Success' => true,
-               'Message' => 'Form Added'
+               'success' => true,
+               'message' => 'Form Added'
         ]);
  
     }
@@ -365,8 +365,8 @@ class FormController extends Controller
         }
 
             return response([
-             'Success' => true,
-             'Message' => 'Form Updated'
+             'success' => true,
+             'message' => 'Form Updated'
        ]);
     }
     
@@ -377,14 +377,17 @@ class FormController extends Controller
     
         // Check if the form exists
         if (!$form) {
-            return response()->json(['message' => 'Form not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Form not found'
+            ]);
         }
     
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $form->delete();
     
         return response([
-            'Success' => true,
+            'success' => true,
             'message' => 'Form archived successfully']);
 
     }
@@ -397,15 +400,19 @@ class FormController extends Controller
     
         // Check if the form exists
         if (!$form) {
-            return response()->json(['message' => 'Form not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Form not found'
+            ]);
         }
     
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $form->restore();
     
         return response([
-            'Success' => true,
-            'message' => 'Form Restored successfully']);
+            'success' => true,
+            'message' => 'Form Restored successfully'
+        ]);
     }
 
     public function form_delete($id)
@@ -416,12 +423,18 @@ class FormController extends Controller
 
         // Check if the form exists
         if (!$form) {
-            return response()->json(['message' => 'Form not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Form not found'
+            ]);
         }
 
         // Force delete the form
         $form->forceDelete();
 
-        return response()->json(['message' => 'Form permanently deleted']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Form permanently deleted'
+        ]);
     }
 }
