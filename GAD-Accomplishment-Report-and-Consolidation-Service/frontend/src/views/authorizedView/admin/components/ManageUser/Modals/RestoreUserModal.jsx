@@ -1,36 +1,43 @@
 import { React, useState } from 'react'
 import Submit from '../../../../../components/buttons/Submit'
 import axiosClient from '../../../../../axios/axios';
+import Feedback from '../../../../../components/feedbacks/Feedback';
 
 export default function RestoreUserModal({selectedUser}) {
     const [error, setError] = useState("");
 
-    const onSubmit = (ev) => {
-        ev.preventDefault();
-        setError({ __html: "" });
-    
-        axiosClient
-          .put(`/restoreuser/${selectedUser.id}`)
-          .catch((error) => {
-            if (error.response) {
-              const finalErrors = Object.values(error.response.data.errors).reduce(
-                (accum, next) => [...accum, ...next],
-                []
-              );
-              setError({ __html: finalErrors.join("<br>") });
-            }
-            console.error(error);
-          });
-        };
+    const [message, setAxiosMessage] = useState('');
+    const [status, setAxiosStatus] = useState('');
 
-        console.log(selectedUser)
+    const onSubmit = async (ev) => {
+        ev.preventDefault();
+    
+        setAxiosMessage('Loading...');
+        setAxiosStatus('Loading');
+
+        try {
+          const response = await axiosClient.put(`/restoreuser/${selectedUser.id}`);
+          setAxiosMessage(response.data.message);
+          setAxiosStatus(response.data.success);
+        } catch (error) {
+          setAxiosMessage(error.response.data.message);
+          setAxiosStatus(false);
+        }
+    };
+
   return (
-    <div>Restore User
+    <div>
+
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
+
+      <h1>
+        Are you sure you want to delete <b>{selectedUser.username}</b>
+      </h1>
 
       {/**BUTTONS */}
       <div className='mt-5'>
-          <Submit label="Restore User" onClick={onSubmit}/*disabled={ your condition }*/ />
-        </div>
+        <Submit label="Restore User" onClick={onSubmit}/*disabled={ your condition }*/ />
+      </div>
     </div>
   )
 }
