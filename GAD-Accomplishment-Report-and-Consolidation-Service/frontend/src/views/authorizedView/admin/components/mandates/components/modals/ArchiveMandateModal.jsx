@@ -33,7 +33,7 @@ export default function ArchiveMandateModal({ mandateSelected }) {
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1>
-        Are you sure you want to delete <b>{mandateSelected.gender_issue}</b>
+        Are you sure you want to delete <b>{mandateSelected[0].gender_issue}</b>
       </h1>
       {/** BUTTONS */}
       <div className='mt-5'>
