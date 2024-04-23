@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddUserRequest;
 use App\Models\Forms;
 use App\Models\User;
+use App\Models\accReport;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -201,6 +202,21 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User permanently deleted',
             'success' => true
+        ]);
+    }
+
+    public function counter() 
+    {
+        $userCount = User::count(); // Count the number of users
+        $formCount = Forms::count(); // Count the number of users
+        $completedCount = accReport::count();
+        $pendingCount = $formCount - $completedCount;
+
+        return response()->json([
+            'users' => $userCount,
+            'design' => $formCount,
+            'pending' => $pendingCount,
+            'completed' => $completedCount 
         ]);
     }
 }

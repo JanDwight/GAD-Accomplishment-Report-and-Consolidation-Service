@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NeutralButton from '../buttons/NeutralButton';
 import ReactModal from 'react-modal';
+import axiosClient from '../../axios/axios';
 
 // For Modal
 import AddUserModal from '../../authorizedView/admin/components/ManageUser/Modals/AddUserModal';
@@ -13,10 +14,10 @@ import AddMandatesModal from '../../authorizedView/admin/components/mandates/com
 export default function SideBar() {
 
     const [arbitrary, setArbitrary] = useState({
-        users: 29,
-        design: 78,
-        pending: 58,
-        completed: 20,
+        users: '',
+        design: '',
+        pending: '',
+        completed: '',
     })
 
     // For Modals
@@ -49,9 +50,26 @@ export default function SideBar() {
         { label: 'Accomplisment Reports: ' + arbitrary.completed},
     ];
 
-
     const style = "w-full md:w-[30%] max-h-[95%] min-h-fit bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl my-[1%] mx-auto p-5"
     
+    useEffect(() => {
+        fetchCounts();
+      }, []);
+    
+    const fetchCounts = async () => {
+      try {
+        const response = await axiosClient.get('/counter');
+        if (response.data && response.data) {
+          console.log("Return: ", response.data);
+          setArbitrary(response.data);
+        } else {
+          console.error('Invalid response format:', response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     return (
         <div className="sidebar space-y-5">
             <ul className="sidebar-list">
