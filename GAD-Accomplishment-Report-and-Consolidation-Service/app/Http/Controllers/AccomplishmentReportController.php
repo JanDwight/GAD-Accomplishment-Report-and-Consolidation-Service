@@ -40,7 +40,10 @@ class AccomplishmentReportController extends Controller
             $report = accReport::with('images')->find($id);
             return response()->json($report->images->pluck('original_path')->toArray());
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json([
+                'message' => $e->getMessage(),
+                'success' => false
+            ]);
         }
     }
     
@@ -126,13 +129,18 @@ class AccomplishmentReportController extends Controller
     
         // Check if the form exists
         if (!$form) {
-            return response()->json(['message' => 'Form not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Form not found']);
         }
     
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $form->delete();
     
-        return response()->json(['message' => 'Form archived successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Form archived successfully'
+        ]);
     }
 
     public function accomplishment_report_restore($id)
@@ -143,13 +151,19 @@ class AccomplishmentReportController extends Controller
     
         // Check if the form exists
         if (!$form) {
-            return response()->json(['message' => 'Report not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Report not found'
+            ]);
         }
     
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $form->restore();
     
-        return response()->json(['message' => 'Report Restored successfully']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Report Restored successfully'
+        ]);
     }
 
     public function accomplishment_report_delete($id) {
@@ -159,13 +173,19 @@ class AccomplishmentReportController extends Controller
 
         // Check if the form exists
         if (!$form) {
-            return response()->json(['message' => 'Form not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Form not found'
+            ]);
         }
 
         // Force delete the form
         $form->forceDelete();
 
-        return response()->json(['message' => 'Form permanently deleted']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Form permanently deleted'
+        ]);
     }
 
     public function addmandates (Addmandate $request) 
@@ -190,7 +210,10 @@ class AccomplishmentReportController extends Controller
             }
         }
 
-        return response()->json(['message' => 'Mandates set successfully!']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Mandates set successfully!'
+        ]);
     }
 
     public function setmandates(Setmandate $request){
