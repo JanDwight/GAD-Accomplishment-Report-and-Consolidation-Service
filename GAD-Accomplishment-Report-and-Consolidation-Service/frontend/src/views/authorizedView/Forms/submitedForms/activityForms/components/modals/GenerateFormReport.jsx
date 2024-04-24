@@ -14,6 +14,7 @@ export default function GenerateFormReport({ selectedForm }) {
   
   const [message, setAxiosMessage] = useState(''); // State for success message
   const [status, setAxiosStatus] = useState('');
+  const tableBorder = "text-center border border-black border-solid text-center px-2";
 
   const [formData, setFormData] = useState({
     forms_id: selectedForm.id,
@@ -212,7 +213,7 @@ const renderInput = (name, label) => {
         //{...(isRequired ? { required: true } : {})}
         value={formData[name]}
         onChange={handleChange}
-        className="bg-gray-100"
+        className="bg-gray-100 border border-gray-200"
       />
     </div>
   );
@@ -236,7 +237,7 @@ const renderInput = (name, label) => {
         Proposed Expenditures:
       </h1>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
           <thead>
             <tr>
               <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium uppercase tracking-wider">Item Type</th>
@@ -268,18 +269,19 @@ const renderInput = (name, label) => {
       <div className="flex flex-col justify-center items-center w-full overflow-x-auto">
         {/*------------------------------------------------------------------------------*/}
         <table>
-          <thead>
+          <thead className='bg-gray-300'>
             <tr>
-              <th>Type</th>
-              <th>Item Description</th>
-              <th>Approved Budget</th>
-              <th>Actual Expendatures</th>
+              <th className={tableBorder}>Type</th>
+              <th className={tableBorder}>Item Description</th>
+              <th className={tableBorder}>Approved Budget</th>
+              <th className={tableBorder}>Actual Expendatures</th>
+              <th className={tableBorder}>Action</th>
             </tr>
           </thead>
           <tbody>
             {actualExpendatures.map((input, index) => (
               <tr key={index}>
-                <td>
+                <td className={tableBorder}>
                   <select
                     id={`type${index}`}
                     name="type"
@@ -301,7 +303,7 @@ const renderInput = (name, label) => {
                     <option value="Others">Others...</option>
                   </select>
                 </td>
-                <td>
+                <td className={tableBorder}>
                   <input
                     id={`item${index}`}
                     name="item"
@@ -314,7 +316,7 @@ const renderInput = (name, label) => {
                     onChange={event => handleFormChange(index, event)}
                   />
                 </td>
-                <td>
+                <td className={tableBorder}>
                   <input
                     id={`approved_budget${index}`}
                     name="approved_budget"
@@ -327,7 +329,7 @@ const renderInput = (name, label) => {
                     onChange={event => handleFormChange(index, event)}
                   />
                 </td>
-                <td>
+                <td className={tableBorder}>
                   <input
                     id={`actual_expenditure${index}`}
                     name="actual_expenditure"
@@ -340,7 +342,7 @@ const renderInput = (name, label) => {
                     onChange={event => handleFormChange(index, event)}
                   />
                 </td>
-                  <td className='text-center'>
+                <td className={tableBorder}>
                     <button type="button" title="Delete Row" onClick={() => removeFields(index)}>
                       <MinusCircleIcon className="w-6 h-6 text-red-500 cursor-pointer transform transition-transform hover:scale-125" />
                     </button>
@@ -351,7 +353,7 @@ const renderInput = (name, label) => {
         </table>
         
           {/*------------------------------------------------------------------------------*/}
-          <div className="flex justify-center">
+          <div className="mt-2 flex justify-center">
 
             <NeutralButton label="Add more.." onClick={() => addFields()} />
           {/* <button onClick={addFields} className='m-1'>Add More..</button> */}
