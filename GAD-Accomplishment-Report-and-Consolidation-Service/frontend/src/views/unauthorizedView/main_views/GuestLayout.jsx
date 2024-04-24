@@ -5,6 +5,7 @@ import LandingPage1 from '../components/landingPage/LandingPage1';
 import LandingPage2 from '../components/landingPage/LandingPage2';
 import LandingPage3 from '../components/landingPage/LandingPage3';
 import LandingPage4 from '../components/landingPage/LandingPage4';
+import LandingPage5 from '../components/landingPage/LandingPage5';
 
 export default function GuestLayout() {
   const { userToken, currentUser } = useStateContext();
@@ -32,6 +33,10 @@ export default function GuestLayout() {
 
       <div className="snap-center h-screen">
         <LandingPage4 />
+      </div>
+
+      <div className="snap-center h-screen">
+        <LandingPage5 />
       </div>
     </div>
   );
