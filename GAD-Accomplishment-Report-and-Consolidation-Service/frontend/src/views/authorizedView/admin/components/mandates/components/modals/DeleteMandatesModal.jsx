@@ -27,12 +27,12 @@ export default function DeleteMandatesModal({selectedForm}) {
   };
 
   return (
-    <div>
+    <div className='text-center'>
 
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1>
-        Are you sure you want to delete <b>{selectedForm[0].gender_issue}</b>
+        Are you sure you want to delete <b>{selectedForm[0].gender_issue}</b>?
       </h1>
 
       {/**BUTTONS */}

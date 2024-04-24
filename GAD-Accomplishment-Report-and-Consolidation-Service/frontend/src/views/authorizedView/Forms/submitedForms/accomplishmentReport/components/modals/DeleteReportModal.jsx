@@ -26,12 +26,12 @@ export default function DeleteReportModal({selectedForm}) {
     };
 
   return (
-    <div>
+    <div className='text-center'>
 
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1>
-        Are you sure you want to delete <b>{selectedForm.title}</b>
+        Are you sure you want to delete <b>{selectedForm.title}</b>?
       </h1>
 
       {/**BUTTONS */}

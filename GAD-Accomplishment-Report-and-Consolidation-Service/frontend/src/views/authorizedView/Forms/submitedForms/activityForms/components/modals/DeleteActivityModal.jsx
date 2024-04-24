@@ -27,18 +27,18 @@ export default function DeleteActivityModal({selectedForm}) {
   };
 
   return (
-    <div>
+    <div className='text-center'> 
       {/**BUTTONS */}
-      <div className='mt-5'>
+     
         {/** For Feedback */}
         <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} />
 
           <h1>
-            Are you sure you want to delete <b>{selectedForm.title}</b>
+            Are you sure you want to delete <b>{selectedForm.title}</b>?
           </h1>
-
-          <WarningButton label="Delete Activity Design" onClick={onSubmit}/*disabled={ your condition }*/ />
-        </div>
+          <div className='mt-5'>
+            <WarningButton label="Delete Activity Design" onClick={onSubmit}/*disabled={ your condition }*/ />
+          </div>
     </div>
   )
 }
