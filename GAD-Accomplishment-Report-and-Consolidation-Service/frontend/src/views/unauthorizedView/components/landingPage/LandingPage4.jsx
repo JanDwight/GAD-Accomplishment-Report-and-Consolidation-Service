@@ -9,9 +9,9 @@ export default function LandingPage4() {
     {
       content: (
         <div>
-          <h1 className='text-4xl font-bold mb-4'>
+          <h2 className='text-3xl font-bold mb-4'>
             I. Learning & Development
-          </h1>
+          </h2>
           <ul className='text-2xl list-disc list-inside text-left'>
             <li>Gender Sensitivity Training (GST)</li>
             <li>GAD Planning and Budgeting (GPB)</li>
@@ -26,7 +26,7 @@ export default function LandingPage4() {
     {
       content: (
         <div>
-          <h1 className='text-4xl font-bold mb-4'>
+          <h1 className='text-3xl font-bold mb-4'>
             II. Technical Assistance through Gender Responsive Extension Program (GREP)
           </h1>
         </div>
@@ -35,7 +35,7 @@ export default function LandingPage4() {
     {
       content: (
         <div>
-          <h1 className='text-4xl font-bold mb-4'>
+          <h1 className='text-3xl font-bold mb-4'>
             III. Gender Responsive Research Program (GRRP)
           </h1>
         </div>
@@ -44,7 +44,7 @@ export default function LandingPage4() {
     {
       content: (
         <div>
-          <h1 className='text-4xl font-bold mb-4'>
+          <h1 className='text-3xl font-bold mb-4'>
             IV. Establishment/ Maintenance of Gender Responsive Facility
           </h1>
           <ul className='text-2xl list-disc list-inside text-left'>
@@ -83,7 +83,10 @@ export default function LandingPage4() {
       {/* Overlay with opacity */}
       <div className='absolute inset-0 bg-secondary opacity-10'></div>
 
-      <div className={'flex items-center justify-center w-[70%] bg-opacity-70 bg-primary relative z-10'}>
+      <div className={'flex flex-col items-center justify-center p-2 w-full bg-opacity-70 bg-primary relative z-10'}>
+          <h1 className='text-4xl font-bold mb-4'>
+            GAD Focal Point System (GFPS) Services
+          </h1>
         {slides[activeSlide].content}
       </div>
 
