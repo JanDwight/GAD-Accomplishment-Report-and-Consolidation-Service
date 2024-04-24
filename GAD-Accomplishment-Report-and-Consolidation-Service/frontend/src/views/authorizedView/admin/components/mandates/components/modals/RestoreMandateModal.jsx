@@ -36,7 +36,7 @@ export default function RestoreMandateModal({selectedForm}) {
       </h1>
       {/**BUTTONS */}
       <div className='mt-5'>
-          <Submit label="Restore User" onClick={onSubmit}/*disabled={ your condition }*/ />
+          <Submit label="Restore Mandate" onClick={onSubmit}/*disabled={ your condition }*/ />
         </div>
     </div>
   )
