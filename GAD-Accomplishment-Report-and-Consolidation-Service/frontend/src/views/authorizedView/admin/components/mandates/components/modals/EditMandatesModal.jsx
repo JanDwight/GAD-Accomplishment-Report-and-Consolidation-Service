@@ -35,6 +35,7 @@ export default function EditMandatesModal({ mandateSelected }) {
           name={name}
           onChange={handleChange}
           value={formData[name]}
+          className='border border-black'
           required
         >
           <option value="">Select Focus</option>
@@ -49,7 +50,7 @@ export default function EditMandatesModal({ mandateSelected }) {
             required
             value={formData[name]}
             onChange={handleChange}
-            className="bg-gray-200"
+            className="bg-gray-200 border border-black"
             rows={2}
         />
       )}
