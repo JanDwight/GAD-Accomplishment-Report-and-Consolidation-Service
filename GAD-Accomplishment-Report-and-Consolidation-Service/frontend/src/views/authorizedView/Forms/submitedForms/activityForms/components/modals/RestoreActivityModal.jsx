@@ -27,12 +27,12 @@ export default function RestoreActivityModal({selectedForm}) {
     };
 
   return (
-    <div>
+    <div className='text-center'>
       {/**For Feedback */}
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1>
-        Are you sure you want to Restore <b>{selectedForm.title}</b>
+        Are you sure you want to Restore <b>{selectedForm.title}</b>?
       </h1>
       {/**BUTTONS */}
       <div className='mt-5'>
