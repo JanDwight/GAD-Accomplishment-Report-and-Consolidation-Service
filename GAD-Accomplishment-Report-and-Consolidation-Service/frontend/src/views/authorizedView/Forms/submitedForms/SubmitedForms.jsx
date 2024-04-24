@@ -152,15 +152,14 @@ export default function SubmitedForms() {
             <Tab.Panel
               key="Inset"
               className={classNames(
-                'rounded-xl bg-white p-3',
-                'ring-white/60 ring-offset-2 ring-offset-accent focus:outline-none focus:ring-2'
+                'rounded-xl bg-white p-3 h-it',
               )}
             >
               <ul className='text-center'>
                 {insetForms.map((form) => (
                   <li
                     key={form.id}
-                    className="relative rounded-md p-3 hover:bg-gray-100"
+                    className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'
                   >
                     <h3 className="text-sm font-medium leading-5">
                       {form.title}
@@ -188,15 +187,14 @@ export default function SubmitedForms() {
             <Tab.Panel
               key="EAD"
               className={classNames(
-                'rounded-xl bg-white p-3',
-                'ring-white/60 ring-offset-2 ring-offset-accent focus:outline-none focus:ring-2'
+                'rounded-xl bg-white p-3 h-it',
               )}
             >
               <ul className='text-center'>
                 {eadForm.map((form) => (
                   <li
                   key={form.id}
-                  className="relative rounded-md p-3 hover:bg-gray-100"
+                  className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'
                 >
                   <h3 className="text-sm font-medium leading-5">
                     {form.title}

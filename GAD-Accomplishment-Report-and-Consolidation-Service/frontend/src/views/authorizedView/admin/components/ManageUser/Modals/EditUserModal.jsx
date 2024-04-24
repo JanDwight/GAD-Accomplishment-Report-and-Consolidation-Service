@@ -43,6 +43,7 @@ export default function EditUserModal({ selectedUser }) {
           name="email"
           type="text"
           autoComplete="email"
+          className='bg-gray-200 px-2'
           value={updatedUser.email}
           onChange={ev => setUpdatedUser({ ...updatedUser, email: ev.target.value })}
         />
@@ -54,12 +55,13 @@ export default function EditUserModal({ selectedUser }) {
           name="username"
           type="text"
           autoComplete="username"
+          className='bg-gray-200 px-2'
           value={updatedUser.username}
           onChange={ev => setUpdatedUser({ ...updatedUser, username: ev.target.value })}
         />
 
         {/**BUTTONS */}
-        <div className='mt-5'>
+        <div className='mt-5 flex justify-center'>
           <Submit label="Edit User" /*disabled={ your condition }*/ />
         </div>
       </form>

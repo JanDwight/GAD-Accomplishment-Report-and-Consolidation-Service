@@ -10,6 +10,7 @@ export default function EditActivityModal({ selectedForm }) {
   const expendituresArray = selectedForm.expenditures;
   const [message, setAxiosMessage] = useState(''); // State for success message
   const [status, setAxiosStatus] = useState('');
+  const tableBorder = "text-center border border-black border-solid text-center px-2";
   
   const [inputFields, setInputFields] = useState([
     {type: '', item: '', per_item: '', no_item: '', times: '', total: '0'}
@@ -198,21 +199,21 @@ export default function EditActivityModal({ selectedForm }) {
             </h1>
             <div className="overflow-x-auto">
               <table>
-                    <thead>
+                    <thead className="bg-gray-200">
                       <tr>
-                        <th>Type</th>
-                        <th>Item</th>
-                        <th>Cost Per Item</th>
-                        <th>Number of Items</th>
-                        <th>Number of Times</th>
-                        <th>Total</th>
-                        <th>Action</th>
+                        <th className={tableBorder}>Type</th>
+                        <th className={tableBorder}>Item</th>
+                        <th className={tableBorder}>Cost Per Item</th>
+                        <th className={tableBorder}>Number of Items</th>
+                        <th className={tableBorder}>Number of Times</th>
+                        <th className={tableBorder}>Total</th>
+                        <th className={tableBorder}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {inputFields.map((input, index) => (
                         <tr key={index}>
-                          <td>
+                          <td className={tableBorder}>
                             <select
                               id="type"
                               name="type"
@@ -233,7 +234,7 @@ export default function EditActivityModal({ selectedForm }) {
                               <option value="Others">Others...</option>
                             </select>
                           </td>
-                          <td>
+                          <td className={tableBorder}>
                             <input
                               id="item"
                               name="item"
@@ -245,7 +246,7 @@ export default function EditActivityModal({ selectedForm }) {
                               onChange={event => handleFormChange(index, event)}
                             />
                           </td>
-                          <td>
+                          <td className={tableBorder}>
                             <input
                               id="per_item"
                               name="per_item"
@@ -259,7 +260,7 @@ export default function EditActivityModal({ selectedForm }) {
                                 handleChangeNumbers(index, event.target.value); }}
                             />
                           </td>
-                          <td>
+                          <td className={tableBorder}>
                             <input
                               id="no_item"
                               name="no_item"
@@ -273,7 +274,7 @@ export default function EditActivityModal({ selectedForm }) {
                                 handleChangeNumbers(index, event.target.value); }}
                             />
                           </td>
-                          <td>
+                          <td className={tableBorder}>
                             <input
                               id="times"
                               name="times"
@@ -287,7 +288,7 @@ export default function EditActivityModal({ selectedForm }) {
                                 handleChangeNumbers(index, event.target.value); }}
                             />
                           </td>
-                          <td>
+                          <td className={tableBorder}>
                             <input
                               id="total"
                               name="total"
@@ -301,7 +302,7 @@ export default function EditActivityModal({ selectedForm }) {
                               onChange={event => { handleFormChange(index, event);}}
                             />
                             </td>
-                            <td className='text-center'>
+                          <td className={tableBorder}>
                             <button type="button" title="Delete Item" onClick={() => removeFields(index, input.id)}>
                               <MinusCircleIcon className="w-6 h-6 text-red-500 cursor-pointer transform transition-transform hover:scale-125" />
                             </button>
@@ -314,7 +315,7 @@ export default function EditActivityModal({ selectedForm }) {
                     
                     
               {/*------------------------------------------------------------------------------*/}
-                <div className="flex justify-center">
+                <div className="mt-2 flex justify-center">
                     
                 <NeutralButton label="Add more.." onClick={() => addFields()} />
                 {/* <button onClick={addFields} className='m-1'>Add More..</button> */}

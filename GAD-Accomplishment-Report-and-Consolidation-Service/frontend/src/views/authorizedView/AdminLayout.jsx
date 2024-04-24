@@ -198,17 +198,13 @@ export default function AdminLayout() {
         </Disclosure>
         
         <main className="flex h-full"> {/* Apply flex to the main container */}
-          <div 
-            className={`bg-white ml-2 mt-1 sidebar py-[1%] shadow-2xl max-h-[90%] max-w-[15%] px-[1%] rounded-xl ${
-              isSidebarOpen ? '' : 'hidden'
-            }`}
+          <div className={`bg-white ml-2 mt-1 sidebar py-[1%] shadow-2xl max-h-[90%] max-w-[15%] px-[1%] rounded-xl 
+            ${isSidebarOpen ? '' : 'hidden'}`}
             style={{ transition: 'margin-left 0.5s' }}
           > {/* Add sidebar styling */}
             <SideBar />
           </div>
-          
-          <div 
-            className={`max-h-[90%] min-w-[${isSidebarOpen ? '85%' : '100%'}] pt-1 sm:px-6 lg:px-6`}
+          <div className={`max-h-[90%] max-w-[${isSidebarOpen ? '85%' : '100%'}] min-w-[85%] pt-1 sm:px-6 lg:px-6`}
             style={{ transition: 'width 0.5s' }}
           > {/* Maintain the content container */}
               <Outlet />

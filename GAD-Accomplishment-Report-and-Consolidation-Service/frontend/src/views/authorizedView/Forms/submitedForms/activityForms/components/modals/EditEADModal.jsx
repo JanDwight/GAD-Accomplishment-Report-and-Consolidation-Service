@@ -13,6 +13,7 @@ export default function EditEADModal({selectedForm}) {
 
   const [message, setAxiosMessage] = useState(''); // State for success message
   const [status, setAxiosStatus] = useState('');
+  const tableBorder = "text-center border border-black border-solid text-center px-2";
 
   //----------for exenditure
 
@@ -169,20 +170,20 @@ export default function EditEADModal({selectedForm}) {
         </h1>
         <div className="overflow-x-auto">
         <table>
-              <thead>
+              <thead className="bg-gray-200">
                 <tr>
-                  <th>Type</th>
-                  <th>Item</th>
-                  <th>Estimated Cost</th>
-                  <th>Remarks</th>
-                  <th>Source of Funds</th>
-                  <th>Action</th>
+                  <th className={tableBorder}>Type</th>
+                  <th className={tableBorder}>Item</th>
+                  <th className={tableBorder}>Estimated Cost</th>
+                  <th className={tableBorder}>Remarks</th>
+                  <th className={tableBorder}>Source of Funds</th>
+                  <th className={tableBorder}>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {inputFields.map((input, index) => (
                   <tr key={index}>
-                    <td>
+                    <td className={tableBorder}>
                       <select
                         id="type"
                         name="type"
@@ -204,7 +205,7 @@ export default function EditEADModal({selectedForm}) {
                         <option value="Others">Others...</option>
                       </select>
                     </td>
-                    <td>
+                    <td className={tableBorder}>
                       <input
                         id="item"
                         name="item"
@@ -217,7 +218,7 @@ export default function EditEADModal({selectedForm}) {
                         onChange={event => handleFormChange(index, event)}
                       />
                     </td>
-                    <td>
+                    <td className={tableBorder}>
                       <input
                         id="estimated"
                         name="estimated"
@@ -230,7 +231,7 @@ export default function EditEADModal({selectedForm}) {
                         onChange={event => handleFormChange(index, event)}
                       />
                     </td>
-                    <td>
+                    <td className={tableBorder}>
                       <input
                         id="remarks"
                         name="remarks"
@@ -242,7 +243,7 @@ export default function EditEADModal({selectedForm}) {
                         onChange={event => handleFormChange(index, event)}
                       />
                     </td>
-                    <td>
+                    <td className={tableBorder}>
                       <input
                         id="source_of_funds"
                         name="source_of_funds"
@@ -255,7 +256,7 @@ export default function EditEADModal({selectedForm}) {
                         onChange={event => handleFormChange(index, event)}
                       />
                     </td>
-                    <td className='text-center'>
+                    <td className={tableBorder}>
                       <button type="button" title="Delete Item" onClick={() => removeFields(index, input.id)}>
                         <MinusCircleIcon className="w-6 h-6 text-red-500 cursor-pointer transform transition-transform hover:scale-125" />
                       </button>
@@ -264,7 +265,7 @@ export default function EditEADModal({selectedForm}) {
                 ))}
               </tbody>
             </table>
-            <div className="flex justify-center">
+            <div className="mt-2 flex justify-center">
               <NeutralButton label="Add more.." onClick={() => addFields()} />
             </div>
           

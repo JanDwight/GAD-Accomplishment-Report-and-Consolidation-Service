@@ -15,6 +15,7 @@ import AddImages from '../../../../../../components/image/Addimages';
 export default function GenerateAccomplishmentReport({ selectedForm }) {
   const [message, setAxiosMessage] = useState('');
   const [status, setAxiosStatus] = useState('');
+  const tableBorder = "text-center border border-black border-solid text-center px-2";
 
     //----------for docx
     const fileUrl = ExtensionAccomplishmentReport; // Use the imported file directly
@@ -206,7 +207,7 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
         required
         value={formData[name]}
         onChange={handleChange}
-        className="bg-gray-100"
+        className="bg-gray-100 border border-gray-200"
       />
     </div>
   );
@@ -238,7 +239,7 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
         </h1>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
             <thead>
               <tr>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium uppercase tracking-wider">Item</th>
@@ -263,18 +264,19 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
         </h1>
         <div className="flex flex-col justify-center items-center w-full overflow-x-auto">
             <table>
-              <thead>
+              <thead className='bg-gray-300'>
                 <tr>
-                  <th>Type</th>
-                  <th>Item</th>
-                  <th>Approved Budget</th>
-                  <th>Actual Expenditure</th>
+                  <th className={tableBorder}>Type</th>
+                  <th className={tableBorder}>Item</th>
+                  <th className={tableBorder}>Approved Budget</th>
+                  <th className={tableBorder}>Actual Expenditure</th>
+                  <th className={tableBorder}>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {actualExpendatures.map((input, index) => (
                   <tr key={index}>
-                    <td>
+                    <td className={tableBorder}>
                       <select
                         id={`type${index}`}
                         name="type"
@@ -296,7 +298,7 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
                         <option value="Others">Others...</option>
                       </select>
                     </td>
-                    <td>
+                    <td className={tableBorder}>
                       <input
                         id={`item${index}`}
                         name="item"
@@ -309,7 +311,7 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
                         onChange={event => handleFormChange(index, event)}
                       />
                     </td>
-                    <td>
+                    <td className={tableBorder}>
                       <input
                         id={`approved_budget${index}`}
                         name="approved_budget"
@@ -322,7 +324,7 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
                         onChange={event => handleFormChange(index, event)}
                       />
                     </td>
-                    <td>
+                    <td className={tableBorder}>
                       <input
                         id={`actual_expenditure${index}`}
                         name="actual_expenditure"
@@ -335,8 +337,10 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
                         onChange={event => handleFormChange(index, event)}
                       />
                     </td>
-                    <td>
-                      <MinusCircleIcon onClick={() => removeFields(index)} className="w-6 h-6 text-red-500 cursor-pointer transform transition-transform hover:scale-125" />
+                    <td className={tableBorder}>
+                      <button type="button" title="Delete Row">
+                        <MinusCircleIcon onClick={() => removeFields(index)} className="w-6 h-6 text-red-500 cursor-pointer transform transition-transform hover:scale-125" />
+                      </button>
                     </td>
                   </tr>
                 ))}
