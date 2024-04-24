@@ -27,12 +27,12 @@ export default function ArchiveUserModal({selectedUser}) {
 
 
   return (
-    <div>
+    <div className='text-center'>
 
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1>
-        Are you sure you want to delete <b>{selectedUser.username}</b>
+        Are you sure you want to delete <b>{selectedUser.username}</b>?
       </h1>
       {/**BUTTONS */}
       <div className='mt-5'>

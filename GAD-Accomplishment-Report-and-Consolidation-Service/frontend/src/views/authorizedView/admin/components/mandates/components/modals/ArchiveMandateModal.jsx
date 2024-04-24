@@ -28,15 +28,15 @@ export default function ArchiveMandateModal({ mandateSelected }) {
 
   console.log('This is the selected Mandate', mandateSelected);
   return (
-    <div>
+    <div className='text-center'>
       {/** For Feedback */}
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1>
-        Are you sure you want to delete <b>{mandateSelected[0].gender_issue}</b>
+        Are you sure you want to delete <b>{mandateSelected[0].gender_issue}</b>?
       </h1>
       {/** BUTTONS */}
-      <div className='mt-5'>
+      <div className='mt-5 flex justify-center'>
         <Submit label="Archive Activity Design" onClick={onSubmit} /* disabled={your condition} */ />
       </div>
     </div>
