@@ -11,9 +11,9 @@ export default function LandingPage3() {
       {/* Overlay with opacity */}
       <div className='absolute inset-0 bg-primary opacity-10'></div>
       
-      <div className='w-[80%] p-5 text-center bg-opacity-70 bg-secondary relative z-10'>
+      <div className='w-fulll p-5 text-center bg-opacity-70 bg-secondary relative z-10'>
         <h1 className='text-4xl font-bold mb-4'>Goals:</h1>
-        <ul className='text-2xl list-disc list-inside text-left'>
+        <ul className='text-2xl list-disc list-inside text-left ml-10'>
           <li>Improve GAD information system for policy and decision making.</li>
           <li>Recognize GAD Zonal Resource Center in the Region.</li>
           <li>Enrich quality education through the integration of gender perspective in academe.</li>
