@@ -315,7 +315,7 @@ export default function EditActivityModal({ selectedForm }) {
                     
                     
               {/*------------------------------------------------------------------------------*/}
-                <div className="flex justify-center">
+                <div className="mt-2 flex justify-center">
                     
                 <NeutralButton label="Add more.." onClick={() => addFields()} />
                 {/* <button onClick={addFields} className='m-1'>Add More..</button> */}

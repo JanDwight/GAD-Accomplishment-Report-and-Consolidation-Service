@@ -265,7 +265,7 @@ export default function EditEADModal({selectedForm}) {
                 ))}
               </tbody>
             </table>
-            <div className="flex justify-center">
+            <div className="mt-2 flex justify-center">
               <NeutralButton label="Add more.." onClick={() => addFields()} />
             </div>
           

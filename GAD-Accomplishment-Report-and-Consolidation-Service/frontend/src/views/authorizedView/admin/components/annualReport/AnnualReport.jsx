@@ -265,7 +265,7 @@ export default function AnnualReport() {
                                         )}
                                         <td style={tnStyles}>{expenditure.items}</td>
                                         <td style={tnStyles}>{expenditure.actual_expenditure}</td>
-                                        <td style={tnStyles}>+++</td>
+                                        <td style={tnStyles}>Pending</td>
                                     </tr>
                                 ))
                             ))}
