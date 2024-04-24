@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {ArrowLeftCircleIcon, ArrowRightCircleIcon} from '@heroicons/react/24/solid';
+import img from '../../../../TMP/image4.jpg';
 
 export default function LandingPage4() {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -62,34 +64,51 @@ export default function LandingPage4() {
     setActiveSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
+    //for auto slides
+    useEffect(() => {
+      const slideInterval = setInterval(nextSlide, 5000); // Slide to next image every 3 seconds
+ 
+      // Clear interval on component unmount to prevent memory leaks
+      return () => {
+        clearInterval(slideInterval);
+      };
+    }, [activeSlide]); // Re-run effect when currentIndex changes
+
   return (
-    <div className='overflow-hidden h-screen flex items-center justify-center relative'>
-      <div className={'flex items-center justify-center w-[70%]'}>
+    <div 
+      className='overflow-hidden h-screen flex items-center justify-center relative'
+      style={{ backgroundImage: `url(${img})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}    
+    >
+      
+      {/* Overlay with opacity */}
+      <div className='absolute inset-0 bg-secondary opacity-10'></div>
+
+      <div className={'flex items-center justify-center w-[70%] bg-opacity-70 bg-primary relative z-10'}>
         {slides[activeSlide].content}
       </div>
-      
+
       <div className='absolute inset-x-0 bottom-4 flex items-center justify-center'>
-        {slides.map((slide, index) => (
+        {slides.map((index) => (
           <button
             key={index}
-            onClick={() => setActiveSlide(index)}
-            className={`mx-1 w-4 h-4 rounded-full bg-gray-400 ${activeSlide === index ? 'bg-accent' : ''}`}
+            onClick={() => setCurrentIndex(index)}
+            className={`mx-1 w-4 h-4 rounded-full ${activeSlide === index ? 'bg-accent' : 'bg-gray-400'}`}
           ></button>
         ))}
       </div>
 
       <div className='absolute inset-0 flex items-center justify-between p-4'>
         <button
-          className='bg-primary h-screen w-[10%] bg-opacity-30 hover:bg-opacity-100'
+          className='bg-black h-screen w-[5%] bg-opacity-10 hover:bg-opacity-30'
           onClick={prevSlide}
         >
-          Prev
+          <ArrowLeftCircleIcon />
         </button>
         <button
-          className='bg-primary h-screen w-[10%] bg-opacity-30 hover:bg-opacity-100'
+          className='bg-black h-screen w-[5%] bg-opacity-10 hover:bg-opacity-30'
           onClick={nextSlide}
         >
-          Next
+          <ArrowRightCircleIcon />
         </button>
       </div>
     </div>

@@ -1,17 +1,18 @@
-import React from 'react'
+import React from 'react';
 import Login from '../../components/Login';
 import imageSrc from '../../../../TMP/image.png';
+import GADLogo from '../../../../TMP/GAD_Logo.png';
 
 export default function LandingPage1() {
   return (
-    <div className='flex'>
-        <div className='w-[40%]'>
+    <div className='flex bg-gradient-to-r from-primary via-purple-800 to-purple-950'>
+        <div className='w-[60%]'>
           <Login />
         </div>
-        <div className='w-[60%]'>
+        <div className='max-w-[60%]'>
             {/* Add a function that allows the user to change this image */}
-            <img src={imageSrc} alt="" className='w-[100%] h-screen' />
+            <img src={GADLogo} alt="" className='w-full h-screen object-contain' />
         </div>
     </div>
-  )
+  );
 }

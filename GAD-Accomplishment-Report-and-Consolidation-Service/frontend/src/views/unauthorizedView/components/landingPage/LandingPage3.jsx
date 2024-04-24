@@ -1,9 +1,17 @@
 import React from 'react'
+import img from '../../../../TMP/image3.jpg';
 
 export default function LandingPage3() {
   return (
-    <div className='flex justify-center items-center h-screen'>
-      <div className='w-[80%] p-5 text-center'>
+    <div 
+      className='flex justify-center items-center h-screen relative'
+      style={{ backgroundImage: `url(${img})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}
+    >
+
+      {/* Overlay with opacity */}
+      <div className='absolute inset-0 bg-primary opacity-10'></div>
+      
+      <div className='w-[80%] p-5 text-center bg-opacity-70 bg-secondary relative z-10'>
         <h1 className='text-4xl font-bold mb-4'>Goals:</h1>
         <ul className='text-2xl list-disc list-inside text-left'>
           <li>Improve GAD information system for policy and decision making.</li>
