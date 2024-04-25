@@ -3,6 +3,7 @@ import NeutralButton from '../buttons/NeutralButton';
 import ReactModal from 'react-modal';
 import axiosClient from '../../axios/axios';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
+import GADLogo from '../../../../src/TMP/GAD_Logo.png'
 
 // For Modal
 import AddUserModal from '../../authorizedView/admin/components/ManageUser/Modals/AddUserModal';
@@ -72,32 +73,30 @@ export default function SideBar() {
     };
 
     return (
-        <div className="sidebar space-y-3">
+        <div className="sidebar">
             <div className='flex justify-center'>
-                GAD LOGO
-                GAD LOGO
+                <img src={GADLogo} alt="" className='w-[65%] h-[65%] object-contain' />
             </div>
-            <ul className="sidebar-list">
-                {sidebarItems.map((item, index) => (
-                    <li key={index} className='pt-3'>
-                        <NeutralButton label={item.label} onClick={item.onClick} />
-                    </li>
-                ))}
-            </ul>
-            <div className='border-2 shadow-2 px-5 rounded-lg py-2'>
+            <div className='py-1'>
+                <ul className="sidebar-list">
+                    {sidebarItems.map((item, index) => (
+                        <li key={index} className='pt-1'>
+                            <NeutralButton label={item.label} onClick={item.onClick} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className='mt-2 border-2 shadow-2 px-5 rounded-lg py-2'>
                 <table>
                     <tbody>
                     {sidebarList.map((item, index) => (
-                        <tr key={index} className='py-2 text font-semibold'>
+                        <tr key={index} className='pt-1 text font-semibold'>
                             <td className='border-b border-secondary'> <a className='text-xs'>{item.label}</a> </td>
                             <td><b>{item.val}</b></td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
-            </div>
-            <div className='w-full flex justify-center'>
-                <EllipsisHorizontalIcon className='block h-8 w-10 cursor-pointer transform transition-transform hover:scale-125'/>
             </div>
             <ReactModal
                 isOpen={modals.addUser}
