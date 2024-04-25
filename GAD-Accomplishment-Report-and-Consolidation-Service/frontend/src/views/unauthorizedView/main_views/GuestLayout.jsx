@@ -14,7 +14,7 @@ export default function GuestLayout() {
   if (userToken && currentUser.role === 'admin') {
     return <Navigate to="/admin/dashboard" />;
   } else if (userToken && currentUser.role === 'college') {
-    return <Navigate to="/college" />;
+    return <Navigate to="/college/forms" />;
   }
 
   return (

@@ -20,9 +20,17 @@ class AccomplishmentReportController extends Controller
 {
     
     public function index_accomplishment_report() {
-        $accomplishmentReport = accReport::with('actualExpenditure')->get();
+        $user = auth()->user();
 
-        return response($accomplishmentReport);
+        if ($user->role === 'college') {
+            // Retrieve only the authenticated user's accomplishment reports along with actual expenditures
+            $accomplishmentReports = $user->accomplishmentReport()->with('actualExpenditure')->get();
+        } else {
+            // If the user's role is not 'college', retrieve all accomplishment reports along with actual expenditures
+            $accomplishmentReports = accReport::with('actualExpenditure')->get();
+        }
+
+        return response()->json($accomplishmentReports);
     }
 
     public function index_expenditures($id)
