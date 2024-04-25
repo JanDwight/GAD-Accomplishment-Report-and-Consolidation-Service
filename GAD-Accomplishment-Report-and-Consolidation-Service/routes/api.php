@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/archiveuser/{id}', 'archiveuser');
         Route::put('/restoreuser/{id}', 'restoreuser');
         Route::put('/deleteuser/{id}', 'deleteuser');
+        Route::get('/profile', 'profile');
         Route::get('/showusers', 'index');
         Route::get('/showarchivedusers', 'userarchiveindex');
         Route::get('/counter', 'counter');

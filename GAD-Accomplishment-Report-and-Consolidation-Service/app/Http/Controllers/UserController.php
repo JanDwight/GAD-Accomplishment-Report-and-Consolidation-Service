@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\accReport;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -21,6 +22,15 @@ class UserController extends Controller
         return response()->json($data);
     }
     
+    public function profile()
+    {
+        $profile = Auth::user();
+
+        return response([
+            'message' => $profile,
+            'success' => true
+        ]);
+    }
 
     public function adduser(AddUserRequest $request){
         try {
@@ -72,6 +82,7 @@ class UserController extends Controller
         try {
             // Validate the incoming data (e.g., username, email)
             $validatedData = $request->validate([
+                'password' => 'nullable',
                 'username' => 'nullable|string',
                 'email' => 'nullable|email'
             ]);
@@ -86,7 +97,12 @@ class UserController extends Controller
                     'success' => false
                 ]);
             }
-    
+
+            // Conditionally update the password if provided
+            if (isset($validatedData['password'])) {
+                $validatedData['password'] = bcrypt($validatedData['password']);
+            }
+            
             // Update the user's information with the validated data
             $user->update($validatedData);
     
