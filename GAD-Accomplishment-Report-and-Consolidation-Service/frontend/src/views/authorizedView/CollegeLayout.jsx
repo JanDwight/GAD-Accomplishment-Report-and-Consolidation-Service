@@ -10,6 +10,7 @@ const navigation = [
   //{ name: 'Home', href: '#', current: false },
   { name: 'Activity Design Forms', to: '/college/forms'},
   { name: 'Submitted Forms', to: '/college/submitedforms'},
+  { name: 'Accomplishment Reports', to: '/college/accomplishmentreport'},
   //{ name: 'Employee Activity Form', to: '/college/printemployeeactivityform'}
 ]
 

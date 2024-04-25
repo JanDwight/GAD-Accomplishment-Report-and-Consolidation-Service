@@ -81,7 +81,7 @@ const router = createBrowserRouter([
             {
                 path: 'accomplishmentreport',
                 element: <AccomplishmentReport />
-            }
+            },
         ]
     },
 ])
