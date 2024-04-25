@@ -4,12 +4,13 @@ import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import axiosClient from '../axios/axios';
+import GADLogo from '../../TMP/GAD_Logo.png'
 
 const navigation = [
-  { name: 'Home', href: '#', current: false },
+  //{ name: 'Home', href: '#', current: false },
   { name: 'Activity Design Forms', to: '/college/forms'},
   { name: 'Submitted Forms', to: '/college/submitedforms'},
-  { name: 'Employee Activity Form', to: '/college/printemployeeactivityform'}
+  //{ name: 'Employee Activity Form', to: '/college/printemployeeactivityform'}
 ]
 
 function classNames(...classes) {
@@ -24,7 +25,7 @@ export default function CollegeLayout() {
         axiosClient.post('/logout')
           .then(res => {
             setCurrentUser({})
-            setUserToken(null)
+            //setUserToken(null)
           })
       };
 
@@ -35,16 +36,17 @@ export default function CollegeLayout() {
     console.log('User Token', userToken)
     return (
       <>
+        <div className='h-screen overflow-hidden'>
         {/*NavBar*/}
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="bg-primary">
           {({ open }) => (
             <>
-              <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-8xl px-2 sm:px-6 lg:px-8">
 
                 <div className="relative flex h-16 items-center justify-between">
 
+                  {/* Mobile menu button*/}
                   <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                    {/* Mobile menu button*/}
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                       <span className="absolute -inset-0.5" />
                       <span className="sr-only">Open main menu</span>
@@ -56,26 +58,22 @@ export default function CollegeLayout() {
                     </Disclosure.Button>
                   </div>
 
-                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                  <div className="flex h-full items-center sm:items-stretch sm:justify-start">
 
                     <div className="flex flex-shrink-0 items-center">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
+                      <img src={GADLogo} alt="" className='w-full h-[80%]  transform transition-transform hover:scale-125' />
                     </div>
 
                     <div className="hidden sm:ml-6 sm:block">
-                      <div className="flex space-x-4">
+                      <div className="flex justify-center items-center h-full space-x-4">
                         {navigation.map((item) => (
                           <NavLink
                             key={item.name}
                             to={item.to}
                             className={({ isActive }) => classNames(
-                              isActive ? 'bg-gray-900 text-white' 
-                                       : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'block rounded-md px-3 py-2 text-base font-medium'
+                              isActive ? 'bg-accent text-black drop-shadow-gs'  
+                                       : 'text-black hover:bg-accent hover:text-black hover:drop-shadow-gs',
+                              'flex justify-center items-center px-3 py-2 h-full text-base md:text-sm xl:text-md font-medium'
                             )}
                           >
                             {item.name}
@@ -87,15 +85,9 @@ export default function CollegeLayout() {
                   </div>
 
                   <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    <button
-                      type="button"
-                      className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-
+                    <p>
+                     USERNAME
+                    </p>
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">
                       <div>
@@ -188,11 +180,12 @@ export default function CollegeLayout() {
           )}
         </Disclosure>
 
-        <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <main className="flex h-full">
+          <div className="max-h-[90%] max-w-[100%] min-w-[100%] pt-1 sm:px-6 lg:px-6`">
             <Outlet />
           </div>
         </main>
+      </div>
     </>
   );
 }
