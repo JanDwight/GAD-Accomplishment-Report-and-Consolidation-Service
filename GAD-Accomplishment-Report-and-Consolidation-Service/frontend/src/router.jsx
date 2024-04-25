@@ -11,6 +11,7 @@ import TestTables from "./views/authorizedView/admin/components/annualreporttest
 import ExcelImport from "./views/authorizedView/admin/components/exceltest/ExcelImport";
 import Mandates from "./views/authorizedView/admin/components/mandates/Mandates";
 import Dashboard from "./views/authorizedView/admin/components/dashboard/Dashboard";
+import Profile from "./views/authorizedView/profile/Profile";
 
 const router = createBrowserRouter([
     {
@@ -57,7 +58,11 @@ const router = createBrowserRouter([
             {
                 path: 'mandates',
                 element: <Mandates />
-            }
+            },
+            {
+                path: 'profile',
+                element: <Profile/>
+            },
         ]
     },
 
