@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NeutralButton from '../buttons/NeutralButton';
 import ReactModal from 'react-modal';
 import axiosClient from '../../axios/axios';
+import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
 
 // For Modal
 import AddUserModal from '../../authorizedView/admin/components/ManageUser/Modals/AddUserModal';
@@ -37,10 +38,10 @@ export default function SideBar() {
     const sidebarItems = [
         { label: 'Add User', onClick: () => toggleModal('addUser', true) },
         { label: 'Add Mandate', onClick: () => toggleModal('showAddMandateModal', true) },
-        { label: 'Archived Users List', onClick: () => toggleModal('archivedUser', true) },
-        { label: 'Archived Mandates List', onClick: () => toggleModal('showArchiveMandate', true) },
-        { label: 'Archived Forms List', onClick: () => toggleModal('archivedForm', true) },
-        { label: 'Archived Accomplishment Report List', onClick: () => toggleModal('archivedReports', true) },
+        { label: 'Archived Users', onClick: () => toggleModal('archivedUser', true) },
+        { label: 'Archived Mandates', onClick: () => toggleModal('showArchiveMandate', true) },
+        { label: 'Archived Forms', onClick: () => toggleModal('archivedForm', true) },
+        { label: 'Archived Accomplishment Reports', onClick: () => toggleModal('archivedReports', true) },
     ];
 
     const sidebarList = [
@@ -71,7 +72,11 @@ export default function SideBar() {
     };
 
     return (
-        <div className="sidebar space-y-5">
+        <div className="sidebar space-y-3">
+            <div className='flex justify-center'>
+                GAD LOGO
+                GAD LOGO
+            </div>
             <ul className="sidebar-list">
                 {sidebarItems.map((item, index) => (
                     <li key={index} className='pt-3'>
@@ -79,16 +84,21 @@ export default function SideBar() {
                     </li>
                 ))}
             </ul>
-            <div className='border-2 shadow-2xl px-5 rounded-lg'>
-                <ul className="sidebar-list-2">
+            <div className='border-2 shadow-2 px-5 rounded-lg py-2'>
+                <table>
+                    <tbody>
                     {sidebarList.map((item, index) => (
-                        <li key={index} className='py-2 text font-semibold'>
-                            <label> <a className='text-xs'>{item.label}</a> <b>{item.val}</b></label>
-                        </li>
+                        <tr key={index} className='py-2 text font-semibold'>
+                            <td className='border-b border-secondary'> <a className='text-xs'>{item.label}</a> </td>
+                            <td><b>{item.val}</b></td>
+                        </tr>
                     ))}
-                </ul>
+                    </tbody>
+                </table>
             </div>
-            {/* Modals */}
+            <div className='w-full flex justify-center'>
+                <EllipsisHorizontalIcon className='block h-8 w-10 cursor-pointer transform transition-transform hover:scale-125'/>
+            </div>
             <ReactModal
                 isOpen={modals.addUser}
                 onRequestClose={() => toggleModal('addUser', false)}

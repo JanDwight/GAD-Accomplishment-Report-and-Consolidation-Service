@@ -3,6 +3,7 @@ import axiosClient from '../../../../axios/axios';
 import { ArchiveBoxArrowDownIcon, PencilIcon } from '@heroicons/react/24/solid';
 import ReactModal from 'react-modal';
 import EditMandatesModal from './components/modals/EditMandatesModal';
+import ViewMandatesModal from './components/modals/ViewMandatesModal';
 import ArchiveMandateModal from './components/modals/ArchiveMandateModal';
 import LoadingHorizontalLine from '../../../../components/feedbacks/LoadingHorizontalLine';
 
@@ -14,6 +15,7 @@ export default function Mandates() {
   //For Modals
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isArchiveModalOpen, setIsArchiveModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   // For Mandate EDIT
   const handleEditClick = (selected_mandate) => {
@@ -24,6 +26,12 @@ export default function Mandates() {
   // For Form Archive
   const handleArchiveClick = (selected_mandate) => {
     setIsArchiveModalOpen(true)
+    setSelectedMandate(selected_mandate)
+  }
+
+  // For View
+  const handleView = (selected_mandate) => {
+    setIsViewModalOpen(true)
     setSelectedMandate(selected_mandate)
   }
 
@@ -68,12 +76,9 @@ export default function Mandates() {
           </thead>
           <tbody>
             {mandates.map((mandate, index) => (
-              <tr key={index}
-              onClick={() => handleEditClick(mandate)}
-              className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'
-              >
-                <td className="text-center p-2">{index+1}) {mandate.gender_issue}</td>
-                <td className="text-center p-2">{mandate.focus}</td>
+              <tr key={index} className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'>
+                <td className="text-center p-2" onClick={() => handleView(mandate)}>{index+1}) {mandate.gender_issue}</td>
+                <td className="text-center p-2" onClick={() => handleView(mandate)}>{mandate.focus}</td>
                 <td className="text-center p-2">
                   <ul className='flex flex-row items-center justify-center'>
                     <li>
@@ -115,6 +120,18 @@ export default function Mandates() {
                  />
             </div>
         </ReactModal>
+      
+      {/** Modal For Mandate VIEW */}
+      <ReactModal
+            isOpen={isViewModalOpen}
+            onRequestClose={() => setIsViewModalOpen(false)}
+            className="w-full md:w-fit h-fit bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl mt-[1%] mx-auto p-5"
+        >
+            <ViewMandatesModal 
+                closeModal={() => setIsViewModalOpen(false)}
+                mandateSelected={selectedMandate}
+            />
+      </ReactModal>
     </div>
   );
 }
