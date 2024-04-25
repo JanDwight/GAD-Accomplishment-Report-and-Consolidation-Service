@@ -1,4 +1,4 @@
-import { React, Fragment } from 'react'
+import { React, Fragment, useState, useEffect } from 'react'
 import { useStateContext } from '../../context/ContextProvider'
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
@@ -18,7 +18,23 @@ function classNames(...classes) {
 }
 
 export default function CollegeLayout() {
+    const [userDetails, setUserDetails] = useState('');
     const { userToken } = useStateContext();
+
+    useEffect(() => {
+      fetchUser();
+      console.log('name: ', userDetails);
+    }, []);
+
+    const fetchUser = async () => {
+      try {
+        const response = await axiosClient.get('/profile');
+        setUserDetails(response.data.message.username);
+        console.log('Return: ', response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
     const logout = (ev) => {
         ev.preventDefault();
@@ -85,9 +101,9 @@ export default function CollegeLayout() {
                   </div>
 
                   <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    <p>
-                     USERNAME
-                    </p>
+                    <strong className='mx-2'>
+                     {userDetails}
+                    </strong>
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">
                       <div>
