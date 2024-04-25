@@ -75,7 +75,7 @@ export default function SideBar() {
     return (
         <div className="sidebar">
             <div className='flex justify-center'>
-                <img src={GADLogo} alt="" className='w-[65%] h-[65%] object-contain' />
+                <img src={GADLogo} alt="" className='w-[65%] h-[65%]  transform transition-transform hover:scale-125' />
             </div>
             <div className='py-1'>
                 <ul className="sidebar-list">
@@ -90,7 +90,7 @@ export default function SideBar() {
                 <table>
                     <tbody>
                     {sidebarList.map((item, index) => (
-                        <tr key={index} className='pt-1 text font-semibold'>
+                        <tr key={index} className='text font-semibold'>
                             <td className='border-b border-secondary'> <a className='text-xs'>{item.label}</a> </td>
                             <td><b>{item.val}</b></td>
                         </tr>
