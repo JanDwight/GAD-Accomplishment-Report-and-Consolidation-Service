@@ -52,7 +52,7 @@ export default function Dashboard() {
         <table className='w-screen text-center h-fit'>
           <thead className='bg-secondary sticky top-0'>
             <tr>
-              <td className={`${headerStyles} w-[40%]`}>USERS <div className='text-xs'>TOTAL</div></td>
+              <td className={`${headerStyles} w-[40%]`}>USERS</td>
               <td className={headerStyles}>SUBMITTED ACTIVITY DESIGN<div>TOTAL</div></td>
               <td className={headerStyles}>ACCOMPLISHMENT REPORTS<div>TOTAL</div></td>
             </tr>
