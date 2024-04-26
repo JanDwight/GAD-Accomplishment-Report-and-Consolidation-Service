@@ -128,7 +128,7 @@ export default function EADForm() {
         setAxiosMessage(response.data.message);
         setAxiosStatus(response.data.success); 
         
-        if (response.data.Success === true){
+        if (response.data.success === true){
           populateDocx(); // Run the download of DOCX
         }
     } catch (error) {
