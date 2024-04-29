@@ -9,13 +9,13 @@ export default function AddMandatesModal() {
   const [status, setAxiosStatus] = useState('');
 
   const [formData, setFormData] = useState({
-    gender_issue: '',
-    cause_of_gender_issue: '',
-    gad_result_statement: '',
-    gad_activity: '',
-    performance_indicators: '',
-    target_result: '',
-    focus: '',
+    gender_issue: 'TBA',
+    cause_of_gender_issue: 'TBA',
+    gad_result_statement: 'TBA',
+    gad_activity: 'TBA',
+    performance_indicators: 'TBA',
+    target_result: 'TBA',
+    focus: 'Client',
   })
 
   const handleChange = async (e) => {
@@ -34,7 +34,6 @@ export default function AddMandatesModal() {
           className='border border-black'
           required
         >
-          <option value="">Select Focus</option>
           <option value="Client">Client-Focused</option>
           <option value="Organization">Organization-Focused</option>
         </select>
@@ -46,7 +45,7 @@ export default function AddMandatesModal() {
             required
             value={formData[name]}
             onChange={handleChange}
-            className="bg-gray-200 border border-black"
+            className="px-2 bg-gray-200 border border-black"
             rows={2}
         />
       )}
