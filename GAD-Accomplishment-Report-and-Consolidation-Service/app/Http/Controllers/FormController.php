@@ -32,16 +32,10 @@ class FormController extends Controller
             return response()->json($forms);
 
         } else {
-        
-            $forms = Forms::where('form_type', 'EMPLOYEE')
-                    ->with('expenditures')
-                    ->get();
-            //xp
-            $expenditures = [];
-            foreach ($forms as $form) {
-                $expenditures[$form->id] = $form->expenditures;
-            }
-
+            $forms = User::with(['forms' => function ($query) {
+                $query->where('form_type', 'EMPLOYEE')->with('expenditures');
+            }])->get();
+            
             return response()->json($forms);
 
         }
@@ -68,14 +62,9 @@ class FormController extends Controller
 
         } else {
         
-            $forms = Forms::where('form_type', 'INSET')
-                    ->with('expenditures')
-                    ->get();
-            //xp
-            $expenditures = [];
-            foreach ($forms as $form) {
-                $expenditures[$form->id] = $form->expenditures;
-            }
+            $forms = User::with(['forms' => function ($query) {
+                $query->where('form_type', 'INSET')->with('expenditures');
+            }])->get();
 
             return response()->json($forms);
 
@@ -103,14 +92,9 @@ class FormController extends Controller
 
         } else {
         
-            $forms = Forms::where('form_type', 'EAD')
-                    ->with('expenditures')
-                    ->get();
-            //xp
-            $expenditures = [];
-            foreach ($forms as $form) {
-                $expenditures[$form->id] = $form->expenditures;
-            }
+            $forms = User::with(['forms' => function ($query) {
+                $query->where('form_type', 'EAD')->with('expenditures');
+            }])->get();
 
             return response()->json($forms);
 
