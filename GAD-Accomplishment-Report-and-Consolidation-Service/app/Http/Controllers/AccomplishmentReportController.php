@@ -67,6 +67,7 @@ class AccomplishmentReportController extends Controller
             'title' => $accReport['title'],
             'date_of_activity' => $accReport['date_of_activity'],
             'venue' => $accReport['venue'],
+            'proponents_implementors' => $accReport['proponents_implementors'],
             'no_of_participants' => $accReport['no_of_participants'],
             'male_participants' => $accReport['male_participants'],
             'female_participants' => $accReport['female_participants'],
