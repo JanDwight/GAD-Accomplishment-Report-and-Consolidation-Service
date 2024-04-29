@@ -50,7 +50,7 @@ export default function AccomplishmentReport() {
   const UnifiedStyle = {
     tdClassName: "text-center p-2",
     thClassName: "px-4 py-3",
-    titleClassname: "w-[65%] text-center p-2"
+    titleClassname: "w-[65%] text-center pl-7 pr-2"
   };
 
   return (
