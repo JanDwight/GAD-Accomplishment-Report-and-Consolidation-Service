@@ -49,7 +49,8 @@ export default function AccomplishmentReport() {
   // For Unified Inputs 
   const UnifiedStyle = {
     tdClassName: "text-center p-2",
-    thClassName: "px-4 py-3"
+    thClassName: "px-4 py-3",
+    titleClassname: "w-[65%] text-center p-2"
   };
 
   return (
@@ -66,8 +67,8 @@ export default function AccomplishmentReport() {
         <table className="w-screen text-center h-fit">
             <thead className='bg-secondary sticky top-0'>
               <tr>
-                <th className={UnifiedStyle.thClassName}>Title</th>
-                <th className={UnifiedStyle.thClassName}>Proponents/Implementors</th>
+                <th className={UnifiedStyle.titleClassname}>Title</th>
+                <th className={UnifiedStyle.thClassName}>Proponent</th>
                 <th className={UnifiedStyle.thClassName}>Actions</th>
               </tr>
             </thead>
@@ -75,8 +76,8 @@ export default function AccomplishmentReport() {
               {accomplishmentReport.map((formEntry) => (
                 <tr key={formEntry.id} 
                   className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'>
-                    <td className={UnifiedStyle.tdClassName} onClick={() => handleViewClick(formEntry)}>{formEntry.title}</td>
-                    <td className={UnifiedStyle.tdClassName} onClick={() => handleViewClick(formEntry)}>{formEntry.proponents_implementors}</td>
+                    <td className={UnifiedStyle.titleClassname} onClick={() => handleViewClick(formEntry)}>{formEntry.title}</td>
+                    <td className={UnifiedStyle.tdClassName} >{formEntry.owner}</td>
                     <td className={UnifiedStyle.tdClassName}>
                     <button onClick={() => handleViewClick(formEntry)}>
                       <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transition-transform hover:scale-1xl' />
