@@ -9,7 +9,7 @@ export default function LandingPage1() {
         <div className='w-[60%]'>
           <Login />
         </div>
-        <div className='max-w-[60%]'>
+        <div className='mx-auto w-[20%] max-w-[60%]'>
             {/* Add a function that allows the user to change this image */}
             <img src={GADLogo} alt="" className='w-full h-screen object-contain' />
         </div>
