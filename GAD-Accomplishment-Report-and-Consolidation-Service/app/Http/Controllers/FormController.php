@@ -21,6 +21,7 @@ class FormController extends Controller
         if ($user->role === 'college') {
             $forms = Forms::where('user_id', $user->id)
                         ->where('form_type', 'EMPLOYEE')
+                        ->where('comp_status', 'Pending')
                         ->with('expenditures')
                         ->get();
             //xp
@@ -33,7 +34,9 @@ class FormController extends Controller
 
         } else {
             $forms = User::with(['forms' => function ($query) {
-                $query->where('form_type', 'EMPLOYEE')->with('expenditures');
+                $query->where('form_type', 'EMPLOYEE')
+                        ->where('comp_status', 'Pending')
+                        ->with('expenditures');
             }])->get();
             
             return response()->json($forms);
@@ -50,6 +53,7 @@ class FormController extends Controller
         if ($user->role === 'college') {
             $forms = Forms::where('user_id', $user->id)
                         ->where('form_type', 'INSET')
+                        ->where('comp_status', 'Pending')
                         ->with('expenditures')
                         ->get();
             //xp
@@ -63,7 +67,9 @@ class FormController extends Controller
         } else {
         
             $forms = User::with(['forms' => function ($query) {
-                $query->where('form_type', 'INSET')->with('expenditures');
+                $query->where('form_type', 'INSET')
+                        ->where('comp_status', 'Pending')
+                        ->with('expenditures');
             }])->get();
 
             return response()->json($forms);
@@ -80,6 +86,7 @@ class FormController extends Controller
         if ($user->role === 'college') {
             $forms = Forms::where('user_id', $user->id)
                         ->where('form_type', 'EAD')
+                        ->where('comp_status', 'Pending')
                         ->with('expenditures')
                         ->get();
             //xp
@@ -93,7 +100,9 @@ class FormController extends Controller
         } else {
         
             $forms = User::with(['forms' => function ($query) {
-                $query->where('form_type', 'EAD')->with('expenditures');
+                $query->where('form_type', 'EAD')
+                        ->where('comp_status', 'Pending')
+                        ->with('expenditures');
             }])->get();
 
             return response()->json($forms);

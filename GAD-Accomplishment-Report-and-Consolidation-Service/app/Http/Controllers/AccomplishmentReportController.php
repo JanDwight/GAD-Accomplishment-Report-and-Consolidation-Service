@@ -82,7 +82,7 @@ class AccomplishmentReportController extends Controller
         $images = $request->validated('images');
         $formsId = $request->input('forms_id');
 
-        $parentForm = Forms::find($formsId)->first();
+        $parentForm = Forms::where('id', $formsId)->first();
         if ($parentForm) {
             $parentForm->comp_status = 'Completed';
             $parentForm->save();
