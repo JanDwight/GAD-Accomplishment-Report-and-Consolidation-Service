@@ -113,7 +113,12 @@ class FormController extends Controller
     public function index_all_archived_forms()
     {
 
-        $allForms = Forms::onlyTrashed()->get();
+        //$allForms = Forms::onlyTrashed()->get(); //soft deleted only
+        $allForms = Forms::where('comp_status', 'Completed')
+                ->orWhere(function ($query) {
+                    $query->onlyTrashed();
+                })
+                ->get();
 
         return response()->json($allForms);
     }
@@ -450,8 +455,7 @@ class FormController extends Controller
     public function form_restore($id)
     {
         // Find the form by ID
-        $form = Forms::withTrashed()
-        ->find($id);
+        $form = Forms::withTrashed()->find($id);
     
         // Check if the form exists
         if (!$form) {
@@ -463,6 +467,8 @@ class FormController extends Controller
     
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $form->restore();
+        $form->comp_status = 'Pending';
+        $form->save();
     
         return response([
             'success' => true,
