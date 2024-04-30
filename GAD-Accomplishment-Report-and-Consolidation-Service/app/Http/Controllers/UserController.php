@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Forms;
+use App\Models\Logo;
 use App\Models\User;
 use App\Models\accReport;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -26,7 +32,13 @@ class UserController extends Controller
     {
         $profile = Auth::user();
 
-        return response([
+        // Fetch the logo associated with the user
+        $logo = $profile->logo()->first();
+
+        // Add logo data to the user object
+        $profile->logo = $logo ? $logo->toArray() : null;
+
+        return response()->json([
             'message' => $profile,
             'success' => true
         ]);
@@ -78,15 +90,11 @@ class UserController extends Controller
         }        
     }    
 
-    public function updateuser(Request $request, $id){
+    public function updateuser(UpdateUserRequest $request, $id){        
         try {
-            // Validate the incoming data (e.g., username, email)
-            $validatedData = $request->validate([
-                'password' => 'nullable',
-                'username' => 'nullable|string',
-                'email' => 'nullable|email'
-            ]);
-    
+            $data = $request->validated();
+            $image = $request->validated('image');
+
             // Retrieve the user based on the provided ID
             $user = User::find($id);
     
@@ -97,18 +105,55 @@ class UserController extends Controller
                     'success' => false
                 ]);
             }
-
-            // Conditionally update the password if provided
-            if (isset($validatedData['password'])) {
-                $validatedData['password'] = bcrypt($validatedData['password']);
-            }
-            
-            // Update the user's information with the validated data
-            $user->update($validatedData);
     
+            // Update password if provided
+            if (isset($data['password'])) {
+                $user->password = bcrypt($data['password']);
+            }
+    
+            // Update username if provided
+            if (isset($data['username'])) {
+                $user->username = $data['username'];
+            }
+    
+            // Update email if provided
+            if (isset($data['email'])) {
+                $user->email = $data['email'];
+            }
+
+            // Check if an image is provided
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                // Assuming Logo model has a one-to-one relationship with User model
+                if ($user->logo) {
+                    // Delete the existing logo before adding a new one
+                    Storage::delete([$user->logo->original_path, $user->logo->thumbnail_path]);
+                    $user->logo->delete();
+                }
+
+                $manager = new ImageManager(new Driver());
+
+                // Store the image in the storage directory
+                $storedImagePath = $image->store('public/logos/');
+                $fullImagePath = Storage::url($storedImagePath);
+
+                $thumbnailPath = 'public/thumbnails/logos/' . $image->hashName();
+                $thumbnail = $manager->read($image)->resize(100, 100);
+                Storage::put($thumbnailPath, $thumbnail->encode());
+
+                // Create a new Logo instance and save the image paths to it
+                $user->logo()->create([
+                    'original_path' => $fullImagePath,
+                    'thumbnail_path' => $thumbnailPath,
+                ]);
+            }
+    
+            // Save the updated user data
+            $user->save();
+                        
             // Return a success response
             return response()->json([
-                'message' => 'User updated successfully',
+                'message' => 'User Updated Successfuly',
                 'success' => true
             ]);
     
@@ -142,8 +187,6 @@ class UserController extends Controller
             ], 500); // HTTP status code 500 for Internal Server Error
         }
     }
-    
-
 
     public function archiveuser($id)
     {

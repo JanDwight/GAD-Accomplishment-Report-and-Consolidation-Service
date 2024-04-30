@@ -82,6 +82,10 @@ const router = createBrowserRouter([
                 path: 'accomplishmentreport',
                 element: <AccomplishmentReport />
             },
+            {
+                path: 'profile',
+                element: <Profile/>
+            },
         ]
     },
 ])
