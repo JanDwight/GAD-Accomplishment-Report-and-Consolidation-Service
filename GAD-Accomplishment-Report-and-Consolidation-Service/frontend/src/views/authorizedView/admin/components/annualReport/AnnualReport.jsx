@@ -106,7 +106,7 @@ export default function AnnualReport() {
     XLSX.utils.book_append_sheet(wb, ws, 'Report');
 
     // Save the workbook as 'report.xlsx'
-    XLSX.writeFile(wb, 'report.xlsx');
+    XLSX.writeFile(wb, 'BSU-GAD-Annual-Report.xlsx');
     };
 
     function EditableTable() {
