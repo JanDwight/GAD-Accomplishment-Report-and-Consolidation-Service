@@ -70,15 +70,13 @@ export default function Mandates() {
           <thead className='bg-secondary sticky top-0'>
             <tr>
               <TableHeader title="Gender Issue" />
-              <TableHeader title="Activity Focus" />
               <TableHeader title="Actions" />
             </tr>
           </thead>
           <tbody>
             {mandates.map((mandate, index) => (
               <tr key={index} className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'>
-                <td className="text-center p-2" onClick={() => handleView(mandate)}>{index+1}) {mandate.gender_issue}</td>
-                <td className="text-center p-2" onClick={() => handleView(mandate)}>{mandate.focus}</td>
+                <td className="text-left pl-9 w-[90%]" onClick={() => handleView(mandate)}>{index+1}) {mandate.gender_issue}</td>
                 <td className="text-center p-2">
                   <ul className='flex flex-row items-center justify-center'>
                     <li>
