@@ -8,6 +8,7 @@ use App\Http\Requests\AddMandate;
 use App\Http\Requests\SetMandate;
 use App\Models\accReport;
 use App\Models\User;
+use App\Models\Forms;
 use App\Models\ActualExpendature;
 use App\Models\Expenditures;
 use App\Models\Mandates;
@@ -79,7 +80,14 @@ class AccomplishmentReportController extends Controller
         $accReport = $request->validated();
         $expenditures = $request->validated('expenditures');
         $images = $request->validated('images');
-        
+        $formsId = $request->input('forms_id');
+
+        $parentForm = Forms::where('id', $formsId)->first();
+        if ($parentForm) {
+            $parentForm->comp_status = 'Completed';
+            $parentForm->save();
+        }
+ 
         // Create Accomplishment Report
         $createdAccReport = accReport::create([
             'forms_id' => $accReport['forms_id'],
@@ -130,6 +138,7 @@ class AccomplishmentReportController extends Controller
         // Save the image paths to the database
         $createdAccReport->images()->createMany($imageModels);
 
+        
 
         // Return the response with the stored image paths
         return response([
