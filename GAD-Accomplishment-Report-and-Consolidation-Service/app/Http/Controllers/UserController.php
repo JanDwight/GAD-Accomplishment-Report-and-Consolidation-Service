@@ -201,6 +201,14 @@ class UserController extends Controller
             ]);
         }
     
+            // Check if the user is trying to archive themselves
+        if ($user->id === Auth::id()) {
+            return response()->json([
+                'message' => 'You cannot archive yourself',
+                'success' => false // Change to false as it's not a successful operation
+            ]);
+        }
+
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $user->delete();
     
