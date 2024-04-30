@@ -166,7 +166,7 @@ export default function InsetForm() {
         form_data: formData, 
         xp_data: inputFields 
       });
-        if (response.data.Success === true){
+        if (response.data.success === true){
           populateDocx(); // Run the download of DOCX
         }
 

@@ -12,6 +12,7 @@ export default function AddUserModal() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [role, setRole] = useState('');
+    const [menuText, setMenu] = useState('');
 
     const [message, setAxiosMessage] = useState('');
     const [status, setAxiosStatus] = useState('');
@@ -104,7 +105,7 @@ export default function AddUserModal() {
               {({ open }) => (
                 <>
                   <Menu.Button className="flex w-full justify-between  bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
-                    <span>{role ? role : 'Select Role'}</span>
+                    <span>{role ? menuText : 'Select Role'}</span>
                     <ChevronUpIcon
                       className={`${
                         open ? 'rotate-180 transform' : ''
@@ -117,15 +118,15 @@ export default function AddUserModal() {
                       <Menu.Item>
                         <button 
                           className="hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-                          onClick={() => setRole('admin')}>
+                          onClick={() => {setRole('admin'); setMenu('Admin');}}>
                           Admin
                         </button>
                       </Menu.Item>
                       <Menu.Item>
                         <button 
                           className="hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-                          onClick={() => setRole('college')}>
-                          College
+                          onClick={() => {setRole('college'); setMenu('User');}}>
+                          User
                         </button>
                       </Menu.Item>
                     </div>

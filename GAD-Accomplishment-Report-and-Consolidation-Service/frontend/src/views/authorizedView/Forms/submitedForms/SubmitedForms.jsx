@@ -1,5 +1,7 @@
 import { React, useState, useEffect } from 'react'
 import { Tab } from '@headlessui/react'
+import { Menu } from '@headlessui/react';
+import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import axiosClient from '../../../axios/axios';
 import { ArchiveBoxArrowDownIcon, PencilIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import ReactModal from 'react-modal';
@@ -121,32 +123,61 @@ export default function SubmitedForms() {
               </div>
 
               <ul className='text-center'>
-                {employeeForms.map((form) => (
-                  <li
-                    key={form.id}
-                    className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'
-                  >
-                    <h3 className="text-sm font-medium leading-5">
-                    {form.title}
-                    </h3>
-
-                    <ul className="mt-1  text-xs font-normal  text-gray-500">
-                      <li>{form.proponents_implementors}</li>
-                    </ul>
-
-                    <ul>
-                        <button title="Edit Activity Design" onClick={() => handleEditClick(form)}>
-                            <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
-                        </button>
-                        <button title="Archive Activity Design" onClick={() => handleArchiveClick(form)}>
-                            <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
-                        </button>
-                        <button title="Create Accomplishment Report" onClick={() => handleGenerateAccomplishmentReportClick(form)}>
-                            <SparklesIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
-                        </button>
-                    </ul>
-                  </li>
-                ))}
+                {/*---------------------------------------*/}
+                <Menu as="div" className="space-y-2">
+                  {employeeForms.map((user) => (
+                    <Menu key={user.id}>
+                      {({ open }) => (
+                        <>
+                          <Menu.Button className="border-b-2 border-secondary flex justify-between block w-full px-4 py-2 text-sm font-medium text-left hover:bg-accent focus:outline-none focus:bg-accent">
+                            {user.username}
+                            <ChevronUpIcon
+                              className={`${
+                                open ? 'rotate-180 transform' : ''
+                              } h-5 w-5 text-black`}
+                            />
+                          </Menu.Button>
+                          {user.forms.length === 0 ? (
+                            <Menu.Items className={`${open ? 'block' : 'hidden'} max-w-[100%] z-10 px-2 py-2 bg-white border rounded-md shadow-lg`}>
+                              <div className="flex flex-col ">
+                                <Menu.Item className="text-gray-500">
+                                  <p>No forms available.</p>
+                                </Menu.Item>
+                              </div>
+                            </Menu.Items>
+                          ) : (
+                          <Menu.Items className={`${open ? 'block' : 'hidden'} max-w-[100%] z-10 px-2 py-2 bg-white border rounded-md shadow-lg`}>
+                            {user.forms.map((form) => (
+                              <Menu.Item key={form.id}>
+                                {({ active }) => (
+                                  <li className='hover:bg-accent border-b-2 border-gray-300'>
+                                    <ul className="mt-1  text-xs font-normal">
+                                      <h3 className="text-sm font-medium leading-5">
+                                        {form.title}
+                                      </h3>
+                                    </ul>
+                                  <ul>
+                                    <button title="Edit Activity Design" onClick={() => handleEditClick(form)}>
+                                      <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                    <button title="Archive Activity Design" onClick={() => handleArchiveClick(form)}>
+                                      <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                    <button title="Create Accomplishment Report" onClick={() => handleGenerateAccomplishmentReportClick(form)}>
+                                      <SparklesIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                  </ul>
+                                </li>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </Menu.Items>
+                          )}
+                        </>
+                      )}
+                    </Menu>
+                  ))}
+                </Menu>
               </ul>
             </Tab.Panel>
             <Tab.Panel
@@ -156,32 +187,61 @@ export default function SubmitedForms() {
               )}
             >
               <ul className='text-center'>
-                {insetForms.map((form) => (
-                  <li
-                    key={form.id}
-                    className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'
-                  >
-                    <h3 className="text-sm font-medium leading-5">
-                      {form.title}
-                    </h3>
-
-                    <ul className="mt-1 space-x-1 text-xs font-normal leading-4 text-gray-500">
-                      <li>{form.proponents_implementors}</li>
-                    </ul>
-
-                    <ul>
-                      <button title="Edit Activity Design" onClick={() => handleEditClick(form)}>
-                          <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
-                      </button>
-                      <button title="Archive Activity Design" onClick={() => handleArchiveClick(form)}>
-                          <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
-                      </button>
-                      <button title="Create Accomplishment Report" onClick={() => handleGenerateAccomplishmentReportClick(form)}>
-                          <SparklesIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
-                      </button>
-                    </ul>
-                  </li>
-                ))}
+                {/*---------------------------------------*/}
+                <Menu as="div" className="space-y-2">
+                  {insetForms.map((user) => (
+                    <Menu key={user.id}>
+                      {({ open }) => (
+                        <>
+                          <Menu.Button className="border-b-2 border-secondary flex justify-between block w-full px-4 py-2 text-sm font-medium text-left hover:bg-accent focus:outline-none focus:bg-accent">
+                            {user.username}
+                            <ChevronUpIcon
+                              className={`${
+                                open ? 'rotate-180 transform' : ''
+                              } h-5 w-5 text-black`}
+                            />
+                          </Menu.Button>
+                          {user.forms.length === 0 ? (
+                            <Menu.Items className={`${open ? 'block' : 'hidden'} max-w-[100%] z-10 px-2 py-2 bg-white border rounded-md shadow-lg`}>
+                              <div className="flex flex-col ">
+                                <Menu.Item className="text-gray-500">
+                                  <p>No forms available.</p>
+                                </Menu.Item>
+                              </div>
+                            </Menu.Items>
+                          ) : (
+                          <Menu.Items className={`${open ? 'block' : 'hidden'} max-w-[100%] z-10 px-2 py-2 bg-white border rounded-md shadow-lg`}>
+                            {user.forms.map((form) => (
+                              <Menu.Item key={form.id}>
+                                {({ active }) => (
+                                  <li className='hover:bg-accent border-b-2 border-gray-300'>
+                                    <ul className="mt-1  text-xs font-normal">
+                                      <h3 className="text-sm font-medium leading-5">
+                                        {form.title}
+                                      </h3>
+                                    </ul>
+                                  <ul>
+                                    <button title="Edit Activity Design" onClick={() => handleEditClick(form)}>
+                                      <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                    <button title="Archive Activity Design" onClick={() => handleArchiveClick(form)}>
+                                      <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                    <button title="Create Accomplishment Report" onClick={() => handleGenerateAccomplishmentReportClick(form)}>
+                                      <SparklesIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                  </ul>
+                                </li>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </Menu.Items>
+                          )}
+                        </>
+                      )}
+                    </Menu>
+                  ))}
+                </Menu>
               </ul>
             </Tab.Panel>
             <Tab.Panel
@@ -191,32 +251,61 @@ export default function SubmitedForms() {
               )}
             >
               <ul className='text-center'>
-                {eadForm.map((form) => (
-                  <li
-                  key={form.id}
-                  className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'
-                >
-                  <h3 className="text-sm font-medium leading-5">
-                    {form.title}
-                  </h3>
-
-                  <ul className="mt-1 space-x-1 text-xs font-normal leading-4 text-gray-500">
-                    <li>{form.proponents_implementors}</li>
-                  </ul>
-
-                  <ul>
-                      <button title="Edit Activity Design" onClick={() => handleEditEADClick(form)}>
-                          <PencilIcon title="Edit Activity Design" className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
-                      </button>
-                      <button title="Archive Activity Design" onClick={() => handleArchiveClick(form)}>
-                          <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
-                      </button>
-                      <button title="Create Accomplishment Report" onClick={() => handleGenerateAccomplishmentReportClick(form)}>
-                          <SparklesIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-125' />
-                      </button>
-                    </ul>
-                  </li>
-                ))}
+                {/*---------------------------------------*/}
+                <Menu as="div" className="space-y-2">
+                  {eadForm.map((user) => (
+                    <Menu key={user.id}>
+                      {({ open }) => (
+                        <>
+                          <Menu.Button className="border-b-2 border-secondary flex justify-between block w-full px-4 py-2 text-sm font-medium text-left hover:bg-accent focus:outline-none focus:bg-accent">
+                            {user.username}
+                            <ChevronUpIcon
+                              className={`${
+                                open ? 'rotate-180 transform' : ''
+                              } h-5 w-5 text-black`}
+                            />
+                          </Menu.Button>
+                          {user.forms.length === 0 ? (
+                            <Menu.Items className={`${open ? 'block' : 'hidden'} max-w-[100%] z-10 px-2 py-2 bg-white border rounded-md shadow-lg`}>
+                              <div className="flex flex-col ">
+                                <Menu.Item className="text-gray-500">
+                                  <p>No forms available.</p>
+                                </Menu.Item>
+                              </div>
+                            </Menu.Items>
+                          ) : (
+                          <Menu.Items className={`${open ? 'block' : 'hidden'} max-w-[100%] z-10 px-2 py-2 bg-white border rounded-md shadow-lg`}>
+                            {user.forms.map((form) => (
+                              <Menu.Item key={form.id}>
+                                {({ active }) => (
+                                  <li className='hover:bg-accent border-b-2 border-gray-300'>
+                                    <ul className="mt-1  text-xs font-normal">
+                                      <h3 className="text-sm font-medium leading-5">
+                                        {form.title}
+                                      </h3>
+                                    </ul>
+                                  <ul>
+                                    <button title="Edit Activity Design" onClick={() => handleEditClick(form)}>
+                                      <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                    <button title="Archive Activity Design" onClick={() => handleArchiveClick(form)}>
+                                      <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                    <button title="Create Accomplishment Report" onClick={() => handleGenerateAccomplishmentReportClick(form)}>
+                                      <SparklesIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
+                                    </button>
+                                  </ul>
+                                </li>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </Menu.Items>
+                          )}
+                        </>
+                      )}
+                    </Menu>
+                  ))}
+                </Menu>
               </ul>
             </Tab.Panel>
           </Tab.Panels>

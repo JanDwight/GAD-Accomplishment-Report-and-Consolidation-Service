@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('date_and_venue', 1000)->nullable();
             $table->string('program_title', 1000)->nullable();
             $table->string('project_title', 500)->nullable();
+            $table->string('comp_status')->default('Pending'); 
             $table->timestamps();
             $table->softDeletes();
         });

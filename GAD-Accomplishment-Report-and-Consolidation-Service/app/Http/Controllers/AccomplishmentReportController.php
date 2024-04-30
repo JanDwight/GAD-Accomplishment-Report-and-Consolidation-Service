@@ -7,6 +7,8 @@ use App\Http\Requests\ACReportRequest_E_I;
 use App\Http\Requests\AddMandate;
 use App\Http\Requests\SetMandate;
 use App\Models\accReport;
+use App\Models\User;
+use App\Models\Forms;
 use App\Models\ActualExpendature;
 use App\Models\Expenditures;
 use App\Models\Mandates;
@@ -20,9 +22,35 @@ class AccomplishmentReportController extends Controller
 {
     
     public function index_accomplishment_report() {
-        $accomplishmentReport = accReport::with('actualExpenditure')->get();
+        $user = auth()->user();
 
-        return response($accomplishmentReport);
+        if ($user->role === 'college') {
+            // Retrieve only the authenticated user's accomplishment reports along with actual expenditures
+            $accomplishmentReports = $user->accomplishmentReport()->with('actualExpenditure')->get();
+        } else {
+            // If the user's role is not 'college', retrieve all accomplishment reports along with actual expenditures
+            $accomplishmentReports = accReport::with('actualExpenditure')->get();
+            //also get the users's names to show the owner
+
+
+
+            
+            //$accomplishmentReports = accReport::find(7);
+            //$parent = $accomplishmentReports->forms;
+            //$grandparent = Forms::find($parent['id']);
+            /*foreach ($accomplishmentReports as $report) {
+                $report->owner = 'user_1'; // Assuming the user's name field is 'name'
+            }*/
+
+            foreach ($accomplishmentReports as $report) {
+                $parent = $report->forms;
+                $magulang = User::find($parent['user_id']);
+                
+                $report->owner = $magulang->username;
+            }
+        }
+
+        return response()->json($accomplishmentReports);
     }
 
     public function index_expenditures($id)
@@ -52,13 +80,21 @@ class AccomplishmentReportController extends Controller
         $accReport = $request->validated();
         $expenditures = $request->validated('expenditures');
         $images = $request->validated('images');
-        
+        $formsId = $request->input('forms_id');
+
+        $parentForm = Forms::where('id', $formsId)->first();
+        if ($parentForm) {
+            $parentForm->comp_status = 'Completed';
+            $parentForm->save();
+        }
+ 
         // Create Accomplishment Report
         $createdAccReport = accReport::create([
             'forms_id' => $accReport['forms_id'],
             'title' => $accReport['title'],
             'date_of_activity' => $accReport['date_of_activity'],
             'venue' => $accReport['venue'],
+            'proponents_implementors' => $accReport['proponents_implementors'],
             'no_of_participants' => $accReport['no_of_participants'],
             'male_participants' => $accReport['male_participants'],
             'female_participants' => $accReport['female_participants'],
@@ -102,6 +138,7 @@ class AccomplishmentReportController extends Controller
         // Save the image paths to the database
         $createdAccReport->images()->createMany($imageModels);
 
+        
 
         // Return the response with the stored image paths
         return response([
