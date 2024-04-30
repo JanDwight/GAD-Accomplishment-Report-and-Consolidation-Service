@@ -40,7 +40,8 @@ class Forms extends Model
         'program_title',
         'project_title',
         'date_and_venue',
-        'clientele_type_and_number'
+        'clientele_type_and_number',
+        'comp_status'
     ];
 
     // BELONGS TO USER
