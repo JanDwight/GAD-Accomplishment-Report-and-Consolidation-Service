@@ -22,7 +22,6 @@ export default function CollegeLayout() {
     const { userToken, setCurrentUser, setUserToken  } = useStateContext();
     const [userData, setUserData] = useState('');
     const [userDetails, setUserDetails] = useState('');
-    const { userToken } = useStateContext();
 
     useEffect(() => {
       fetchUser();
