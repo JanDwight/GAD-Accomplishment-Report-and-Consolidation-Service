@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //For Users================================================
     Route::controller(UserController::class)->group(function() {
         Route::post('/adduser', 'adduser');
-        Route::put('/updateuser/{id}', 'updateuser');
+        Route::post('/updateuser/{id}', 'updateuser');
         Route::put('/archiveuser/{id}', 'archiveuser');
         Route::put('/restoreuser/{id}', 'restoreuser');
         Route::put('/deleteuser/{id}', 'deleteuser');

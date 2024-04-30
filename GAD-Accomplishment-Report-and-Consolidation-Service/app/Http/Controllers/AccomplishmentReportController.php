@@ -88,7 +88,7 @@ class AccomplishmentReportController extends Controller
             $storedImagePath = $image->store('public/images/');
             $fullImagePath = Storage::url($storedImagePath);
 
-            $thumbnailPath = 'public/thumbnails/' . $image->hashName();
+            $thumbnailPath = 'public/thumbnails/images' . $image->hashName();
             $thumbnail = $manager->read($image)->resize(100, 100);
             Storage::put($thumbnailPath, $thumbnail->encode());
             

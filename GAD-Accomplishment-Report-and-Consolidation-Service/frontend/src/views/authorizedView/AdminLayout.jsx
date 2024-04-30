@@ -1,8 +1,8 @@
-import { React, Fragment, useState } from 'react'
+import { React, Fragment, useState, useEffect } from 'react'
 import { useStateContext } from '../../context/ContextProvider'
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
 import axiosClient from '../axios/axios';
 import SideBar from '../components/sidebar/SideBar';
 
@@ -26,6 +26,7 @@ function classNames(...classes) {
 export default function AdminLayout() {
     const { userToken, setCurrentUser, setUserToken } = useStateContext();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [userData, setUserData] = useState('');
 
     const logout = (ev) => {
       ev.preventDefault();
@@ -35,6 +36,17 @@ export default function AdminLayout() {
           setUserToken(null)
         })
     };
+
+    useEffect(() => {
+      (async () => {
+        try {
+          const response = await axiosClient.get('/profile');
+          setUserData(response.data.message); // Assuming response.data contains email, username, etc.
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }, []);
 
     if(!userToken){
         return <Navigate to='/' />
@@ -108,14 +120,18 @@ export default function AdminLayout() {
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">
                       <div>
-                        <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                        <Menu.Button className="relative flex rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Open user menu</span>
+                          {userData.logo?.original_path ? (
                           <img
                             className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src={`${import.meta.env.VITE_API_BASE_URL}${userData.logo.original_path}`}
                             alt=""
                           />
+                        ) : (
+                          <UserIcon className="h-8 w-8 rounded-full" />
+                        )}
                         </Menu.Button>
                       </div>
 
