@@ -1,3 +1,7 @@
-@pdftron used for printing the forms - UNINSTALL
 easy-template-x for printing the forms
 @xlsx used for printing excel files
+
+for backup:
+    remove the comment of extension.zip on php.ini
+    install the composer require spatie/laravel-backup 
+    publish the config file php artisan vendor:publish --provider="Spatie\Backup\BackupServiceProvider"
