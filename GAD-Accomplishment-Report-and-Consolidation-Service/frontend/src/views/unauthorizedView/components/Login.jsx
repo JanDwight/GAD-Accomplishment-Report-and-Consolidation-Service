@@ -6,14 +6,13 @@ import Error from '../../components/feedbacks/Error';
 import Feedback from '../../components/feedbacks/Feedback';
 
 export default function Login() {
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(''); // State for success message
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { setCurrentUser, setUserToken } = useStateContext();
 
-  const [axiosRes, setAxiosRes] = useState('');
+  const [message, setAxiosMessage] = useState('');
+  const [status, setAxiosStatus] = useState('');
 
    //---
    const handlePasswordVisibility = () => {
@@ -25,8 +24,9 @@ export default function Login() {
 
   const onSubmit = (ev) => {
     ev.preventDefault();
-    setError('');
-    setSuccess(''); // Clear success message as well
+
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
 
     axiosClient
       .post('/login', {
@@ -36,28 +36,18 @@ export default function Login() {
       .then(({ data }) => {
         setCurrentUser(data.user);
         setUserToken(data.token);
-        setIsFeedbackModalOpen(true);
-        setAxiosRes(data);
-        setSuccess('Login successful!'); // Set success message
       })
       .catch((error) => {
-        if (error.response) {
-          const finalErrors = Object.values(error.response.data.errors).reduce(
-            (accum, next) => [...accum, ...next],
-            []
-          );
-          setError(finalErrors.join('<br>'));
-        }
-        console.error(error);
+        setAxiosMessage(error.response.data.message);
+        setAxiosStatus(false);
       });
   };
 
   return (
     <div className="p-5 h-full flex justify-center items-center">
-      <Error isOpen={error !== ''} onClose={() => setError('')} errorMessage={error} />
       
       {/* Integrate the Success component */}
-      <Feedback isOpen={success !== ''} onClose={() => setSuccess('')} successMessage={success} />
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <form onSubmit={onSubmit} className="flex flex-col w-full items-center">
         <label htmlFor="Email" className="mb-1">Email: </label>

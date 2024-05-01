@@ -121,7 +121,7 @@ class AccomplishmentReportController extends Controller
             $manager = new ImageManager(new Driver());
 
             // Store each image in the storage directory
-            $storedImagePath = $image->store('public/images/');
+            $storedImagePath = $image->store('public/images');
             $fullImagePath = Storage::url($storedImagePath);
 
             $thumbnailPath = 'public/thumbnails/images' . $image->hashName();
@@ -204,26 +204,52 @@ class AccomplishmentReportController extends Controller
     }
 
     public function accomplishment_report_delete($id) {
-        // Find the form by ID
-        $form = accReport::withTrashed()
-        ->find($id);
-
-        // Check if the form exists
-        if (!$form) {
+        // Find the accomplishment report by ID
+        $report = accReport::withTrashed()->find($id);
+    
+        // Check if the report exists
+        if (!$report) {
             return response()->json([
                 'success' => false,
-                'message' => 'Form not found'
+                'message' => 'Accomplishment report not found'
             ]);
         }
+    
+        // Retrieve the image paths associated with the report
+        $imagePaths = $report->images->pluck('original_path')->toArray();
+    
+        // Force delete the report
+        $report->forceDelete();
+    
+        // Delete the associated images from storage
+        foreach ($imagePaths as $path) {
+            try {
+                // Delete the original image
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
+                }
+            
+                // Delete the thumbnail image (assuming it's stored in the same directory)
+                $thumbnailPath = str_replace('public/images/', 'public/thumbnails/images/', $path);
+                if (Storage::exists($thumbnailPath)) {
+                    Storage::delete($thumbnailPath);
+                }
+            } catch (\Exception $e) {
+                // Log or handle the exception as needed
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]);
+            }
+        }
 
-        // Force delete the form
-        $form->forceDelete();
-
+    
         return response()->json([
             'success' => true,
-            'message' => 'Form permanently deleted'
+            'message' => 'Accomplishment report permanently deleted'
         ]);
     }
+    
 
     public function addmandates (Addmandate $request) 
     {

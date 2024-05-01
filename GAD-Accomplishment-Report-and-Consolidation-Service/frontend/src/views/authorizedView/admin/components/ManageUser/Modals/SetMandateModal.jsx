@@ -6,8 +6,8 @@ import Feedback from '../../../../../components/feedbacks/Feedback';
 import Error from '../../../../../components/feedbacks/Error';
 
 export default function SetMandateModal({closeModal, reportList, n_mandate}) {
-  const [message, setMessage] = useState('');
-  const [success, setSuccess] = useState(true);
+  const [message, setAxiosMessage] = useState('');
+  const [status, setAxiosStatus] = useState('');
   const [mandateSelected, setMandateSelected] = useState("1");
 
   console.log('List: ', reportList);
@@ -19,21 +19,25 @@ export default function SetMandateModal({closeModal, reportList, n_mandate}) {
   }
 
   const handleSetMandates = async (ev) => {
-    ev.preventDefault();
-    axiosClient.put('/setmandates', {
-      reportList: reportList,
-      mandate_id: mandateSelected
-    })
-        .then(response => {
-            console.log('Success:', response.data);
-            setMessage(response.data.message);
-            setSuccess(response.data.success);
-        })
+    try {
+      ev.preventDefault();
+      const response = await axiosClient.put('/setmandates', {
+        reportList: reportList,
+        mandate_id: mandateSelected
+      });
+      console.log('Success:', response.data);
+      setAxiosMessage(response.data.message);
+      setAxiosStatus(response.data.success);
+    } catch (error) {
+      setAxiosMessage(response.data.message);
+      setAxiosStatus(false);
+    }
   }
+  
 
   return (
     <div className='w-full'>
-      <Feedback isOpen={message !== ''} onClose={() => setSuccess('')} successMessage={message}  status={success}/>
+      <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
         <div className='relative text-center w-full'>
           <strong className="text-2xl">Set GAD Mandate</strong>
         </div>

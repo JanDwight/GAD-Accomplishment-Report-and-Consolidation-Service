@@ -15,7 +15,8 @@ class AuthController extends Controller
 
         if (!Auth::attempt($credentials, $remember)) {
             return response([
-                'error' => 'The provided credentials are not correct'
+                'message' => 'The provided credentials are not correct',
+                'success' => false
             ], 422);
         }
 
@@ -23,7 +24,7 @@ class AuthController extends Controller
         $token = $user->createToken('main')->plainTextToken;
 
         return response([
-            'Success' => true,
+            'success' => true,
             'user' => $user,
             'token' => $token
         ]);

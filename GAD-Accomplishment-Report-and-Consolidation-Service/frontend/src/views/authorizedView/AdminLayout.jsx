@@ -230,7 +230,7 @@ export default function AdminLayout() {
           > {/* Add sidebar styling */}
             <SideBar />
           </div>
-          <div className={`max-h-[90%] max-w-[${isSidebarOpen ? '85%' : '100%'}] min-w-[85%] pt-1 sm:px-6 lg:px-6`}
+          <div className={`max-h-[90%] mx-auto max-w-[${isSidebarOpen ? '85%' : '100%'}] min-w-[85%] pt-1 sm:px-6 lg:px-6`}
             style={{ transition: 'width 0.5s' }}
           > {/* Maintain the content container */}
               <Outlet />
