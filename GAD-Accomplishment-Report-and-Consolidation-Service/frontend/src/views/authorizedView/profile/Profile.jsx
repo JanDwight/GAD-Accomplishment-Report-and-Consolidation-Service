@@ -3,6 +3,8 @@ import axiosClient from '../../axios/axios';
 import Submit from '../../components/buttons/Submit';
 import Feedback from '../../components/feedbacks/Feedback';
 import AddImages from '../../components/image/Addimages';
+import ReactModal from 'react-modal';
+import AddPrompt from '../prompts/AddPrompt';
 
 export default function MyProfile() {
   const [userData, setUserData] = useState({
@@ -16,6 +18,17 @@ export default function MyProfile() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setAxiosMessage] = useState('');
   const [status, setAxiosStatus] = useState('');
+  const [promptMessage, setPromptMessage] = useState('');
+  const [showPrompt, setShowPrompt] = useState(false);
+  const action = "Confirm Edit Profile?";
+
+   //<><><><><><>
+  const addprompt = (ev) => {
+    ev.preventDefault();
+    const concatmessage = 'Changes to your profile: "' + userData['username'] +  '" will be saved. Do you wish to proceed?';
+    setPromptMessage(concatmessage);
+    setShowPrompt(true);
+  }
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -42,9 +55,8 @@ export default function MyProfile() {
 
   const inputType = showPassword ? 'text' : 'password';
 
-  const onSubmit = async (ev) => {
-    ev.preventDefault();
-  
+  const onSubmit = async () => {
+
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
   
@@ -89,7 +101,7 @@ export default function MyProfile() {
           <h1 className='text-center w-full text-2xl font-bold my-2'>
             Your Profile
           </h1>
-          <form onSubmit={onSubmit} className="flex flex-col w-full items-center">
+          <form onSubmit={addprompt} className="flex flex-col w-full items-center">
             <label htmlFor="username" className="mb-1">User Name: </label>
             <input
               placeholder={userData.username}
@@ -140,6 +152,21 @@ export default function MyProfile() {
           </form>
         </div>
       </div>
+      {/*----------*/}
+      <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={onSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+        </ReactModal>
     </div>
   );
 }

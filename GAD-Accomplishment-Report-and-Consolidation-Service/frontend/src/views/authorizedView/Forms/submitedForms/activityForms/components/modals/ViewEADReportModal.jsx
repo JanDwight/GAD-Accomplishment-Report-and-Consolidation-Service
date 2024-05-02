@@ -40,7 +40,7 @@ export default function ViewEADReportModal({selectedForm}) {
     
       generateInputFields();
   }, []);
-    //------------------------------
+    //------------------------------causing mapping error
 
   const handleFormChange = (index, event) => {
     let data = [...inputFields];

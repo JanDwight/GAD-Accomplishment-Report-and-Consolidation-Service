@@ -77,11 +77,8 @@ export default function AccomplishmentReport() {
                 <tr key={formEntry.id} 
                   className='px-10 border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs transition-transform hover:scale-sm'>
                     <td className={UnifiedStyle.titleClassname} onClick={() => handleViewClick(formEntry)}>{formEntry.title}</td>
-                    <td className={UnifiedStyle.tdClassName} >{formEntry.owner}</td>
+                    <td className={UnifiedStyle.tdClassName}  onClick={() => handleViewClick(formEntry)}>{formEntry.owner}</td>
                     <td className={UnifiedStyle.tdClassName}>
-                    <button onClick={() => handleViewClick(formEntry)}>
-                      <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transition-transform hover:scale-1xl' />
-                    </button>
                     <button onClick={() => handleArchiveClick(formEntry)}>
                       <ArchiveBoxArrowDownIcon className='h-5 w-5 mx-1 cursor-pointer  transition-transform hover:scale-1xl' />
                     </button>

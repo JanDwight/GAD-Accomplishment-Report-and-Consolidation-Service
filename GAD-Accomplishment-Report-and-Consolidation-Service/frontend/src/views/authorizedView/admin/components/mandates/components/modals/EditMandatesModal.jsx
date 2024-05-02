@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Submit from '../../../../../../components/buttons/Submit';
 import axiosClient from '../../../../../../axios/axios';
+import ReactModal from 'react-modal';
+import AddPrompt from '../../../../../prompts/AddPrompt';
 
 //For Feedback
 import Feedback from '../../../../../../components/feedbacks/Feedback';
@@ -21,6 +23,17 @@ export default function EditMandatesModal({ mandateSelected }) {
     focus: ''
   });
 
+  const [promptMessage, setPromptMessage] = useState('');
+  const [showPrompt, setShowPrompt] = useState(false);
+  const action = "Confirm Edit User?";
+
+   //<><><><><><>
+  const addprompt = (ev) => {
+    ev.preventDefault();
+    const concatmessage = 'Changes to mandate: "' + formData['gender_issue'] +  '" will be saved. Do you wish to proceed?';
+    setPromptMessage(concatmessage);
+    setShowPrompt(true);
+  }
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,8 +71,7 @@ export default function EditMandatesModal({ mandateSelected }) {
   );
 
   //----------axiosClient
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
 
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
@@ -81,7 +93,7 @@ export default function EditMandatesModal({ mandateSelected }) {
         {/* Integrate the Success component */}
       <Feedback isOpen={message !== ''} onClose={() => setSuccess('')} successMessage={message}  status={status}/>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={addprompt}>
         {renderInput('gender_issue', 'Gender Issues/GAD Mandate')}
         {renderInput('cause_of_gender_issue', 'Cause of Gender Issues')}
         {renderInput('gad_result_statement', 'GAD Result Statements')}
@@ -94,6 +106,21 @@ export default function EditMandatesModal({ mandateSelected }) {
           <Submit label="Submit"/>
         </div>
       </form>
+       {/*----------*/}
+       <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={handleSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+      </ReactModal>
     </div>
   );
 }

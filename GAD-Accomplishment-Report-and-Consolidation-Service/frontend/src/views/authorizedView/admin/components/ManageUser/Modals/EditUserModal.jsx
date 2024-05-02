@@ -2,6 +2,8 @@ import { React, useState } from 'react';
 import Submit from '../../../../../components/buttons/Submit';
 import axiosClient from '../../../../../axios/axios';
 import Feedback from '../../../../../components/feedbacks/Feedback';
+import AddPrompt from '../../../../prompts/AddPrompt';
+import ReactModal from 'react-modal';
 
 export default function EditUserModal({ selectedUser }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,6 +16,18 @@ export default function EditUserModal({ selectedUser }) {
     password: ''
   });
 
+    const [promptMessage, setPromptMessage] = useState('');
+    const [showPrompt, setShowPrompt] = useState(false);
+    const action = "Confirm Edit User?";
+
+     //<><><><><><>
+    const addprompt = (ev) => {
+      ev.preventDefault();
+      const concatmessage = 'Changes to user: "' + updatedUser['username'] +  '" will be saved. Do you wish to proceed?';
+      setPromptMessage(concatmessage);
+      setShowPrompt(true);
+    }
+
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -21,13 +35,11 @@ export default function EditUserModal({ selectedUser }) {
   const inputType = showPassword ? 'text' : 'password';
 
   const onSubmit = async (ev) => {
-    ev.preventDefault();
-    
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
     
     try {
-      const response = await axiosClient.put(`/updateuser/${selectedUser.id}`, updatedUser);
+      const response = await axiosClient.post(`/updateuser/${selectedUser.id}`, updatedUser);
       setAxiosMessage(response.data.message);
       setAxiosStatus(response.data.success);
     } catch (error) {
@@ -42,7 +54,7 @@ export default function EditUserModal({ selectedUser }) {
 
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
-      <form onSubmit={onSubmit} className='flex flex-1 flex-col'>
+      <form onSubmit={addprompt} className='flex flex-1 flex-col'>
         <label htmlFor="username">User Name: </label>
         <input
           placeholder={'Name of College'}
@@ -92,6 +104,21 @@ export default function EditUserModal({ selectedUser }) {
           <Submit label="Edit User" /*disabled={ your condition }*/ />
         </div>
       </form>
+      {/*----------*/}
+      <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={onSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+      </ReactModal>
     </>
   );
 }
