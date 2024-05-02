@@ -17,18 +17,15 @@ class FormController extends Controller
     public function index_employee_forms()
     {
         $user = auth()->user();
+        $userID = $user->id;
         
         if ($user->role === 'college') {
-            $forms = Forms::where('user_id', $user->id)
-                        ->where('form_type', 'EMPLOYEE')
-                        ->where('comp_status', 'Pending')
-                        ->with('expenditures')
-                        ->get();
-            //xp
-            $expenditures = [];
-            foreach ($forms as $form) {
-                $expenditures[$form->id] = $form->expenditures;
-            }
+           
+            $forms = User::where('id', $userID)->with(['forms' => function ($query) {
+                $query->where('form_type', 'EMPLOYEE')
+                    ->where('comp_status', 'Pending')
+                    ->with('expenditures');
+            }])->get();
 
             return response()->json($forms);
 
@@ -49,19 +46,14 @@ class FormController extends Controller
     {
 
         $user = auth()->user();
+        $userID = $user->id;
         
         if ($user->role === 'college') {
-            $forms = Forms::where('user_id', $user->id)
-                        ->where('form_type', 'INSET')
-                        ->where('comp_status', 'Pending')
-                        ->with('expenditures')
-                        ->get();
-            //xp
-            $expenditures = [];
-            foreach ($forms as $form) {
-                $expenditures[$form->id] = $form->expenditures;
-            }
-
+            $forms = User::where('id', $userID)->with(['forms' => function ($query) {
+                $query->where('form_type', 'INSET')
+                    ->where('comp_status', 'Pending')
+                    ->with('expenditures');
+            }])->get();
             return response()->json($forms);
 
         } else {
@@ -82,18 +74,14 @@ class FormController extends Controller
     {
 
         $user = auth()->user();
+        $userID = $user->id;
         
         if ($user->role === 'college') {
-            $forms = Forms::where('user_id', $user->id)
-                        ->where('form_type', 'EAD')
-                        ->where('comp_status', 'Pending')
-                        ->with('expenditures')
-                        ->get();
-            //xp
-            $expenditures = [];
-            foreach ($forms as $form) {
-                $expenditures[$form->id] = $form->expenditures;
-            }
+            $forms = User::where('id', $userID)->with(['forms' => function ($query) {
+                $query->where('form_type', 'EAD')
+                    ->where('comp_status', 'Pending')
+                    ->with('expenditures');
+            }])->get();
 
             return response()->json($forms);
 
