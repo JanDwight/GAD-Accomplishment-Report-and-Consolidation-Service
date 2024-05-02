@@ -23,10 +23,18 @@ class DbBackup extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
-    {
-        $filename = "backup_".strtotime(now()).".sql";
-        $command = "mysqldump --user=".env('DB_USERNAME')." --password=".env('DB_PASSWORD')." --host=".env('DB_HOST')." ".env('DB_DATABASE')." > ".storage_path("/app/".$filename);
-        exec($command);
+public function handle()
+{
+    $backupPath = storage_path('app/backup');
+    // Check if the backup folder exists, if not, create it
+    if (!file_exists($backupPath)) {
+        mkdir($backupPath, 0755, true); // Create backup directory recursively
     }
+
+    $filename = "backup_" . date('Y-m-d_H-i-s') . ".sql";
+    $filePath = $backupPath . '/' . $filename;
+    $command = "mysqldump --user=" . env('DB_USERNAME') . " --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . " > " . $filePath;
+    exec($command);
+}
+
 }

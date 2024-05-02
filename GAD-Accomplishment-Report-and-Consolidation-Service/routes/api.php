@@ -91,6 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(BackupAndRestore::class)->group(function() {
         Route::post('/backup', 'backup');
+        Route::post('/restore', 'restore');
     });
     
     Route::post('/logout', [AuthController::class, 'logout']);
