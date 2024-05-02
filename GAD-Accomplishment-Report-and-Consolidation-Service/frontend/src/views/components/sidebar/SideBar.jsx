@@ -12,8 +12,12 @@ import ArchivedActivityForms from '../../authorizedView/Forms/submitedForms/acti
 import ArchivedReports from '../../authorizedView/Forms/submitedForms/accomplishmentReport/components/ArchivedReports';
 import ShowArchiveMandates from '../../authorizedView/admin/components/mandates/components/ShowArchiveMandates';
 import AddMandatesModal from '../../authorizedView/admin/components/mandates/components/modals/AddMandatesModal';
+import Feedback from '../feedbacks/Feedback';
+import Restore from '../backupAndRestore/Restore';
 
 export default function SideBar() {
+    const [message, setAxiosMessage] = useState('');
+    const [status, setAxiosStatus] = useState('');
 
     const [arbitrary, setArbitrary] = useState({
         users: '',
@@ -29,8 +33,25 @@ export default function SideBar() {
         archivedForm: false,
         archivedReports: false,
         showArchiveMandate: false,
-        showAddMandateModal: false
+        showAddMandateModal: false,
+        showRestore: false
     });
+
+    const handleBackup = () => {
+
+        setAxiosMessage('Loading...');
+        setAxiosStatus('Loading');
+        
+        axiosClient.post('/backup')
+          .then(response => {
+            setAxiosMessage(response.data.message);
+            setAxiosStatus(response.data.success);
+          })
+          .catch(error => {
+            setAxiosMessage(error.response.data.message);
+            setAxiosStatus(false);
+          });
+      };
 
     const toggleModal = (modalName, value) => {
         setModals(prevState => ({ ...prevState, [modalName]: value }));
@@ -43,6 +64,8 @@ export default function SideBar() {
         { label: 'Archived Mandates', onClick: () => toggleModal('showArchiveMandate', true) },
         { label: 'Archived Forms', onClick: () => toggleModal('archivedForm', true) },
         { label: 'Archived Accomplishment Reports', onClick: () => toggleModal('archivedReports', true) },
+        { label: 'Backup', onClick: () => handleBackup() },
+        { label: 'Restore', onClick: () => toggleModal('showRestore', true) },
     ];
 
     const sidebarList = [
@@ -74,6 +97,9 @@ export default function SideBar() {
 
     return (
         <div className="sidebar">
+            
+        <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={true}/>
+
             <div className='flex justify-center'>
                 <img src={GADLogo} alt="" className='w-[65%] h-[65%]  transform transition-transform hover:scale-125' />
             </div>
@@ -153,6 +179,16 @@ export default function SideBar() {
             >
                 <div>
                     <ShowArchiveMandates closeModal={() => toggleModal('showArchiveMandate', false)} />
+                </div>
+            </ReactModal>
+
+            <ReactModal
+                isOpen={modals.showRestore}
+                onRequestClose={() => toggleModal('showRestore', false)}
+                className={style}
+            >
+                <div>
+                    <Restore closeModal={() => toggleModal('showRestore', false)} />
                 </div>
             </ReactModal>
         </div>
