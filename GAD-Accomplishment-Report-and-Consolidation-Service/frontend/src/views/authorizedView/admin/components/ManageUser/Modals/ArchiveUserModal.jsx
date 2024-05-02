@@ -36,7 +36,7 @@ export default function ArchiveUserModal({selectedUser}) {
       </h1>
       {/**BUTTONS */}
       <div className='mt-5'>
-          <Submit label="Archive Activity Design" onClick={onSubmit}/*disabled={ your condition }*/ />
+          <Submit label="Archive User" onClick={onSubmit}/*disabled={ your condition }*/ />
         </div>
     </div>
   )
