@@ -4,6 +4,8 @@ import { ChevronUpIcon } from '@heroicons/react/20/solid';
 import Submit from '../../../../../components/buttons/Submit'
 import axiosClient from '../../../../../axios/axios';
 import Feedback from '../../../../../components/feedbacks/Feedback';
+import ReactModal from 'react-modal';
+import AddPrompt from '../../../../prompts/AddPrompt';
 
 
 export default function AddUserModal() {
@@ -17,10 +19,20 @@ export default function AddUserModal() {
     const [message, setAxiosMessage] = useState('');
     const [status, setAxiosStatus] = useState('');
 
+    const [promptMessage, setPromptMessage] = useState('');
+    const [showPrompt, setShowPrompt] = useState(false);
+    const action = "Confirm Add New User?";
+
+     //<><><><><><>
+    const addprompt = (ev) => {
+      ev.preventDefault();
+      const concatmessage = 'A new user: "' + userName +  '" will be created. Do you wish to proceed?';
+      setPromptMessage(concatmessage);
+      setShowPrompt(true);
+    }
+
 
       const onSubmit = async (ev) => {
-        ev.preventDefault();
-    
         setAxiosMessage('Loading...');
         setAxiosStatus('Loading');
     
@@ -50,7 +62,7 @@ export default function AddUserModal() {
     <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <div>
-        <form onSubmit={onSubmit} className='flex flex-1 flex-col'>
+        <form onSubmit={addprompt} className='flex flex-1 flex-col'>
           {/**For inputs */}
           <div className='flex flex-col'>
             <label htmlFor="email">Email: </label>
@@ -142,6 +154,21 @@ export default function AddUserModal() {
           </div>
         </form>
       </div>
+      {/*----------*/}
+      <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={onSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+        </ReactModal>
     </div>
   )
 }
