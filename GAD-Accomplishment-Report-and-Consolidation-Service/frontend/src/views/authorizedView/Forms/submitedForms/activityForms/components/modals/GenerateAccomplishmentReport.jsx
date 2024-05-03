@@ -59,10 +59,10 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
 
     const handleImagesChange = (selectedImages) => {
       // Update the formData state with the array of selected images
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        images: selectedImages
-      }));
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          images: selectedImages
+        }));
     };
   
     const populateDocx = async () => {
@@ -365,7 +365,7 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
         </div>
         
         <div className='flex justify-center mt-5'>
-          <AddImages onImagesChange={handleImagesChange} />
+          <AddImages type="button" onImagesChange={handleImagesChange} />
         </div>
 
         <div className='mt-5'>

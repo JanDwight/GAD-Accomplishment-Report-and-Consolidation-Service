@@ -55,7 +55,7 @@ const AddImages = ({ onImagesChange }) => {
             {images.map((image, index) => (
               <div key={index} style={{ marginBottom: '10px' }}>
                 <img src={URL.createObjectURL(image)} alt={`Selected Image ${index}`} style={{ maxWidth: '100px', maxHeight: '100px' }} />
-                <button onClick={() => handleRemoveImage(index)}>Remove</button>
+                <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
               </div>
             ))}
           </div>
