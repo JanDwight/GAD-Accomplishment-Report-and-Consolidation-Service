@@ -3,6 +3,8 @@ import Submit from '../../../../../../components/buttons/Submit';
 import axiosClient from '../../../../../../axios/axios';
 import NeutralButton from '../../../../../../components/buttons/NeutralButton';
 import { MinusCircleIcon } from '@heroicons/react/24/outline';
+import ReactModal from 'react-modal';
+import AddPrompt from '../../../../../prompts/AddPrompt';
 
 //For Feedback
 import Feedback from '../../../../../../components/feedbacks/Feedback';
@@ -15,12 +17,37 @@ export default function EditEADModal({selectedForm}) {
   const [status, setAxiosStatus] = useState('');
   const tableBorder = "text-center border border-black border-solid text-center px-2";
 
+  const [formData, setFormData] = useState({
+    program_title: selectedForm.program_title,
+    project_title: selectedForm.project_title,
+    title: selectedForm.title,
+    date_and_venue: selectedForm.date_and_venue,
+    venue: selectedForm.venue,
+    clientele_type_and_number: selectedForm.clientele_type_and_number,
+    estimated_cost: selectedForm.estimated_cost,
+    cooperating_agencies_units: selectedForm.cooperating_agencies_units,
+    expected_outputs: selectedForm.expected_outputs,
+    fund_source: selectedForm.fund_source,
+    proponents_implementors: selectedForm.proponents_implementors,
+  });
+
   //----------for exenditure
 
   const [inputFields, setInputFields] = useState([
     {type: '', item: '', estimated: '', remarks: '', source_of_funds: ''}
   ])
 
+  const [promptMessage, setPromptMessage] = useState('');
+  const [showPrompt, setShowPrompt] = useState(false);
+  const action = "Confirm Update Activity Form?";
+
+   //<><><><><><>
+  const addprompt = (ev) => {
+    ev.preventDefault();
+    const concatmessage = 'Changes to the activity form for the activity: "' + formData['title'] +  '" will be saved. Do you wish to proceed?';
+    setPromptMessage(concatmessage);
+    setShowPrompt(true);
+  }
 
     //------------------------------
     useEffect(() => {
@@ -74,28 +101,13 @@ export default function EditEADModal({selectedForm}) {
     //will also remove from DB
   }
 
-  const [formData, setFormData] = useState({
-    program_title: selectedForm.program_title,
-    project_title: selectedForm.project_title,
-    title: selectedForm.title,
-    date_and_venue: selectedForm.date_and_venue,
-    venue: selectedForm.venue,
-    clientele_type_and_number: selectedForm.clientele_type_and_number,
-    estimated_cost: selectedForm.estimated_cost,
-    cooperating_agencies_units: selectedForm.cooperating_agencies_units,
-    expected_outputs: selectedForm.expected_outputs,
-    fund_source: selectedForm.fund_source,
-    proponents_implementors: selectedForm.proponents_implementors,
-  });
-
   const handleChange = async (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   //----------axiosClient
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
+   
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
 
@@ -154,7 +166,7 @@ export default function EditEADModal({selectedForm}) {
         Extension Activity Design Form
       </h1>
 
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={addprompt} >
         {renderInput("program_title", "Program Title: ")}
         {renderInput("project_title", "Project Title: ")}
         {renderInput("title", "Activity Title: ")}
@@ -275,6 +287,21 @@ export default function EditEADModal({selectedForm}) {
           <Submit label="Submit"/>
         </div>
       </form>
+      {/*----------*/}
+    <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={handleSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+      </ReactModal>
     </div>
   )
   

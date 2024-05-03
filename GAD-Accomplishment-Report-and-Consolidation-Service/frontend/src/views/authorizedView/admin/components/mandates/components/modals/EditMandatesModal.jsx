@@ -25,7 +25,7 @@ export default function EditMandatesModal({ mandateSelected }) {
 
   const [promptMessage, setPromptMessage] = useState('');
   const [showPrompt, setShowPrompt] = useState(false);
-  const action = "Confirm Edit User?";
+  const action = "Confirm Edit Mandate?";
 
    //<><><><><><>
   const addprompt = (ev) => {

@@ -4,6 +4,8 @@ import NeutralButton from '../../../../../../components/buttons/NeutralButton';
 import axiosClient from '../../../../../../axios/axios';
 import { MinusCircleIcon } from '@heroicons/react/24/outline';
 import Feedback from '../../../../../../components/feedbacks/Feedback';
+import ReactModal from 'react-modal';
+import AddPrompt from '../../../../../prompts/AddPrompt';
 
 export default function EditActivityModal({ selectedForm }) {
 
@@ -15,6 +17,35 @@ export default function EditActivityModal({ selectedForm }) {
   const [inputFields, setInputFields] = useState([
     {type: '', item: '', per_item: '', no_item: '', times: '', total: '0'}
   ])
+
+  const [formData, setFormData] = useState({
+    title: selectedForm.title,
+    purpose: selectedForm.purpose,
+    legal_bases: selectedForm.legal_bases,
+    //Change date_of_activity to date_of_LEAD_activity depending of the form_type
+    ...(selectedForm.form_type !== "INSET" && { date_of_activity: selectedForm.date_of_activity }),
+    ...(selectedForm.form_type === "INSET" && { date_of_activity: selectedForm.date_of_activity }),
+    venue: selectedForm.venue,
+    participants: selectedForm.participants,
+    learning_service_providers: selectedForm.learning_service_providers,
+    expected_outputs: selectedForm.expected_outputs,
+    fund_source: selectedForm.fund_source,
+    proponents_implementors: selectedForm.proponents_implementors,
+    // Exclude no_of_target_participants if form type is INSET
+    ...(selectedForm.form_type !== "INSET" && { no_of_target_participants: selectedForm.no_of_target_participants }),
+  });
+
+  const [promptMessage, setPromptMessage] = useState('');
+  const [showPrompt, setShowPrompt] = useState(false);
+  const action = "Confirm Update Activity Form?";
+
+   //<><><><><><>
+  const addprompt = (ev) => {
+    ev.preventDefault();
+    const concatmessage = 'Changes to the activity form for the activity: "' + formData['title'] +  '" will be saved. Do you wish to proceed?';
+    setPromptMessage(concatmessage);
+    setShowPrompt(true);
+  }
 
   const handleChangeNumbers = (index, event) => {
     const C_per_item = parseFloat(inputFields[index].per_item || 0, 10);
@@ -54,7 +85,6 @@ export default function EditActivityModal({ selectedForm }) {
   
     generateInputFields();
 }, []);
-  //------------------------------
 
   //-----
   
@@ -95,31 +125,12 @@ export default function EditActivityModal({ selectedForm }) {
    
   }
 
-  const [formData, setFormData] = useState({
-    title: selectedForm.title,
-    purpose: selectedForm.purpose,
-    legal_bases: selectedForm.legal_bases,
-    //Change date_of_activity to date_of_LEAD_activity depending of the form_type
-    ...(selectedForm.form_type !== "INSET" && { date_of_activity: selectedForm.date_of_activity }),
-    ...(selectedForm.form_type === "INSET" && { date_of_activity: selectedForm.date_of_activity }),
-    venue: selectedForm.venue,
-    participants: selectedForm.participants,
-    learning_service_providers: selectedForm.learning_service_providers,
-    expected_outputs: selectedForm.expected_outputs,
-    fund_source: selectedForm.fund_source,
-    proponents_implementors: selectedForm.proponents_implementors,
-    // Exclude no_of_target_participants if form type is INSET
-    ...(selectedForm.form_type !== "INSET" && { no_of_target_participants: selectedForm.no_of_target_participants }),
-  });
-  
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (ev) => {
-    ev.preventDefault();
-
+  const handleSubmit = async () => {
+  
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
 
@@ -182,7 +193,7 @@ export default function EditActivityModal({ selectedForm }) {
 
          <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
-          <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
+          <form onSubmit={addprompt} className="flex flex-1 flex-col">
             {renderInput("title", "Title: ")}
             {renderInput("purpose", "Purpose: ")}
             {renderInput("legal_bases", "Legal Bases: ")}
@@ -326,7 +337,21 @@ export default function EditActivityModal({ selectedForm }) {
           <Submit label="Submit"/>
         </div>
       </form>
-
+    {/*----------*/}
+    <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={handleSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+        </ReactModal>
     </div>
   );
 }
