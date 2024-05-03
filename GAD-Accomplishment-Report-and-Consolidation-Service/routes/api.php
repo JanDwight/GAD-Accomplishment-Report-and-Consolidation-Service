@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccomplishmentReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackupAndRestore;
+use App\Http\Controllers\Logs;
 use App\Http\Controllers\MandatesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FormController;
@@ -93,7 +94,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/backup', 'backup');
         Route::post('/restore', 'restore');
     });
-    
+
+    Route::controller(Logs::class)->group(function() {
+        Route::get('/showlogs', 'index');
+    });
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
