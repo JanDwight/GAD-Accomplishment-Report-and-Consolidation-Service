@@ -96,11 +96,7 @@ export default function AccomplishmentReport() {
         className="w-full md:w-[30%] lg:w-[60%] h-[80%] bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl mt-[1%] mx-auto p-5 overflow-auto"
       >
         <div>
-          {selectedForm && selectedForm.forms && selectedForm.forms.form_type === 'EAD' ? (
-            <ViewEADReportModal closeModal={() => setIsEditModalOpen(false)} selectedForm={selectedForm} />
-          ) : (
             <ShowActivityModal closeModal={() => setIsEditModalOpen(false)} selectedForm={selectedForm} />
-          )}
         </div>
       </ReactModal>
 
