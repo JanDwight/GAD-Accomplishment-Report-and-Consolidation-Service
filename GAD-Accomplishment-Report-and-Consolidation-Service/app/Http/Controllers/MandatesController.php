@@ -23,18 +23,21 @@ class MandatesController extends Controller
 
     public function createmandates(MandatesRequest $request){
         try {
-            $mandates = $request->validated('form_data');
+            $mandatesData = $request->validated('form_data');
     
-            Mandates::create([
-                'gender_issue' => $mandates['gender_issue'],
-                'cause_of_gender_issue' => $mandates['cause_of_gender_issue'],
-                'gad_result_statement' => $mandates['gad_result_statement'],
-                'gad_activity' => $mandates['gad_activity'],
-                'performance_indicators' => $mandates['performance_indicators'],
-                'target_result' => $mandates['target_result'],
-                'focus' => $mandates['focus'],
+            $mandates = Mandates::create([
+                'gender_issue' => $mandatesData['gender_issue'],
+                'cause_of_gender_issue' => $mandatesData['cause_of_gender_issue'],
+                'gad_result_statement' => $mandatesData['gad_result_statement'],
+                'gad_activity' => $mandatesData['gad_activity'],
+                'performance_indicators' => $mandatesData['performance_indicators'],
+                'target_result' => $mandatesData['target_result'],
+                'focus' => $mandatesData['focus'],
             ]);
     
+        // Log user creation activity
+        activity()->performedOn($mandates)->withProperties(['created' => ['GAD Mandate' => $mandates['gender_issue']]])->log('Mandate Created');
+
             return response([
                 'message' => 'Mandate created successfully',
                 'success' => true
@@ -48,31 +51,58 @@ class MandatesController extends Controller
         }
     }
 
-    public function updatemandates(MandatesRequest $request, $id){
-        try {
-            $mandate = $request->validated();
+public function updatemandates(MandatesRequest $request, $id){
+    try {
+        // Validate the request data
+        $validatedData = $request->validated();
 
-            $mandateData = Mandates::find($id);
-    
-            $mandateData->update($mandate['form_data']);
-            
-            return response([
-                'message' => 'Mandate updated successfully',
-                'success' => true
-            ]);
-        } catch (\Exception $e) {
-            return response([
-                'message' => 'Error updating mandates: ' . $e->getMessage(),
-                'success' => false
-            ]);
+        // Find the Mandates record by its ID
+        $mandateData = Mandates::findOrFail($id);
+
+        // Get the original attributes of the Mandate before the update
+        $originalAttributes = $mandateData->getAttributes();
+
+        // Update the Mandate with the validated data
+        $mandateData->update($validatedData['form_data']);
+
+        // Compare the original attributes with the updated attributes
+        $changedFields = [];
+        foreach ($originalAttributes as $key => $value) {
+            if ($key !== 'updated_at' && $mandateData->{$key} != $value) {
+                $changedFields[$key] = [
+                    'field' => $key,
+                    'old' => $value,
+                    'new' => $mandateData->{$key}
+                ];
+            }
         }
-    }
 
+        // Log the update activity with only the changed fields
+        activity()
+            ->performedOn($mandateData)
+            ->withProperties(['changed' => $changedFields])
+            ->log('Mandate Updated');
+
+        return response([
+            'message' => 'Mandate updated successfully',
+            'success' => true
+        ]);
+    } catch (\Exception $e) {
+        return response([
+            'message' => 'Error updating mandates: ' . $e->getMessage(),
+            'success' => false
+        ]);
+    }
+}
+    
     public function archivemandates($id){
         try {
             $mandate = Mandates::find($id);
 
             $mandate->delete();
+
+            // Log user creation activity
+            activity()->performedOn($mandate)->withProperties(['archived' => ['gender_issue' => $mandate['gender_issue']]])->log('Mandate Archive');
 
             return response([
             'message' => 'Mandate archived successfully',
@@ -93,6 +123,9 @@ class MandatesController extends Controller
 
             $mandate->restore();
 
+            // Log user creation activity
+            activity()->performedOn($mandate)->withProperties(['restored' => ['gender_issue' => $mandate['gender_issue']]])->log('Mandate Restored');
+
             return response([
                 'message' => 'Mandate Restored',
                 'success' => true
@@ -112,6 +145,9 @@ class MandatesController extends Controller
         try {
             $mandate->forceDelete();
             
+            // Log user creation activity
+            activity()->performedOn($mandate)->withProperties(['deleted' => ['gender_issue' => $mandate['gender_issue']]])->log('Mandate Deleted');
+
             return response([
                 'message' => 'Mandate permanently deleted',
                 'success' => true

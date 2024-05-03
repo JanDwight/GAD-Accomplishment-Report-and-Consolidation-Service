@@ -14,6 +14,7 @@ import ShowArchiveMandates from '../../authorizedView/admin/components/mandates/
 import AddMandatesModal from '../../authorizedView/admin/components/mandates/components/modals/AddMandatesModal';
 import Feedback from '../feedbacks/Feedback';
 import Restore from '../backupAndRestore/Restore';
+import Logs from '../logs/Logs';
 
 export default function SideBar() {
     const [message, setAxiosMessage] = useState('');
@@ -34,7 +35,8 @@ export default function SideBar() {
         archivedReports: false,
         showArchiveMandate: false,
         showAddMandateModal: false,
-        showRestore: false
+        showRestore: false,
+        showLogs: false
     });
 
     const handleBackup = () => {
@@ -66,6 +68,7 @@ export default function SideBar() {
         { label: 'Archived Accomplishment Reports', onClick: () => toggleModal('archivedReports', true) },
         { label: 'Backup', onClick: () => handleBackup() },
         { label: 'Restore', onClick: () => toggleModal('showRestore', true) },
+        { label: 'Logs', onClick: () => toggleModal('showLogs', true) },
     ];
 
     const sidebarList = [
@@ -75,7 +78,7 @@ export default function SideBar() {
         { label: 'Accomplisment Reports: ', val: arbitrary.completed},
     ];
 
-    const style = "w-full md:w-[30%] max-h-[95%] min-h-fit bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl my-[1%] mx-auto p-5"
+    const style = "max-w-[90%] w-fit max-h-[95%] min-h-fit bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl my-[1%] mx-auto p-5 overflow-y-auto"
     
     useEffect(() => {
         fetchCounts();
@@ -189,6 +192,17 @@ export default function SideBar() {
             >
                 <div>
                     <Restore closeModal={() => toggleModal('showRestore', false)} />
+                </div>
+            </ReactModal>
+
+            
+            <ReactModal
+                isOpen={modals.showLogs}
+                onRequestClose={() => toggleModal('showLogs', false)}
+                className={style}
+            >
+                <div>
+                    <Logs closeModal={() => toggleModal('showLogs', false)} />
                 </div>
             </ReactModal>
         </div>

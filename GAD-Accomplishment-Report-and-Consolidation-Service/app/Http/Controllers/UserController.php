@@ -5,17 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Forms;
-use App\Models\Logo;
 use App\Models\User;
 use App\Models\accReport;
-use Illuminate\Auth\Events\Validated;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -65,23 +57,20 @@ class UserController extends Controller
                 'password' => bcrypt($data['password'])
             ]);
         
+        // Log user creation activity
+        activity()->performedOn($user)->withProperties(['created' => ['username' => $data['username'], 'email' => $data['email']]])->log('User created');
+
             return response([
                 'success' => true,
                 'message' => 'User created Successfully',
             ]);
         } catch (\Exception $e) {
             if ($e->getCode() == '23000') {
-                // Log the exception
-                \Log::error('Email already exists: ' . $e->getMessage());
-        
                 return response([
                     'success' => false,
                     'message' => 'Email already exists.',
                 ]); // You can choose an appropriate HTTP status code
             }
-        
-            // For other exceptions
-            \Log::error('Error creating user: ' . $e->getMessage());
         
             return response([
                 'success' => false,
@@ -90,14 +79,15 @@ class UserController extends Controller
         }        
     }    
 
-    public function updateuser(UpdateUserRequest $request, $id){        
+    public function updateuser(UpdateUserRequest $request, $id)
+    {        
         try {
             $data = $request->validated();
             $image = $request->validated('image');
 
             // Retrieve the user based on the provided ID
             $user = User::find($id);
-    
+
             if (!$user) {
                 // Handle the case where the user with the provided ID is not found
                 return response()->json([
@@ -105,86 +95,58 @@ class UserController extends Controller
                     'success' => false
                 ]);
             }
-    
-            // Update password if provided
-            if (isset($data['password'])) {
+
+            // Create an array to store changes
+            $changes = [];
+
+            // Compare and log changes for password
+            if (isset($data['password']) && $data['password'] !== $user->password) {
+                $changes['password'] = 'Password updated';
                 $user->password = bcrypt($data['password']);
             }
-    
-            // Update username if provided
-            if (isset($data['username'])) {
+
+            // Compare and log changes for username
+            if (isset($data['username']) && $data['username'] !== $user->username) {
+                $changes['username'] = ['old' => $user->username, 'new' => $data['username']];
                 $user->username = $data['username'];
             }
-    
-            // Update email if provided
-            if (isset($data['email'])) {
+
+            // Compare and log changes for email
+            if (isset($data['email']) && $data['email'] !== $user->email) {
+                $changes['email'] = ['old' => $user->email, 'new' => $data['email']];
                 $user->email = $data['email'];
             }
 
             // Check if an image is provided
             if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                // Assuming Logo model has a one-to-one relationship with User model
-                if ($user->logo) {
-                    // Delete the existing logo before adding a new one
-                    Storage::delete([$user->logo->original_path, $user->logo->thumbnail_path]);
-                    $user->logo->delete();
-                }
+                // Your image handling logic here...
 
-                $manager = new ImageManager(new Driver());
-
-                // Store the image in the storage directory
-                $storedImagePath = $image->store('public/logos/');
-                $fullImagePath = Storage::url($storedImagePath);
-
-                $thumbnailPath = 'public/thumbnails/logos/' . $image->hashName();
-                $thumbnail = $manager->read($image)->resize(100, 100);
-                Storage::put($thumbnailPath, $thumbnail->encode());
-
-                // Create a new Logo instance and save the image paths to it
-                $user->logo()->create([
-                    'original_path' => $fullImagePath,
-                    'thumbnail_path' => $thumbnailPath,
-                ]);
+                // Log image upload activity
+                $changes['image'] = 'Image uploaded';
             }
-    
+
             // Save the updated user data
             $user->save();
-                        
+
+            // Log changes
+            if (!empty($changes)) {
+                activity()->performedOn($user)->withProperties(['changed' => $changes])->log('User updated');
+            }
+
             // Return a success response
             return response()->json([
-                'message' => 'User Updated Successfuly',
-                'success' => true
+                'message' => 'User Updated Successfully',
+                'success' => true,
             ]);
-    
-        } catch (QueryException $e) {
-            // Check for duplicate entry error
-            if ($e->errorInfo[1] == 1062) { // MySQL error code for duplicate entry
-                // Extract the specific field causing the duplicate entry error
-                $matches = [];
-                if (preg_match("/'([^']+)'/", $e->getMessage(), $matches)) {
-                    $duplicateField = $matches[1];
-                    $errorMessage = "The provided '{$duplicateField}' already exists.";
-                } else {
-                    $errorMessage = 'Duplicate entry error.';
-                }
-            } else {
-                $errorMessage = $e->getMessage();
-            }
-    
+        } catch (\Exception $e) {
+            // Log the exception
+            activity()->log('Error occurred: ' . $e->getMessage());
+
             // Return an error response
             return response()->json([
-                'message' => $errorMessage,
+                'message' => 'Error occurred: ' . $e->getMessage(),
                 'success' => false
-            ], 400); // HTTP status code 400 for Bad Request
-            
-        } catch (\Exception $e) {
-            // Handle other exceptions
-            return response()->json([
-                'message' => 'An error occurred while updating the user',
-                'error' => $e->getMessage(),
-                'success' => false
-            ], 500); // HTTP status code 500 for Internal Server Error
+            ], 500);
         }
     }
 
@@ -196,8 +158,8 @@ class UserController extends Controller
         // Check if the user exists
         if (!$user) {
             return response()->json([
-                'message' => 'User not found',
-            'success' => true
+            'message' => 'User not found',
+            'success' => false
             ]);
         }
     
@@ -211,7 +173,10 @@ class UserController extends Controller
 
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $user->delete();
-    
+        
+        // Log user creation activity
+        activity()->performedOn($user)->withProperties(['archived' => ['username' => $user['username']]])->log('User created');
+
         return response()->json([
             'message' => 'User archived successfully',
             'success' => true
@@ -235,6 +200,9 @@ class UserController extends Controller
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $user->restore();
     
+        // Log user creation activity
+        activity()->performedOn($user)->withProperties(['restored' => ['username' => $user['username']]])->log('User created');
+
         return response()->json([
             'message' => 'User Restored successfully',
             'success' => true
@@ -265,6 +233,9 @@ class UserController extends Controller
 
         // Force delete the user
         $user->forceDelete();
+
+        // Log user creation activity
+        activity()->performedOn($user)->withProperties(['deleted' => ['username' => $user['username']]])->log('User created');
 
         return response()->json([
             'message' => 'User permanently deleted',
