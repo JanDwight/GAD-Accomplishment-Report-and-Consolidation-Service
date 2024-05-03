@@ -68,7 +68,7 @@ export default function SubmitedForms() {
     setSelectedForm(selected_form)
   }
 
-  // For Form EDIT
+  // For Form EAD EDIT
   const handleEditEADClick = (selected_form) => {
     setIsEditEADModalOpen(true)
     setSelectedForm(selected_form)
@@ -285,7 +285,7 @@ export default function SubmitedForms() {
                                       </h3>
                                     </ul>
                                   <ul>
-                                    <button title="Edit Activity Design" onClick={() => handleEditClick(form)}>
+                                    <button title="Edit Activity Design" onClick={() => handleEditEADClick(form)}>
                                       <PencilIcon className='h-5 w-5 mx-1 cursor-pointer transform transition-transform hover:scale-1xl' />
                                     </button>
                                     <button title="Archive Activity Design" onClick={() => handleArchiveClick(form)}>
