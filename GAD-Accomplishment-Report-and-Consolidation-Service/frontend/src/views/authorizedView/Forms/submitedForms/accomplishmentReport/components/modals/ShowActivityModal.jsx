@@ -137,9 +137,11 @@ export default function ShowActivityModal({ selectedForm }) {
         onRequestClose={closeModal}
         contentLabel="Full View Image"
       >
+        <button onClick={closeModal} className="absolute top-1 right-1 bg-red-600 text-white px-3 py-1 rounded-full hover:bg-red-700 cursor-pointer">
+                        X
+        </button>
         <div className="w-full h-screen flex flex-col items-center justify-center">
-          <button onClick={closeModal} className="absolute top-4 right-4 text-white bg-red-500 p-2 rounded">Close</button>
-          <div className="relative w-full h-full" onDoubleClick={handleDoubleClick}>
+         <div className="relative w-full h-full" onDoubleClick={handleDoubleClick}>
             <img 
               src={selectedImage} 
               alt="Full view"
@@ -147,8 +149,8 @@ export default function ShowActivityModal({ selectedForm }) {
               className="max-w-full max-h-full object-contain"
             />
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex">
-              <button onClick={() => setZoomLevel(prev => prev + 0.1)} className="text-white bg-blue-500 p-2 rounded m-2">Zoom In</button>
-              <button onClick={() => setZoomLevel(prev => prev - 0.1)} className="text-white bg-blue-500 p-2 rounded m-2">Zoom Out</button>
+              <button onClick={() => setZoomLevel(prev => prev + 0.1)} className="text-white bg-blue-500 p-2 rounded m-2 hover:bg-blue-400">Zoom In</button>
+              <button onClick={() => setZoomLevel(prev => prev - 0.1)} className="text-white bg-blue-500 p-2 rounded m-2 hover:bg-blue-400">Zoom Out</button>
             </div>
           </div>
         </div>
