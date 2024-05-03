@@ -78,7 +78,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/accomplishment_report', 'accomplishment_report_store');
         Route::get('/show_accomplishment_report', 'index_accomplishment_report');
         Route::get('/update_accomplishment_report', 'accomplishment_report_update');
-        Route::put('/addmandates', 'addmandates');
         Route::get('/getimages/{id}', 'getimages'); 
         Route::put('/setmandates', 'setmandates');//setmandates
 

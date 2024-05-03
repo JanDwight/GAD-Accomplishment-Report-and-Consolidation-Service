@@ -99,13 +99,16 @@ class FormController extends Controller
 
     public function index_all_archived_forms()
     {
+        //$allForms = Forms::onlyTrashed()->get(); //soft deleted only
 
-        $allForms = Forms::onlyTrashed()->get(); //soft deleted only
-        // $allForms = Forms::where('comp_status', 'Completed')
-        //         ->orWhere(function ($query) {
-        //             $query->onlyTrashed();
-        //         })
-        //         ->get();
+        // Retrieve completed forms
+        $completedForms = Forms::where('comp_status', 'Completed')->get();
+
+        // Retrieve trashed forms
+        $trashedForms = Forms::onlyTrashed()->get();
+
+        // Join both data sets
+        $allForms = $completedForms->concat($trashedForms);
 
         return response()->json($allForms);
     }
