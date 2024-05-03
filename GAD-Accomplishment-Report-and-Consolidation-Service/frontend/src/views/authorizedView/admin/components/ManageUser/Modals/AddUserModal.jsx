@@ -31,7 +31,6 @@ export default function AddUserModal() {
       setShowPrompt(true);
     }
 
-
       const onSubmit = async (ev) => {
         setAxiosMessage('Loading...');
         setAxiosStatus('Loading');

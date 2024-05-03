@@ -5,6 +5,8 @@ import NeutralButton from '../../../components/buttons/NeutralButton';
 import { MinusCircleIcon } from '@heroicons/react/24/outline';
 import { TemplateHandler } from 'easy-template-x';
 import InsetNEWLEADSFORM from '../../../components/printing/forms/InsetNEWLEADSFORM.docx'
+import ReactModal from 'react-modal';
+import AddPrompt from '../../prompts/AddPrompt';
 
 //For Feedback
 import Feedback from '../../../components/feedbacks/Feedback';
@@ -15,8 +17,33 @@ export default function InsetForm() {
   const [message, setAxiosMessage] = useState(''); // State for success message
   const [status, setAxiosStatus] = useState('');
 
+  const [formData, setFormData] = useState({
+    title: '',
+    purpose: '',
+    legal_bases: '',
+    date_of_activity: '',
+    venue: '',
+    participants: '',
+    learning_service_providers: '',
+    expected_outputs: '',
+    fund_source: '',
+    proponents_implementors: '',
+  });
+
       //----------for docx
       const fileUrl = InsetNEWLEADSFORM; // Use the imported file directly
+
+      const [promptMessage, setPromptMessage] = useState('');
+      const [showPrompt, setShowPrompt] = useState(false);
+      const action = "Confirm Add New Inset New Leads Activity Form?";
+  
+       //<><><><><><>
+      const addprompt = (ev) => {
+        ev.preventDefault();
+        const concatmessage = 'A new inset new leads form for the activity: "' + formData['title'] +  '" will be created. Do you wish to proceed?';
+        setPromptMessage(concatmessage);
+        setShowPrompt(true);
+      }
 
       const fetchData = async (url) => {
         const response = await fetch(url);
@@ -137,27 +164,13 @@ export default function InsetForm() {
     }
   }
 
-  const [formData, setFormData] = useState({
-    title: '',
-    purpose: '',
-    legal_bases: '',
-    date_of_activity: '',
-    venue: '',
-    participants: '',
-    learning_service_providers: '',
-    expected_outputs: '',
-    fund_source: '',
-    proponents_implementors: '',
-  });
-  
   const handleChange = async (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   //----------axiosClient
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
+    
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
 
@@ -215,10 +228,10 @@ export default function InsetForm() {
     <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <h1 className='text-center'>
-        Inset New Lead Form
+        Inset New Leads Form
       </h1>
 
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={addprompt} >
         {renderInput("title", "Title: ")}
         {renderInput("purpose", "Purpose: ")}
         {renderInput("legal_bases", "Legal Bases: ")}
@@ -356,6 +369,21 @@ export default function InsetForm() {
               <Submit label="Submit"/>
             </div>
       </form>
+      {/*----------*/}
+      <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={handleSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+        </ReactModal>
     </div>
   )
 }

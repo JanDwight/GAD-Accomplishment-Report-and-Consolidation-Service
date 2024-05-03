@@ -5,6 +5,8 @@ import { TemplateHandler } from 'easy-template-x';
 import axiosClient from '../../../../../../axios/axios';
 import InsetEmployeeAccomplishmentReport from '../../../../../../components/printing/forms/InsetEmployeeAccomplishmentReport.docx'
 import Addimages from '../../../../../../components/image/Addimages';
+import ReactModal from 'react-modal';
+import AddPrompt from '../../../../../prompts/AddPrompt';
 
 //For Feedback
 import Feedback from '../../../../../../components/feedbacks/Feedback';
@@ -40,6 +42,18 @@ export default function GenerateFormReport({ selectedForm }) {
     approved_budget: '',
     actual_expenditure: '',
   }]);
+
+  const [promptMessage, setPromptMessage] = useState('');
+  const [showPrompt, setShowPrompt] = useState(false);
+  const action = "Confirm Generate Accomplishment Report?";
+
+   //<><><><><><>
+  const addprompt = (ev) => {
+    ev.preventDefault();
+    const concatmessage = 'A new accomplishment report for the activity: "' + formData['title'] +  '" will be generated. Do you wish to proceed?';
+    setPromptMessage(concatmessage);
+    setShowPrompt(true);
+  }
 
   const handleImagesChange = (selectedImages) => {
     // Update the formData state with the array of selected images
@@ -133,8 +147,7 @@ export default function GenerateFormReport({ selectedForm }) {
   //------------------------------
   
   const handleSubmit = async (ev) => {
-    ev.preventDefault();
-  
+   
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
     
@@ -224,7 +237,7 @@ const renderInput = (name, label) => {
       
     <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
-    <form onSubmit={handleSubmit} className="flex flex-1 flex-col" encType="multipart/form-data">
+    <form onSubmit={addprompt} className="flex flex-1 flex-col" encType="multipart/form-data">
       {renderInput("title", "Title: ")}
       {renderInput(selectedForm.form_type === "INSET" ? "date_of_activity" : "date_of_activity", "Date of Activity: ")}
       {renderInput("venue", "Venue: ")}
@@ -369,7 +382,21 @@ const renderInput = (name, label) => {
           <Submit label="Submit"/>
         </div>
       </form>
-
+    {/*----------*/}
+    <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={handleSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+        </ReactModal>
     </div>
   );
 }

@@ -4,6 +4,8 @@ import NeutralButton from '../../../../../../components/buttons/NeutralButton';
 import { TemplateHandler } from 'easy-template-x';
 import ExtensionAccomplishmentReport from '../../../../../../components/printing/forms/ExtensionAccomplishmentReport.docx'
 import axiosClient from '../../../../../../axios/axios';
+import ReactModal from 'react-modal';
+import AddPrompt from '../../../../../prompts/AddPrompt';
 import Modal from 'react-modal';
 Modal.setAppElement('#root'); // Assuming '#root' is the ID of your root element
 
@@ -17,8 +19,38 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
   const [status, setAxiosStatus] = useState('');
   const tableBorder = "text-center border border-black border-solid text-center px-2";
 
+  const [formData, setFormData] = useState({
+    forms_id: selectedForm.id,
+    title: selectedForm.title,
+    date_and_venue: selectedForm.date_and_venue,
+    clientele_type_and_number: selectedForm.clientele_type_and_number,
+    male_participants: selectedForm.participants_male,
+    female_participants: selectedForm.participants_female,
+    no_of_participants: selectedForm.no_of_participants,
+    estimated_cost: selectedForm.estimated_cost,
+    cooperating_agencies_units: selectedForm.cooperating_agencies_units,
+    expected_outputs: selectedForm.expected_outputs,
+    fund_source: selectedForm.fund_source,
+    proponents_implementors: selectedForm.proponents_implementors,
+
+    date_of_activity: 'n/a',
+    venue: 'n/a'
+  });
+
     //----------for docx
     const fileUrl = ExtensionAccomplishmentReport; // Use the imported file directly
+
+    const [promptMessage, setPromptMessage] = useState('');
+    const [showPrompt, setShowPrompt] = useState(false);
+    const action = "Confirm Generate Accomplishment Report?";
+
+     //<><><><><><>
+    const addprompt = (ev) => {
+      ev.preventDefault();
+      const concatmessage = 'A new accomplishment report for the activity: "' + formData['title'] +  '" will be generated. Do you wish to proceed?';
+      setPromptMessage(concatmessage);
+      setShowPrompt(true);
+    }
 
     const fetchData = async (url) => {
       const response = await fetch(url);
@@ -129,32 +161,12 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
     setActualExpendatures(data)
 }
 
-  const [formData, setFormData] = useState({
-    forms_id: selectedForm.id,
-    title: selectedForm.title,
-    date_and_venue: selectedForm.date_and_venue,
-    clientele_type_and_number: selectedForm.clientele_type_and_number,
-    male_participants: selectedForm.participants_male,
-    female_participants: selectedForm.participants_female,
-    no_of_participants: selectedForm.no_of_participants,
-    estimated_cost: selectedForm.estimated_cost,
-    cooperating_agencies_units: selectedForm.cooperating_agencies_units,
-    expected_outputs: selectedForm.expected_outputs,
-    fund_source: selectedForm.fund_source,
-    proponents_implementors: selectedForm.proponents_implementors,
-
-    date_of_activity: 'n/a',
-    venue: 'n/a'
-  });
-
-
   const handleChange = async (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   //----------axiosClient
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
@@ -221,7 +233,7 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
         Generate Extension Accomplishment Report
       </h1>
 
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={addprompt} >
         {renderInput("title", "Title: ")}
         {renderInput("date_and_venue", "Date and Venue of Activity: ")}
         {renderInput("clientele_type_and_number", "Clientele Type and Number: ")}
@@ -360,6 +372,21 @@ export default function GenerateAccomplishmentReport({ selectedForm }) {
           <Submit label="Submit"/>
         </div>
       </form>
+      {/*----------*/}
+      <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={handleSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+        </ReactModal>
     </div>
   )
   
