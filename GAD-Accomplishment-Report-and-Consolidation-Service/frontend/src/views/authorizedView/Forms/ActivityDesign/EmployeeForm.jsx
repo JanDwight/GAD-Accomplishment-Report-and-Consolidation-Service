@@ -5,6 +5,8 @@ import NeutralButton from '../../../components/buttons/NeutralButton';
 import { MinusCircleIcon } from '@heroicons/react/24/outline';
 import { TemplateHandler } from 'easy-template-x';
 import EmployeesActivityForm from '../../../components/printing/forms/EmployeesActivityForm.docx'
+import ReactModal from 'react-modal';
+import AddPrompt from '../../prompts/AddPrompt';
 
 //For Feedback
 import Feedback from '../../../components/feedbacks/Feedback';
@@ -16,8 +18,34 @@ export default function EmployeeForm() {
   const [message, setAxiosMessage] = useState('');
   const [status, setAxiosStatus] = useState('');
 
+  const [formData, setFormData] = useState({
+    title: '',
+    purpose: '',
+    legal_bases: '',
+    date_of_activity: '',
+    venue: '',
+    participants: '',
+    no_of_target_participants: '',
+    learning_service_providers: '',
+    expected_outputs: '',
+    fund_source: '',
+    proponents_implementors: '',
+  });
+
   //----------for docx
   const fileUrl = EmployeesActivityForm; // Use the imported file directly
+
+    const [promptMessage, setPromptMessage] = useState('');
+    const [showPrompt, setShowPrompt] = useState(false);
+    const action = "Confirm Add New Employee Activity Form?";
+
+     //<><><><><><>
+    const addprompt = (ev) => {
+      ev.preventDefault();
+      const concatmessage = 'A new employee form for the activity: "' + formData['title'] +  '" will be created. Do you wish to proceed?';
+      setPromptMessage(concatmessage);
+      setShowPrompt(true);
+    }
 
   const fetchData = async (url) => {
     const response = await fetch(url);
@@ -137,27 +165,12 @@ export default function EmployeeForm() {
     }
   }
 
-  const [formData, setFormData] = useState({
-    title: '',
-    purpose: '',
-    legal_bases: '',
-    date_of_activity: '',
-    venue: '',
-    participants: '',
-    no_of_target_participants: '',
-    learning_service_providers: '',
-    expected_outputs: '',
-    fund_source: '',
-    proponents_implementors: '',
-  });
-
   const handleChange = async (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
+    
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
 
@@ -224,7 +237,7 @@ export default function EmployeeForm() {
         Employee Activity Form
       </h1>
 
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={addprompt} >
         {renderInput("title", "Title: ")}
         {renderInput("purpose", "Purpose: ")}
         {renderInput("legal_bases", "Legal Bases: ")}
@@ -359,8 +372,21 @@ export default function EmployeeForm() {
           <Submit label="Submit"/>
         </div>
       </form>
-
-
+      {/*----------*/}
+      <ReactModal
+            isOpen={showPrompt}
+            onRequestClose={() => setShowPrompt(false)}
+            className="md:w-[1%]"
+          >
+            <div>
+                <AddPrompt
+                    closeModal={() => setShowPrompt(false)}
+                    handleSave={handleSubmit}
+                    action={action}
+                    promptMessage={promptMessage}
+                />
+            </div>
+        </ReactModal>
     </div>
   )
 }

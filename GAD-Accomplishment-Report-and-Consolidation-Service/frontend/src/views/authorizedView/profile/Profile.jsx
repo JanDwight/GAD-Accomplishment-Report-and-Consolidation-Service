@@ -56,7 +56,6 @@ export default function MyProfile() {
   const inputType = showPassword ? 'text' : 'password';
 
   const onSubmit = async () => {
-
     setAxiosMessage('Loading...');
     setAxiosStatus('Loading');
   
