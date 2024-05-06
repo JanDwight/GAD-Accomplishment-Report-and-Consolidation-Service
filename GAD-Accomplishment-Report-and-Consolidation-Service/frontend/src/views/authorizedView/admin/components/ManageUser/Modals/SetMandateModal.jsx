@@ -19,6 +19,9 @@ export default function SetMandateModal({closeModal, reportList, n_mandate}) {
   }
 
   const handleSetMandates = async (ev) => {
+    setAxiosMessage('Loading...');
+    setAxiosStatus('Loading');
+    
     try {
       ev.preventDefault();
       const response = await axiosClient.put('/setmandates', {

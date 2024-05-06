@@ -138,7 +138,8 @@ class AccomplishmentReportController extends Controller
         // Save the image paths to the database
         $createdAccReport->images()->createMany($imageModels);
 
-        
+        // Log user creation activity
+        activity()->performedOn($createdAccReport)->withProperties(['Generated' => ['Accomplishment Report' => ['title' => $createdAccReport['title']]]])->log('Accomplishment Report Generated');
 
         // Return the response with the stored image paths
         return response([
@@ -174,6 +175,9 @@ class AccomplishmentReportController extends Controller
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $form->delete();
     
+        // Log user creation activity
+        activity()->performedOn($form)->withProperties(['Archived' => ['Accomplishment Report' => ['title' => $form['title']]]])->log('Accomplishment Report Archived');
+
         return response()->json([
             'success' => true,
             'message' => 'Form archived successfully'
@@ -197,6 +201,9 @@ class AccomplishmentReportController extends Controller
         // Eloquent automatically handles soft deletes if the model uses the SoftDeletes trait, if SoftDeletes is used
         $form->restore();
     
+        // Log user creation activity
+        activity()->performedOn($form)->withProperties(['Restored' => ['Accomplishment Report' => ['title' => $form['title']]]])->log('Accomplishment Report Restored');
+
         return response()->json([
             'success' => true,
             'message' => 'Report Restored successfully'
@@ -221,6 +228,10 @@ class AccomplishmentReportController extends Controller
         // Force delete the report
         $report->forceDelete();
     
+        
+        // Log user creation activity
+        activity()->performedOn($report)->withProperties(['Deleted' => ['Accomplishment Report' => ['title' => $report['title']]]])->log('Accomplishment Report Deleted');
+
         // Delete the associated images from storage
         foreach ($imagePaths as $path) {
             try {
@@ -251,7 +262,6 @@ class AccomplishmentReportController extends Controller
     }
 
     public function setmandates(Setmandate $request){
-        $requestData = $request->validated();
         $acc_list = $request->input('reportList');
         $mandate_id = $request->input('mandate_id');
 
@@ -261,8 +271,12 @@ class AccomplishmentReportController extends Controller
 
             foreach ($acc_list as $report) {
                 accReport::where('title', $report['title'])->update(['mandates_id' => $mandate_id]);
+            
+                // Log user creation activity
+                activity()->performedOn($mandate)->withProperties(['Set' => ['GAD Mandate to' => $report['title']]])->log('Mandate Created');
             }
 
+            
             return response()->json([
                 'message' => 'Succesfully set mandates.',
                 'success' => true,
