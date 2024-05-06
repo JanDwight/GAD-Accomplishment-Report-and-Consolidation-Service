@@ -38,6 +38,7 @@ export default function Login() {
         setUserToken(data.token);
       })
       .catch((error) => {
+        console.error(error);
         setAxiosMessage(error.response.data.message);
         setAxiosStatus(false);
       });
