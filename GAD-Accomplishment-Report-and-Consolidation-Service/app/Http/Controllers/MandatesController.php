@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MandatesRequest;
 use App\Models\Mandates;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MandatesController extends Controller
 {
@@ -159,8 +160,16 @@ public function updatemandates(MandatesRequest $request, $id){
             ]);
         }
     }
-    public function showact_mandates(){
-        $accomplishmentReport = Mandates::with('accReport.actualExpenditure')->get();
+    public function showact_mandates(Request $request){
+        //$accomplishmentReport = Mandates::with('accReport.actualExpenditure')->get();
+
+        $currentYear = $request->input('content');
+
+        $accomplishmentReport = Mandates::with(['accReport' => function ($query) use ($currentYear) {
+            $query->whereYear('created_at', $currentYear);
+        }, 'accReport.actualExpenditure'])
+        ->get();
+        // Fetch mandates but if an acc report wasn't created at the currrent year it will not be fetched
 
         // Group the data by the 'focus' column value
         $groupedData = $accomplishmentReport->groupBy('focus');
