@@ -29,11 +29,17 @@ class FormController extends Controller
             return response()->json($forms);
 
         } else {
-            $forms = User::with(['forms' => function ($query) {
+            $forms = User::whereHas('forms', function ($query) {
                 $query->where('form_type', 'EMPLOYEE')
-                        ->where('comp_status', 'Pending')
-                        ->with('expenditures');
-            }])->get();
+                      ->where('comp_status', 'Pending')
+                      ->whereNull('deleted_at'); // Exclude soft deleted forms
+            })
+            ->with(['forms' => function ($query) {
+                $query->where('form_type', 'EMPLOYEE')
+                    ->where('comp_status', 'Pending')
+                    ->with('expenditures');
+            }])
+            ->get();
             
             return response()->json($forms);
 
@@ -57,11 +63,23 @@ class FormController extends Controller
 
         } else {
         
-            $forms = User::with(['forms' => function ($query) {
+            /*$forms = User::with(['forms' => function ($query) {
                 $query->where('form_type', 'INSET')
                         ->where('comp_status', 'Pending')
                         ->with('expenditures');
-            }])->get();
+            }])->get();*/
+
+            $forms = User::whereHas('forms', function ($query) {
+                $query->where('form_type', 'INSET')
+                      ->where('comp_status', 'Pending')
+                      ->whereNull('deleted_at'); // Exclude soft deleted forms
+            })
+            ->with(['forms' => function ($query) {
+                $query->where('form_type', 'INSET')
+                    ->where('comp_status', 'Pending')
+                    ->with('expenditures');
+            }])
+            ->get();
 
             return response()->json($forms);
 
@@ -86,11 +104,23 @@ class FormController extends Controller
 
         } else {
         
-            $forms = User::with(['forms' => function ($query) {
+            /*$forms = User::with(['forms' => function ($query) {
                 $query->where('form_type', 'EAD')
                         ->where('comp_status', 'Pending')
                         ->with('expenditures');
-            }])->get();
+            }])->get();*/
+
+            $forms = User::whereHas('forms', function ($query) {
+                $query->where('form_type', 'EAD')
+                      ->where('comp_status', 'Pending')
+                      ->whereNull('deleted_at'); // Exclude soft deleted forms
+            })
+            ->with(['forms' => function ($query) {
+                $query->where('form_type', 'EAD')
+                    ->where('comp_status', 'Pending')
+                    ->with('expenditures');
+            }])
+            ->get();
 
             return response()->json($forms);
 

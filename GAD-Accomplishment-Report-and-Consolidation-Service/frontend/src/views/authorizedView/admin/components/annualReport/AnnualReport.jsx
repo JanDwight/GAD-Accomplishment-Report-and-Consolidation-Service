@@ -127,10 +127,6 @@ export default function AnnualReport() {
         }, []); // Run this effect only once when the component mounts
     }
 
-    useEffect(() => {
-        
-    }, []);
-
     return (
         <div className='bg-white h-full overflow-y-auto rounded-xl'>
             <div className='flex justify-center space-x-5 p-2' contenteditable>
