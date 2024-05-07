@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/archivemandate/{id}', 'archivemandates');
         Route::put('/restoremandate/{id}', 'restoremandates');
         Route::put('/deletemandate/{id}', 'deletemandates');
-        Route::get('/showact_mandates','showact_mandates');
+        Route::put('/showact_mandates','showact_mandates');
         
     });
     

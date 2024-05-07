@@ -12,6 +12,7 @@ export default function AddUserModal() {
     const [email, setEmail] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [role, setRole] = useState('');
     const [menuText, setMenu] = useState('');
@@ -34,6 +35,12 @@ export default function AddUserModal() {
       const onSubmit = async (ev) => {
         setAxiosMessage('Loading...');
         setAxiosStatus('Loading');
+
+        if(password !== confirmPassword){
+          setAxiosMessage('Password does not match. Please try again.');
+          setAxiosStatus(false);
+          return;
+        }
     
         try {
           const response = await axiosClient.post('/adduser', { email, username: userName, password, role });
@@ -78,7 +85,7 @@ export default function AddUserModal() {
               />
             <label htmlFor="username">User Name: </label>
               <input
-                  placeholder={'Name of College'}
+                  placeholder={'Office/Department'}
                   id="username"
                   name="username"
                   type="text"
@@ -98,6 +105,18 @@ export default function AddUserModal() {
                   required
                   value={password}
                   onChange={ev => setPassword(ev.target.value)}
+                  className={style}
+              />
+            <label htmlFor="confirmpassword">Confirm Password: </label>
+              <input
+                  placeholder={'Confirm Password'}
+                  id="confirmpassword"
+                  name="confirmpassword"
+                  type={inputType}
+                  autoComplete="confirm password"
+                  required
+                  value={confirmPassword}
+                  onChange={ev => setConfirmPassword(ev.target.value)}
                   className={style}
               />
               <div className='flex space-x-2 justify-end pt-1'>

@@ -124,6 +124,15 @@ export default function SubmitedForms() {
 
               <ul className='text-center'>
                 {/*---------------------------------------*/}
+                {employeeForms.length === 0 ? (
+                <Menu as="div" className="space-y-2">
+                    <div className="flex flex-col ">
+                      <Menu.Item className="text-gray-500">
+                        <p>No forms available.</p>
+                      </Menu.Item>
+                    </div>
+                </Menu>
+                ) : (
                 <Menu as="div" className="space-y-2">
                   {employeeForms.map((user) => (
                     <Menu key={user.id}>
@@ -178,6 +187,8 @@ export default function SubmitedForms() {
                     </Menu>
                   ))}
                 </Menu>
+                )}
+                {/*---------------------------------------*/}
               </ul>
             </Tab.Panel>
             <Tab.Panel
@@ -188,6 +199,15 @@ export default function SubmitedForms() {
             >
               <ul className='text-center'>
                 {/*---------------------------------------*/}
+                {insetForms.length === 0 ? (
+                <Menu as="div" className="space-y-2">
+                    <div className="flex flex-col ">
+                      <Menu.Item className="text-gray-500">
+                        <p>No forms available.</p>
+                      </Menu.Item>
+                    </div>
+                </Menu>
+                ) : (
                 <Menu as="div" className="space-y-2">
                   {insetForms.map((user) => (
                     <Menu key={user.id}>
@@ -242,6 +262,8 @@ export default function SubmitedForms() {
                     </Menu>
                   ))}
                 </Menu>
+                )}
+                {/*---------------------------------------*/}
               </ul>
             </Tab.Panel>
             <Tab.Panel
@@ -252,6 +274,15 @@ export default function SubmitedForms() {
             >
               <ul className='text-center'>
                 {/*---------------------------------------*/}
+                {eadForm.length === 0 ? (
+                <Menu as="div" className="space-y-2">
+                    <div className="flex flex-col ">
+                      <Menu.Item className="text-gray-500">
+                        <p>No forms available.</p>
+                      </Menu.Item>
+                    </div>
+                </Menu>
+                ) : (
                 <Menu as="div" className="space-y-2">
                   {eadForm.map((user) => (
                     <Menu key={user.id}>
@@ -306,6 +337,8 @@ export default function SubmitedForms() {
                     </Menu>
                   ))}
                 </Menu>
+                )}
+                {/*---------------------------------------*/}
               </ul>
             </Tab.Panel>
           </Tab.Panels>

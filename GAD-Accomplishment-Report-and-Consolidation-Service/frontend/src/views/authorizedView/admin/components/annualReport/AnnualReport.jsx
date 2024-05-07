@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axiosClient from '../../../../axios/axios';
 import * as XLSX from 'xlsx';
 import NeutralButton from '../../../../components/buttons/NeutralButton';
+import ReactModal from 'react-modal';
 //#D8D8D8 ---> grey
 
 
@@ -9,21 +10,28 @@ export default function AnnualReport() {
     
     const [clientMandate, setClientMandate] = useState([]);
     const [organizationMandate, setOrganizationMandate] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    console.log('SY', selectedYear);
+    const currentYear = new Date().getFullYear();
 
     const [totalMale, setTotalMale] = useState('');
     const [totalFemale, setTotalFemale] = useState('');
 
     const [totalExpenses, setTotalExpenses] = useState('');
     //const [totalAttribution, setTotalAttribution] = useState('');
+    const pastYears = [];
 
+    for (let i = 0; i < 5; i++) {
+    pastYears.push(currentYear - i);
+    }
 
     useEffect(() => {
         fetchMandate();
-    }, []);
+    }, [selectedYear]);
 
     const fetchMandate = async () => {
         try {
-            const response = await axiosClient.get('/showact_mandates');
+            const response = await axiosClient.put('/showact_mandates', {content: selectedYear});
             if (response.data) {
                 console.log('Return Client: ', response.data.Client);
                 console.log('Return Organization: ', response.data.Organization);
@@ -121,17 +129,33 @@ export default function AnnualReport() {
 
     return (
         <div className='bg-white h-full overflow-y-auto rounded-xl'>
-            <div className='p-2 mx-auto w-[20%]' contenteditable>
+            <div className='flex justify-center space-x-5 p-2' contenteditable>
                 <NeutralButton label={'Export to Excel'} onClick={exportToExcel} />
+
+                <label htmlFor='year'>Select Year</label>
+                <select
+                    id="year"
+                    value={selectedYear} // Use selectedYear as the value
+                    onChange={(event) => {
+                        setSelectedYear(event.target.value); // Update selectedYear on change
+                        fetchMandate(); // Call fetchMandate() when selection changes
+                      }}
+                    className="w-[50%] border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                >
+                    {pastYears.map((year) => (
+                        <option key={year} value={year}>{year}</option>
+                    ))}
+                </select>
             </div>
+           
             <table id="report-table" 
-                className='w-screen overflow-x-auto' 
+                className='w-screen overflow-x-auto'
                 contentEditable={false}
                 //set contentEditable to true for editing the table contents
             >
                 <thead>
                     <tr>
-                        <th style={tvStyles} colSpan="12">BENGUET STATE UNIVERSITY ANNUAL GENDER AND DEVELOPMENT (GAD) ACCOMPLISHMENT FY 20XX</th>
+                        <th style={tvStyles} colSpan="12">BENGUET STATE UNIVERSITY ANNUAL GENDER AND DEVELOPMENT (GAD) ACCOMPLISHMENT FY {selectedYear}</th>
                     </tr>
                     <tr>
                         <th style={thStyles}></th>
