@@ -47,15 +47,13 @@ export default function Logs() {
   };
     
   return (
-        <div className="h-full">
-          <div className='bg-white flex h-full rounded-xl'>
+          <div className='bg-white flex h-[80%] rounded-xl'>
             <table className='w-screen text-left'>
               <thead className='bg-secondary sticky top-0'>
                 <tr>
-                  <th className='w-28 px-4 py-2'>Log ID</th>
-                  <th className='px-4 py-2'>By</th>
-                  <th className='px-4 py-2'>Properties</th>
                   <th className='px-4 py-2'>On</th>
+                  <th className='px-4 py-2'>By</th>
+                  <th className='px-4 py-2'>Actions</th>
                   {/* Add more table headers as needed */}
                 </tr>
               </thead>
@@ -65,22 +63,21 @@ export default function Logs() {
                     key={index}
                     className='border-b-2 border-secondary hover:bg-accent hover:drop-shadow-gs'
                   >
-                    <td className='px-4 py-2'>{log.id}</td>
+                    <td className='w-28 px-4 py-2'>{log.formated_updated_at}</td>
                     <td className='px-4 py-2'>{log.causer_username}</td>
                     <td className='px-4 py-2'>
                       {/* Render properties based on their types */}
                       {renderProperties(log.properties)}
                     </td>
-                    <td className='w-28 px-4 py-2'>{log.formated_updated_at}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            
+            <div className="absolute bottom-10 right-20 mr-10">
+              <NeutralButton label="Print Logs" onClick={() => printLogsToFile()} />
+            </div>
           </div>
-          <div className="absolute bottom-10 right-20 mr-10">
-            <NeutralButton label="Print Logs" onClick={() => printLogsToFile()} />
-          </div>
-        </div>
   );
 }
 

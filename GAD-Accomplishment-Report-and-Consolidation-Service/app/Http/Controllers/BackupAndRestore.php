@@ -10,6 +10,22 @@ use Illuminate\Support\Facades\Validator;
 
 class BackupAndRestore extends Controller
 {
+    public function index() {
+        $backupPath = storage_path('app/backup');
+    
+        // Get an array of all SQL files in the directory
+        $sqlFiles = glob($backupPath . '/*.sql');
+    
+        // Extract only the filenames from the paths
+        $filenames = array_map('basename', $sqlFiles);
+    
+        return response()->json([
+            'message' => $filenames,
+            'success' => true
+        ]);
+    }
+    
+
     public function backup() {
         // Call the Artisan command
         Artisan::call('db:backup');

@@ -13,6 +13,7 @@ import Mandates from "./views/authorizedView/admin/components/mandates/Mandates"
 import Dashboard from "./views/authorizedView/admin/components/dashboard/Dashboard";
 import Profile from "./views/authorizedView/profile/Profile";
 import Logs from "./views/components/logs/Logs";
+import PreviousReport from "./views/authorizedView/admin/components/previousReports/PreviousReport";
 
 const router = createBrowserRouter([
     {
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
             {
                 path: 'logs',
                 element: <Logs/>
+            },
+            {
+                path: 'previousreports',
+                element: <PreviousReport/>
             },
         ]
     },
