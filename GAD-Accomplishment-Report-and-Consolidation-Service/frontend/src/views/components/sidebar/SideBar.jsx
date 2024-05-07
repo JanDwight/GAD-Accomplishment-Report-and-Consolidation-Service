@@ -13,19 +13,10 @@ import ArchivedReports from '../../authorizedView/Forms/submitedForms/accomplish
 import ShowArchiveMandates from '../../authorizedView/admin/components/mandates/components/ShowArchiveMandates';
 import AddMandatesModal from '../../authorizedView/admin/components/mandates/components/modals/AddMandatesModal';
 import Feedback from '../feedbacks/Feedback';
-import Restore from '../backupAndRestore/Restore';
-import Logs from '../logs/Logs';
 
 export default function SideBar() {
     const [message, setAxiosMessage] = useState('');
     const [status, setAxiosStatus] = useState('');
-
-    const [arbitrary, setArbitrary] = useState({
-        users: '',
-        design: '',
-        pending: '',
-        completed: '',
-    })
 
     // For Modals
     const [modals, setModals] = useState({
@@ -67,36 +58,10 @@ export default function SideBar() {
         { label: 'Archived Forms', onClick: () => toggleModal('archivedForm', true) },
         { label: 'Archived Accomplishment Reports', onClick: () => toggleModal('archivedReports', true) },
         { label: 'Backup', onClick: () => handleBackup() },
-        { label: 'Restore', onClick: () => toggleModal('showRestore', true) },
-        { label: 'Logs', onClick: () => toggleModal('showLogs', true) },
-    ];
-
-    const sidebarList = [
-        { label: 'Total Users: ', val: arbitrary.users},
-        { label: 'Total Training Designs: ', val: arbitrary.design},
-        { label: 'Pending Accomplishment Reports: ', val: arbitrary.pending},
-        { label: 'Accomplisment Reports: ', val: arbitrary.completed},
     ];
 
     const style = "max-w-[90%] w-fit max-h-[95%] min-h-fit bg-[#FFFFFF] rounded-3xl ring-1 ring-black shadow-2xl my-[1%] mx-auto p-5 overflow-y-auto"
     
-    useEffect(() => {
-        fetchCounts();
-      }, []);
-    
-    const fetchCounts = async () => {
-      try {
-        const response = await axiosClient.get('/counter');
-        if (response.data && response.data) {
-          console.log("Return: ", response.data);
-          setArbitrary(response.data);
-        } else {
-          console.error('Invalid response format:', response.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
     return (
         <div className="sidebar">
@@ -114,18 +79,6 @@ export default function SideBar() {
                         </li>
                     ))}
                 </ul>
-            </div>
-            <div className='mt-2 border-2 shadow-2 px-5 rounded-lg py-2'>
-                <table>
-                    <tbody>
-                    {sidebarList.map((item, index) => (
-                        <tr key={index} className='text font-semibold'>
-                            <td className='border-b border-secondary'> <a className='text-xs'>{item.label}</a> </td>
-                            <td><b>{item.val}</b></td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
             </div>
             <ReactModal
                 isOpen={modals.addUser}
@@ -185,26 +138,8 @@ export default function SideBar() {
                 </div>
             </ReactModal>
 
-            <ReactModal
-                isOpen={modals.showRestore}
-                onRequestClose={() => toggleModal('showRestore', false)}
-                className={style}
-            >
-                <div>
-                    <Restore closeModal={() => toggleModal('showRestore', false)} />
-                </div>
-            </ReactModal>
-
             
-            <ReactModal
-                isOpen={modals.showLogs}
-                onRequestClose={() => toggleModal('showLogs', false)}
-                className={style}
-            >
-                <div>
-                    <Logs closeModal={() => toggleModal('showLogs', false)} />
-                </div>
-            </ReactModal>
+
         </div>
     );
 }
