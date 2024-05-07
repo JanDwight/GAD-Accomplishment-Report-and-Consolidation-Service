@@ -38,7 +38,7 @@ export default function BackupList() {
 
     //<><><><><><>
     const addprompt = (title) => {
-       const concatmessage = '' + title +  '" restored. All of the data saved after said date will be lost. Do you wish to proceed?';
+       const concatmessage = '' + title +  '" will be restored. All of the data saved after said date will be lost. Do you wish to proceed?';
        setPromptMessage(concatmessage);
        setShowPrompt(true);
        setToBeRestored(title);

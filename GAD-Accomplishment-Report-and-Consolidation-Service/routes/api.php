@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BackupAndRestore;
 use App\Http\Controllers\Logs;
 use App\Http\Controllers\MandatesController;
+use App\Http\Controllers\PreviousReport;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FormController;
 use Illuminate\Http\Request;
@@ -97,6 +98,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(Logs::class)->group(function() {
         Route::get('/showlogs', 'index');
+    });
+
+    Route::controller(PreviousReport::class)->group(function() {
+        Route::post('/uploadpdf', 'storepdf');
+        Route::get('/showpdfs', 'index');
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
