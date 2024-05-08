@@ -103,6 +103,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(PreviousReport::class)->group(function() {
         Route::post('/uploadpdf', 'storepdf');
         Route::get('/showpdfs', 'index');
+        Route::get('/downloadpdf/{pdfFileName}', 'downloadpdf');
+        Route::put('/archivepdf/{selectedPDF}', 'archivepdf');
+        Route::get('/showarchivedpdfs', 'archivedindex');
+        Route::put('/restorepdf/{selectedPDF}', 'restorepdf');
+        Route::put('/deletepdf/{selectedPDF}', 'deletepdf');
     });
 
     Route::post('/logout', [AuthController::class, 'logout']);
