@@ -14,6 +14,7 @@ import Dashboard from "./views/authorizedView/admin/components/dashboard/Dashboa
 import Profile from "./views/authorizedView/profile/Profile";
 import Logs from "./views/components/logs/Logs";
 import PreviousReport from "./views/authorizedView/admin/components/previousReports/PreviousReport";
+import ArchivedPdfs from "./views/authorizedView/admin/components/previousReports/components/ArchivedPdfs";
 
 const router = createBrowserRouter([
     {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
             {
                 path: 'previousreports',
                 element: <PreviousReport/>
+            },
+            {
+                path: 'archivedpdfs',
+                element: <ArchivedPdfs/>
             },
         ]
     },

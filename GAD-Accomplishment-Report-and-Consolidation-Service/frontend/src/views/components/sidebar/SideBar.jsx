@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import NeutralButton from '../buttons/NeutralButton';
 import ReactModal from 'react-modal';
 import axiosClient from '../../axios/axios';
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
 import GADLogo from '../../../../src/TMP/GAD_Logo.png'
 
 // For Modal
@@ -13,6 +12,7 @@ import ArchivedReports from '../../authorizedView/Forms/submitedForms/accomplish
 import ShowArchiveMandates from '../../authorizedView/admin/components/mandates/components/ShowArchiveMandates';
 import AddMandatesModal from '../../authorizedView/admin/components/mandates/components/modals/AddMandatesModal';
 import Feedback from '../feedbacks/Feedback';
+import ArchivedPdfs from '../../authorizedView/admin/components/previousReports/components/ArchivedPdfs';
 
 export default function SideBar() {
     const [message, setAxiosMessage] = useState('');
@@ -27,7 +27,8 @@ export default function SideBar() {
         showArchiveMandate: false,
         showAddMandateModal: false,
         showRestore: false,
-        showLogs: false
+        showLogs: false,
+        showArchivedPdf: false
     });
 
     const handleBackup = () => {
@@ -57,6 +58,7 @@ export default function SideBar() {
         { label: 'Archived Mandates', onClick: () => toggleModal('showArchiveMandate', true) },
         { label: 'Archived Forms', onClick: () => toggleModal('archivedForm', true) },
         { label: 'Archived Accomplishment Reports', onClick: () => toggleModal('archivedReports', true) },
+        { label: 'Archived PDFs', onClick: () => toggleModal('showArchivedPdf', true) },
         { label: 'Backup', onClick: () => handleBackup() },
     ];
 
@@ -138,7 +140,15 @@ export default function SideBar() {
                 </div>
             </ReactModal>
 
-            
+            <ReactModal
+                isOpen={modals.showArchivedPdf}
+                onRequestClose={() => toggleModal('showArchivedPdf', false)}
+                className={style}
+            >
+                <div>
+                    <ArchivedPdfs closeModal={() => toggleModal('showArchivedPdf', false)} />
+                </div>
+            </ReactModal>
 
         </div>
     );
