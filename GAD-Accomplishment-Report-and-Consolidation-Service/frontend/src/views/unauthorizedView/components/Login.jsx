@@ -51,7 +51,7 @@ export default function Login() {
       <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message} status={status} refresh={false}/>
 
       <form onSubmit={onSubmit} className="flex flex-col w-full items-center">
-        <label htmlFor="Email" className="mb-1">Email: </label>
+        <label htmlFor="Email" className="mb-1 text-2xl font-bold">Email: </label>
         <input
           placeholder={'example@email.com'}
           id="email"
@@ -63,7 +63,7 @@ export default function Login() {
           onChange={(ev) => setEmail(ev.target.value)}
           className='w-[80%] border-solid border-2 border-primary focus:border-accent focus:outline-none rounded-lg p-2'
         />
-        <label htmlFor="password" className="my-1 ">Password: </label>
+        <label htmlFor="password" className="my-1 text-2xl font-bold">Password: </label>
         <input
           placeholder={'Input Password'}
           id="password"
@@ -81,7 +81,7 @@ export default function Login() {
             checked={showPassword}
             onChange={handlePasswordVisibility}
           />
-          <label htmlFor="showPassword" className="text-sm">Show Password</label>
+          <label htmlFor="showPassword" className="text-lg  font-bold">Show Password</label>
         </div>
 
         <div className="mt-5">

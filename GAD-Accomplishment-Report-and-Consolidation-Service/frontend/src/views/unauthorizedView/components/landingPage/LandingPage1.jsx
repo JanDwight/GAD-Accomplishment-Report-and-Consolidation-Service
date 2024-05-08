@@ -1,6 +1,5 @@
 import React from 'react';
 import Login from '../../components/Login';
-import imageSrc from '../../../../TMP/image.png';
 import GADLogo from '../../../../TMP/GAD_Logo.png';
 
 export default function LandingPage1() {

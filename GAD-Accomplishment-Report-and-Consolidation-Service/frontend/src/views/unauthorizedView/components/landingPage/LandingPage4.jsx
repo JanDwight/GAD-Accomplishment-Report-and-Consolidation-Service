@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {ArrowLeftCircleIcon, ArrowRightCircleIcon} from '@heroicons/react/24/solid';
-import img from '../../../../TMP/image4.jpg';
+import img from '../../../../TMP/image20.png';
 
 export default function LandingPage4() {
   const [activeSlide, setActiveSlide] = useState(0);

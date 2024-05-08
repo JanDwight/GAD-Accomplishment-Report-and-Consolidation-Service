@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {ArrowLeftCircleIcon, ArrowRightCircleIcon} from '@heroicons/react/24/solid'
-import img1 from '../../../../TMP/image1.jpg';
+import img1 from '../../../../TMP/image13.jpg';
 import img3 from '../../../../TMP/image3.jpg';
-import img4 from '../../../../TMP/image4.jpg';
+import img4 from '../../../../TMP/image15.png';
 import img5 from '../../../../TMP/image5.jpg';
 import img6 from '../../../../TMP/image6.jpg';
 import img7 from '../../../../TMP/image7.jpg';
 import img8 from '../../../../TMP/image8.jpg';
-import img9 from '../../../../TMP/image9.jpg';
+import img9 from '../../../../TMP/image16.jpg';
+import img10 from '../../../../TMP/image12.jpg';
 
 export default function LandingPage5() {
-  const images = [img1, img3, img4, img5, img6, img7, img8, img9]; // Add more images as needed
+  const images = [img1, img3, img4, img5, img6, img7, img8, img9, img10]; // Add more images as needed
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
