@@ -1,5 +1,5 @@
 import React from 'react';
-import img from '../../../../TMP/image1.jpg';
+import img from '../../../../TMP/image18.jpg';
 
 export default function LandingPage2() {
   return (
