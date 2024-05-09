@@ -53,7 +53,14 @@ export default function Logs() {
                 <tr>
                   <th className='px-4 py-2'>On</th>
                   <th className='px-4 py-2'>By</th>
-                  <th className='px-4 py-2'>Actions</th>
+                  <th className='px-4 py-2 flex items-center justify-between'>
+                  <div className="w-[20%]">
+                    Actions
+                  </div>
+                  <div className="w-[20%]">
+                    <NeutralButton label="Print Logs" onClick={() => printLogsToFile()} />
+                  </div>
+                  </th>
                   {/* Add more table headers as needed */}
                 </tr>
               </thead>
@@ -73,10 +80,6 @@ export default function Logs() {
                 ))}
               </tbody>
             </table>
-            
-            <div className="absolute bottom-10 right-20 mr-10">
-              <NeutralButton label="Print Logs" onClick={() => printLogsToFile()} />
-            </div>
           </div>
   );
 }
