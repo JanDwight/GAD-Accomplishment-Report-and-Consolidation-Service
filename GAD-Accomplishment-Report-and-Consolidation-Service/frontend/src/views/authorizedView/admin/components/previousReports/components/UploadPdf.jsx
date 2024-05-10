@@ -26,7 +26,7 @@ export default function UploadPdf() {
 
       const addprompt = (ev) => {
         ev.preventDefault();
-        const concatmessage = `Changes to your profile: "${fileData.files.map(file => file.name).join(', ')}" will be saved. Do you wish to proceed?`;
+        const concatmessage = `The PDF file: "${fileData.files.map(file => file.name).join(', ')}" will be uploaded. Do you wish to proceed?`;
         setPromptMessage(concatmessage);
         setShowPrompt(true);
       }

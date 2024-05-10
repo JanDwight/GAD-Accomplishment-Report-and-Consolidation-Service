@@ -36,7 +36,7 @@ export default function RestorePdf({selectedPDF}) {
 
       {/**BUTTONS */}
       <div className='mt-5'>
-        <Submit label="Restore User" onClick={onSubmit}/*disabled={ your condition }*/ />
+        <Submit label="Restore PDF" onClick={onSubmit}/*disabled={ your condition }*/ />
       </div>
     </div>
   )

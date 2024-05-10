@@ -35,7 +35,7 @@ export default function DeletePdfModal({selectedPDF}) {
       
       {/**BUTTONS */}
       <div className='mt-5'>
-          <WarningButton label="Delete User" onClick={onSubmit}/*disabled={ your condition }*/ />
+          <WarningButton label="Delete PDF" onClick={onSubmit}/*disabled={ your condition }*/ />
         </div>
     </div>
   )
