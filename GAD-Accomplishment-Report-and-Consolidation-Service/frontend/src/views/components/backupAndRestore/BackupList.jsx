@@ -17,7 +17,7 @@ export default function BackupList() {
 
     const [promptMessage, setPromptMessage] = useState('');
     const [showPrompt, setShowPrompt] = useState(false);
-    const action = "Confirm Add New Mandate?";
+    const action = "Confirm Restore Database?";
 
     useEffect(() => {
         const fetchBackupFiles = async () => {
