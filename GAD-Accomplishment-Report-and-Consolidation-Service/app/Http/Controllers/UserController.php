@@ -8,6 +8,10 @@ use App\Models\Forms;
 use App\Models\User;
 use App\Models\accReport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -119,10 +123,29 @@ class UserController extends Controller
 
             // Check if an image is provided
             if ($request->hasFile('image')) {
-                // Your image handling logic here...
+                $image = $request->file('image');
+                // Assuming Logo model has a one-to-one relationship with User model
+                if ($user->logo) {
+                    // Delete the existing logo before adding a new one
+                    Storage::delete([$user->logo->original_path, $user->logo->thumbnail_path]);
+                    $user->logo->delete();
+                }
 
-                // Log image upload activity
-                $changes['image'] = 'Image uploaded';
+                $manager = new ImageManager(new Driver());
+
+                // Store the image in the storage directory
+                $storedImagePath = $image->store('public/logos/');
+                $fullImagePath = Storage::url($storedImagePath);
+
+                $thumbnailPath = 'public/thumbnails/logos/' . $image->hashName();
+                $thumbnail = $manager->read($image)->resize(100, 100);
+                Storage::put($thumbnailPath, $thumbnail->encode());
+
+                // Create a new Logo instance and save the image paths to it
+                $user->logo()->create([
+                    'original_path' => $fullImagePath,
+                    'thumbnail_path' => $thumbnailPath,
+                ]);
             }
 
             // Save the updated user data

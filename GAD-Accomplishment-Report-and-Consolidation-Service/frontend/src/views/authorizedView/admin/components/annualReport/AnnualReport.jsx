@@ -129,23 +129,24 @@ export default function AnnualReport() {
 
     return (
         <div className='bg-white h-full overflow-y-auto rounded-xl'>
-            <div className='flex justify-center space-x-5 p-2' contenteditable>
+            <div className='flex items-center justify-between space-x-5 p-2' contenteditable>
                 <NeutralButton label={'Export to Excel'} onClick={exportToExcel} />
-
-                <label htmlFor='year'>Select Year</label>
-                <select
-                    id="year"
-                    value={selectedYear} // Use selectedYear as the value
-                    onChange={(event) => {
-                        setSelectedYear(event.target.value); // Update selectedYear on change
-                        fetchMandate(); // Call fetchMandate() when selection changes
-                      }}
-                    className="w-[50%] border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                >
-                    {pastYears.map((year) => (
-                        <option key={year} value={year}>{year}</option>
-                    ))}
-                </select>
+                <div className='w-[30%] flex items-center justify-end space-x-5 p-2'>
+                    <label htmlFor='year'>Select Year:</label>
+                    <select
+                        id="year"
+                        value={selectedYear} // Use selectedYear as the value
+                        onChange={(event) => {
+                            setSelectedYear(event.target.value); // Update selectedYear on change
+                            fetchMandate(); // Call fetchMandate() when selection changes
+                        }}
+                        className="w-[70%] border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    >
+                        {pastYears.map((year) => (
+                            <option key={year} value={year}>{year}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
            
             <table id="report-table" 

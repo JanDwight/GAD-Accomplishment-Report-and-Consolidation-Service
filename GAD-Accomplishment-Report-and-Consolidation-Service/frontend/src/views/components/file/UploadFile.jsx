@@ -49,7 +49,7 @@ export default function UploadFile({ onFileChange }) {
           onChange={handleFileChange}
           style={{ display: 'none', width: '100%' }}
         />
-        <button type="button" onClick={handleClick}>Choose Excel File</button>
+        <button type="button" onClick={handleClick}>Choose PDF File</button>
         {files.length > 0 && (
           <div>
             {files.map((file, index) => (

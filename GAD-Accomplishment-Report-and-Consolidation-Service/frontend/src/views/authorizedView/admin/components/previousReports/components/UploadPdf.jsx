@@ -26,7 +26,7 @@ export default function UploadPdf() {
 
       const addprompt = (ev) => {
         ev.preventDefault();
-        const concatmessage = `Changes to your profile: "${fileData.files.map(file => file.name).join(', ')}" will be saved. Do you wish to proceed?`;
+        const concatmessage = `The PDF file: "${fileData.files.map(file => file.name).join(', ')}" will be uploaded. Do you wish to proceed?`;
         setPromptMessage(concatmessage);
         setShowPrompt(true);
       }
@@ -65,7 +65,7 @@ export default function UploadPdf() {
               <UploadFile onFileChange={handleFileChange} />
             </div>
             <div className="flex justify-center text-center mt-5">
-              <Submit label="Update" />
+              <Submit label="Upload" />
             </div>
         </form>
 
