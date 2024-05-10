@@ -5,8 +5,8 @@ import SetMandateModal from '../ManageUser/Modals/SetMandateModal';
 import Feedback from '../../../../components/feedbacks/Feedback';
 
 export default function TestTables() {
-    const [message, setMessage] = useState('');
-    const [success, setSuccess] = useState(true);
+  const [message, setAxiosMessage] = useState('');
+  const [status, setAxiosStatus] = useState('');
 
     const [n_mandate, setMandate] = useState([]);
     const [report, setReport] = useState([]);
@@ -71,26 +71,26 @@ export default function TestTables() {
     
     if (selectedRows.length === 0) {
       // No items selected, show an error message
-      setMessage('No items selected.');
-      setSuccess(false);
-      return
+      setAxiosMessage('No items selected.');
+      setAxiosStatus(false);
+      //console.log('Suc: ', success);
+    } else {
+      const selectedItems = selectedRows.map((index) => ({
+        title: report[index].title,
+        mandates_id: report[index].mandates_id,
+      }));
+  
+      console.log('Selected: ', selectedItems);
+      console.log('Mandates: ', n_mandate);
+      
+      setReportList(selectedItems);
+      setShowMandate(true);
     }
-
-    const selectedItems = selectedRows.map((index) => ({
-      title: report[index].title,
-      mandates_id: report[index].mandates_id,
-    }));
-
-    console.log('Selected: ', selectedItems);
-    console.log('Mandates: ', n_mandate);
-    
-    setReportList(selectedItems);
-    setShowMandate(true);
   }
 
     return (
         <div className='bg-white h-full rounded-xl overflow-y-auto flex justify-center'>
-            <Feedback isOpen={message !== ''} onClose={() => setSuccess('')} successMessage={message}  status={success}/>
+            <Feedback isOpen={message !== ''} onClose={() => setAxiosMessage('')} successMessage={message}  status={status} refresh={false}/>
             <div className='overflow-y-auto rounded-xl w-full'>
               <table id="reports_table" className="w-full text-center h-fit">
                   <thead className='bg-secondary sticky top-0'>
