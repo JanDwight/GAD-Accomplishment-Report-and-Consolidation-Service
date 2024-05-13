@@ -15,11 +15,17 @@ import Profile from "./views/authorizedView/profile/Profile";
 import Logs from "./views/components/logs/Logs";
 import PreviousReport from "./views/authorizedView/admin/components/previousReports/PreviousReport";
 import ArchivedPdfs from "./views/authorizedView/admin/components/previousReports/components/ArchivedPdfs";
+import TWGPage from "./views/components/footer/components/TWGPage";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <GuestLayout />
+    },
+
+    {
+        path: '/twg',
+        element: <TWGPage />
     },
 
     {
