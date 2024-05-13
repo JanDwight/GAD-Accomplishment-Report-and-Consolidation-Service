@@ -105,6 +105,7 @@ export default function GuestLayout() {
       <div className="snap-center h-screen" ref={landingPageRefs.landingPage5Ref}>
         <LandingPage1 />
       </div>
+
     </div>
   );
 }
