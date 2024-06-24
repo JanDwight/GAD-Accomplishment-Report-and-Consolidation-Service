@@ -6,7 +6,6 @@ import ViewEADReportModal from '../activityForms/components/modals/ViewEADReport
 import EditActivityModal from '../activityForms/components/modals/EditActivityModal';
 import ShowActivityModal from './components/modals/ShowActivityModal';
 import LoadingHorizontalLine from '../../../../components/feedbacks/LoadingHorizontalLine';
-import ArchivedReports from './components/ArchivedReports';
 import ArchiveReportModal from './components/modals/ArchiveReportModal';
 
 export default function AccomplishmentReport() {

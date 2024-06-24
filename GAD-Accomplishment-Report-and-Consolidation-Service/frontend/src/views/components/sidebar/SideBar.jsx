@@ -8,7 +8,7 @@ import GADLogo from '../../../../src/TMP/GAD_Logo.png'
 import AddUserModal from '../../authorizedView/admin/components/ManageUser/Modals/AddUserModal';
 import ArchivedUser from '../../authorizedView/admin/components/ManageUser/ArchivedUser';
 import ArchivedActivityForms from '../../authorizedView/Forms/submitedForms/activityForms/ArchivedActivityForms';
-import ArchivedReports from '../../authorizedView/Forms/submitedForms/accomplishmentReport/components/ArchivedReports';
+import ArchivedReportsList from '../../authorizedView/Forms/submitedForms/accomplishmentReport/components/ArchivedReportsList';
 import ShowArchiveMandates from '../../authorizedView/admin/components/mandates/components/ShowArchiveMandates';
 import AddMandatesModal from '../../authorizedView/admin/components/mandates/components/modals/AddMandatesModal';
 import Feedback from '../feedbacks/Feedback';
@@ -126,7 +126,7 @@ export default function SideBar() {
                 className={style}
             >
                 <div>
-                    <ArchivedReports closeModal={() => toggleModal('archivedReports', false)} />
+                    <ArchivedReportsList closeModal={() => toggleModal('archivedReports', false)} />
                 </div>
             </ReactModal>
 

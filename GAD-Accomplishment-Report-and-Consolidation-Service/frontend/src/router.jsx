@@ -1,14 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import GuestLayout from "./views/unauthorizedView/main_views/GuestLayout";
-import AdminLayout from "./views/authorizedView/AdminLayout";
+import AdminLayout from "./views/authorizedView/admin/AdminLayout";
 import ManageUsers from "./views/authorizedView/admin/components/ManageUser/ManageUsers";
-import Forms from "./views/authorizedView/Forms/ActivityDesignForms";
+import Forms from "./views/authorizedView/Forms/ActivityDesignFormsChoices";
 import SubmitedForms from "./views/authorizedView/Forms/submitedForms/SubmitedForms";
 import AccomplishmentReport from "./views/authorizedView/Forms/submitedForms/accomplishmentReport/AccomplishmentReport";
-import CollegeLayout from "./views/authorizedView/CollegeLayout";
+import UsersLayout from "./views/authorizedView/users/UsersLayout";
 import AnnualReport from "./views/authorizedView/admin/components/annualReport/AnnualReport";
-import TestTables from "./views/authorizedView/admin/components/annualreporttest/TestTables";
-import ExcelImport from "./views/authorizedView/admin/components/exceltest/ExcelImport";
+import AssignMandates from "./views/authorizedView/admin/components/mandates/AssignMandates";
 import Mandates from "./views/authorizedView/admin/components/mandates/Mandates";
 import Dashboard from "./views/authorizedView/admin/components/dashboard/Dashboard";
 import Profile from "./views/authorizedView/profile/Profile";
@@ -57,12 +56,8 @@ const router = createBrowserRouter([
                 element: <AnnualReport />
             },
             {
-                path: 'annualreporttest',
-                element: <TestTables/>
-            },
-            {
-                path: 'exceltest',
-                element: <ExcelImport/>
+                path: 'assignmandates',
+                element: <AssignMandates/>
             },
             {
                 path: 'mandates',
@@ -88,8 +83,8 @@ const router = createBrowserRouter([
     },
 
     {
-        path: '/college',
-        element: <CollegeLayout />,
+        path: '/user',
+        element: <UsersLayout />,
         children:[
             {
                 path: 'forms',

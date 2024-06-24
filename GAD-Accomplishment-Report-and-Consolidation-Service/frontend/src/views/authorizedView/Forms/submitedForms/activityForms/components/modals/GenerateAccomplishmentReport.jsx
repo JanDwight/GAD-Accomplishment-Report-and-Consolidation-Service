@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Submit from '../../../../../../components/buttons/Submit';
 import NeutralButton from '../../../../../../components/buttons/NeutralButton';
 import { TemplateHandler } from 'easy-template-x';
-import ExtensionAccomplishmentReport from '../../../../../../components/printing/forms/ExtensionAccomplishmentReport.docx'
+import ExtensionAccomplishmentReport from '../../../../../../components/printingAndExports/forms/ExtensionAccomplishmentReport.docx'
 import axiosClient from '../../../../../../axios/axios';
 import ReactModal from 'react-modal';
 import AddPrompt from '../../../../../prompts/AddPrompt';

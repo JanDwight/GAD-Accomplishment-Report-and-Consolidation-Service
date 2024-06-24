@@ -4,7 +4,7 @@ import axiosClient from '../../../axios/axios';
 import NeutralButton from '../../../components/buttons/NeutralButton';
 import { MinusCircleIcon } from '@heroicons/react/24/outline';
 import { TemplateHandler } from 'easy-template-x';
-import EmployeesActivityForm from '../../../components/printing/forms/EmployeesActivityForm.docx'
+import EmployeesActivityForm from '../../../components/printingAndExports/forms/EmployeesActivityForm.docx'
 import ReactModal from 'react-modal';
 import AddPrompt from '../../prompts/AddPrompt';
 

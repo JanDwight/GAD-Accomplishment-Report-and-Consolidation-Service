@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axiosClient from '../../../../../axios/axios';
 import LoadingHorizontalLine from '../../../../../components/feedbacks/LoadingHorizontalLine';
 
-export default function UserReport() {
+export default function UserDashboardModal() {
     const [users, setUsers] = useState([]);
     const [filterText, setFilterText] = useState(''); //for search
     const [isHorizontalLoading, setIsHorizontalLoading] = useState(false)

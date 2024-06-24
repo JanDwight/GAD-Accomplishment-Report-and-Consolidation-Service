@@ -1,9 +1,8 @@
 import { React, useState} from 'react'
-import axiosClient from '../../../../../axios/axios';
+import axiosClient from '../../../../../../axios/axios';
 
 //For Feedback
-import Feedback from '../../../../../components/feedbacks/Feedback';
-import Error from '../../../../../components/feedbacks/Error';
+import Feedback from '../../../../../../components/feedbacks/Feedback';
 
 export default function SetMandateModal({closeModal, reportList, n_mandate}) {
   const [message, setAxiosMessage] = useState('');

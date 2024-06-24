@@ -1,16 +1,16 @@
 import { React, Fragment, useState, useEffect } from 'react'
-import { useStateContext } from '../../context/ContextProvider'
+import { useStateContext } from '../../../context/ContextProvider';
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
-import axiosClient from '../axios/axios';
-import GADLogo from '../../TMP/GAD_Logo.png'
+import axiosClient from '../../axios/axios';
+import GADLogo from '../../../TMP/GAD_Logo.png'
 
 const navigation = [
   //{ name: 'Home', href: '#', current: false },
-  { name: 'Activity Design Forms', to: '/college/forms'},
-  { name: 'Submitted Forms', to: '/college/submitedforms'},
-  { name: 'Accomplishment Reports', to: '/college/accomplishmentreport'},
+  { name: 'Activity Design Forms', to: '/user/forms'},
+  { name: 'Submitted Forms', to: '/user/submitedforms'},
+  { name: 'Accomplishment Reports', to: '/user/accomplishmentreport'},
   //{ name: 'Employee Activity Form', to: '/college/printemployeeactivityform'}
 ]
 
@@ -18,7 +18,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function CollegeLayout() {
+export default function UsersLayout() {
     const { userToken, setCurrentUser, setUserToken  } = useStateContext();
     const [userData, setUserData] = useState('');
     const [userDetails, setUserDetails] = useState('');
