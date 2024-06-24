@@ -9,7 +9,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ActivityDesignForms() {
+export default function ActivityDesignFormsChoices() {
 
   const tabClassName = classNames(
     'flex-1 px-4 py-2 text-sm font-medium text-black rounded-lg bg-secondary hover:bg-accent focus:bg-accent',

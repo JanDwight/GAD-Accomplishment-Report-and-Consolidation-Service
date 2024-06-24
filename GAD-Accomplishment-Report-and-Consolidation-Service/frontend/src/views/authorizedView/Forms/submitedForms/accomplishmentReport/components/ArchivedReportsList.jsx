@@ -5,7 +5,7 @@ import ReactModal from 'react-modal';
 import RestoreReportModal from './modals/RestoreReportModal';
 import DeleteReportModal from './modals/DeleteReportModal';
 
-export default function ArchivedReports() {
+export default function ArchivedReportsList() {
     const [filterText, setFilterText] = useState('');
     const [forms, setForms] = useState([]);
     const [selectedForm, setSelectedForm] = useState('');
@@ -13,10 +13,10 @@ export default function ArchivedReports() {
     const [isDeleteUserModalOpen, setIsDeleteUserModalOpen] = useState(false);
 
     useEffect(() => {
-        fetchCurriculum();
+        fetchArchivedAccomplishmentReportList();
     }, []);
 
-    const fetchCurriculum = async () => {
+    const fetchArchivedAccomplishmentReportList = async () => {
         try {
             const response = await axiosClient.get('/show_archived_accomplishment_report_all');
             if (response.data && response.data) {

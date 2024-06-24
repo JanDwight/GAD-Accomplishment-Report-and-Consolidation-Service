@@ -1,10 +1,10 @@
 import { React, Fragment, useState, useEffect } from 'react'
-import { useStateContext } from '../../context/ContextProvider'
+import { useStateContext } from '../../../context/ContextProvider'
 import { NavLink, Navigate, Outlet } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
-import axiosClient from '../axios/axios';
-import SideBar from '../components/sidebar/SideBar';
+import axiosClient from '../../axios/axios';
+import SideBar from '../../components/sidebar/SideBar';
 
 const navigation = [
   { name: 'Dashboard', to: '/admin/dashboard'},
@@ -12,7 +12,7 @@ const navigation = [
   { name: 'Activity Design Forms', to: '/admin/forms'},
   { name: 'Submitted Forms', to: '/admin/submitedforms'},
   { name: 'Accomplishment Report', to: '/admin/accomplishmentreport'},
-  { name: 'Assign Mandate', to: '/admin/annualreporttest'},
+  { name: 'Assign Mandate', to: '/admin/assignmandates'},
   { name: 'Annual Report', to: '/admin/annualreport'},
   { name: 'Previous Reports', to: '/admin/previousreports'},
   //{ name: 'Employee Activity Form', to: '/admin/printemployeeactivityform'}

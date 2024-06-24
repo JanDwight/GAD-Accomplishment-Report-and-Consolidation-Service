@@ -3,7 +3,7 @@ import ReactModal from "react-modal";
 import BackupList from "../../../../components/backupAndRestore/BackupList";
 import Logs from "../../../../components/logs/Logs";
 import UserDashboard from "./components/UserDashboard";
-import UserReport from "./components/UserReport";
+import UserDashboardModal from "./components/UserDashboardModal";
 
 export default function Dashboard() {
   const [modals, setModals] = useState({
@@ -56,7 +56,7 @@ export default function Dashboard() {
     className={style}
 >
     <div>
-        <UserReport closeModal={() => toggleModal('showUserReport', false)} />
+        <UserDashboardModal closeModal={() => toggleModal('showUserReport', false)} />
     </div>
 </ReactModal>
 

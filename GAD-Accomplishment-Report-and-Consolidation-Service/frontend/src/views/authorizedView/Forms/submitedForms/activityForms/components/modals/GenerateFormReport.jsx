@@ -3,7 +3,7 @@ import Submit from '../../../../../../components/buttons/Submit';
 import NeutralButton from '../../../../../../components/buttons/NeutralButton';
 import { TemplateHandler } from 'easy-template-x';
 import axiosClient from '../../../../../../axios/axios';
-import InsetEmployeeAccomplishmentReport from '../../../../../../components/printing/forms/InsetEmployeeAccomplishmentReport.docx'
+import InsetEmployeeAccomplishmentReport from '../../../../../../components/printingAndExports/forms/InsetEmployeeAccomplishmentReport.docx'
 import Addimages from '../../../../../../components/image/Addimages';
 import ReactModal from 'react-modal';
 import AddPrompt from '../../../../../prompts/AddPrompt';
